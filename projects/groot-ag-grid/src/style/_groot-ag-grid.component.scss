@@ -1,22 +1,94 @@
-groot-ag-grid {
+$active: $primary !default;
+$odd-row-background-color: $white !default;
+$font-family: $font-family-sans-serif !default;
+$font-size: $font-size-base !default;
+$border-color: $gray-250 !default;
+$header-background-color: $light-primary !default;
+$header-foreground-color: color-yiq($header-background-color) !default;
+$icon-color: $table-header-active-color !default;
+$font-family: $font-family-base !default;
+$ag-grid-border-color: $gray-200 !default;
+$ag-grid-accordion-bg: $gray-300 !default;
+$row-border-width: 1px !default;
 
-  .groot-checkbox-cell,
-  .groot-header-checkbox-cell {
+@import "~ag-grid-community/src/styles/ag-grid";
+@import "~ag-grid-community/src/styles/ag-theme-balham/sass/ag-theme-balham";
 
-    .ag-icon {
-      right: 0.35rem;
-    }
-
-    .ag-icon.ag-icon-checkbox-indeterminate,
-    .ag-icon.ag-icon-checkbox-unchecked,
-    .ag-icon.ag-icon-checkbox-checked {
-      color: $body-color;
-    }
-
-  }
-
-  .groot-header-checkbox-cell.ag-header-cell {
-    padding-left: 0.6rem;
-  }
-
+.ag-grid-rows-clickable .ag-row {
+  cursor: pointer;
 }
+
+.ag-theme-balham .ag-row {
+  border-color: $ag-grid-border-color;
+
+  &.accordion-expanded {
+    background-color: $ag-grid-accordion-bg;
+    border-bottom: 0;
+  }
+
+  &.accordion-row {
+    background-color: $ag-grid-accordion-bg;
+    border-top: 0;
+  }
+}
+
+
+groot-ag-grid {
+  .groot-header-checkbox-cell.ag-header-cell {
+    padding-left: 7px;
+  }
+
+  .groot-checkbox-cell.ag-cell {
+    padding: 0 6px;
+  }
+
+  .ag-theme-balham .ag-selection-checkbox,
+  .ag-theme-balham .ag-checkbox {
+    .ag-icon {
+      font-size: 13px;
+      line-height: 13px;
+      border-radius: 2px;
+
+      &:before {
+        visibility: hidden;
+      }
+    }
+
+    .ag-icon-checkbox-unchecked {
+      border: 1px solid $gray-500;
+    }
+
+    .ag-icon-checkbox-indeterminate {
+      border: 1px solid $gray-500;
+
+      &::after {
+        content: "";
+
+        background: 50%/60% 60% no-repeat;
+        background-image: str-replace(url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8' viewBox='0 0 8 8'%3e%3cpath fill='#{$gray-500}' d='m 7.5683901,3.7376529 -7.12338899,0.029241 v 0 0 L 0.43368711,5.795338 7.5683901,5.773418 Z'/%3e%3c/svg%3e"), "#", "%23");
+
+        position: absolute;
+        left: 0;
+        width: 1rem;
+        height: 1rem;
+      }
+    }
+
+    .ag-icon-checkbox-checked {
+      border: 1px solid $primary;
+      color: $white;
+      background-color: $primary;
+
+      &::after {
+        content: "";
+        background: 50%/60% 60% no-repeat;
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8' viewBox='0 0 8 8'%3e%3cpath fill='%23FFFFFF' d='M6.564.75l-3.59 3.612-1.538-1.55L0 4.26l2.974 2.99L8 2.193z'/%3e%3c/svg%3e");
+        position: absolute;
+        left: 0;
+        width: 1rem;
+        height: 1rem;
+      }
+    }
+  }
+}
+
