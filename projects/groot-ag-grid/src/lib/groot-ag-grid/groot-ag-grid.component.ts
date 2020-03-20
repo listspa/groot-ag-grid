@@ -9,7 +9,6 @@ import {GrootAgGridRendererDateComponent} from './groot-ag-grid-renderer-date/gr
 import {GrootAgGridRendererNumbersComponent} from './groot-ag-grid-renderer-numbers/groot-ag-grid-renderer-numbers.component';
 import {GrootAgGridRendererTemplateComponent} from './groot-ag-grid-renderer-template/groot-ag-grid-renderer-template.component';
 import {GrootAgGridHeaderTemplateComponent} from './groot-ag-grid-header-template/groot-ag-grid-header-template.component';
-import {GrootAgGridRendererLongstringComponent} from "./groot-ag-grid-renderer-longstring/groot-ag-grid-renderer-longstring.component";
 import {GrootAgGridCustomizationService} from './groot-ag-grid-customization.service';
 
 const SPECIAL_TOOL_CELL: ColDef = {
@@ -206,7 +205,6 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
       GrootAgGridNoRowsOverlayComponent,
       dateRenderer: GrootAgGridRendererDateComponent,
       numbersRenderer: GrootAgGridRendererNumbersComponent,
-      longstringRenderer: GrootAgGridRendererLongstringComponent,
       templateRenderer: GrootAgGridRendererTemplateComponent,
       headerTemplateRenderer: GrootAgGridHeaderTemplateComponent,
 
