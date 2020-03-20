@@ -10,7 +10,7 @@ test-angular:
   script:
   - npm cache --force clean
   - npm ci
-  - ./node_modules/.bin/ng test --watch=false --code-coverage=true --browsers=ChromeHeadlessNoSandbox
+#  - ./node_modules/.bin/ng test --watch=false --code-coverage=true --browsers=ChromeHeadlessNoSandbox
   - npm run package
   artifacts:
     paths:
