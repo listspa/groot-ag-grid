@@ -12,8 +12,8 @@
     "bootstrap": "^4.2.1 || ^4.3.0",
     "font-awesome": "^4.7.0",
     "@listgroup/groot": "^0.19.9",
-    "ag-grid-angular": "^22.0.0",
-    "ag-grid-community": "^22.0.0"
+    "ag-grid-angular": "^21.2.2",
+    "ag-grid-community": "^21.2.2"
   },
   "publishConfig": {
     "registry": "https://artifactory.list-group.com/artifactory/api/npm/npm-local/"
