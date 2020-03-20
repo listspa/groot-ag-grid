@@ -179,6 +179,7 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
         cellRendererParams: {
           ngTemplate: this.actionButtonTemplate_
         },
+        cellClass: 'groot-action-button-cell',
       };
 
       colDefs.unshift(actionButtonCell);
