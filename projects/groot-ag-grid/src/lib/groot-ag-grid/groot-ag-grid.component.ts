@@ -1,10 +1,20 @@
 import {Component, ContentChild, EventEmitter, Input, OnDestroy, OnInit, Output, TemplateRef, ViewChild} from '@angular/core';
 import {Subscription} from 'rxjs';
-import {GrootTableTitleRightAreaDirective, isLoadingFailed, LoadingFailed, PaginatedResponse, PaginationOptions, SortPagination} from '@listgroup/groot';
+import {
+  GrootTableTitleRightAreaDirective,
+  isLoadingFailed,
+  LoadingFailed,
+  PaginatedResponse,
+  PaginationOptions,
+  SortPagination
+} from '@listgroup/groot';
 import {CellClickedEvent, ColDef, GridOptions, RowNode} from 'ag-grid-community';
 import {TranslateService} from '@ngx-translate/core';
 import {toSortModel, toSortPagination} from './agGrid.utils';
-import {GrootAgGridNoRowsOverlayComponent, GrootAgGridNoRowsParams} from './groot-ag-grid-no-rows-overlay/groot-ag-grid-no-rows-overlay.component';
+import {
+  GrootAgGridNoRowsOverlayComponent,
+  GrootAgGridNoRowsParams
+} from './groot-ag-grid-no-rows-overlay/groot-ag-grid-no-rows-overlay.component';
 import {GrootAgGridRendererDateComponent} from './groot-ag-grid-renderer-date/groot-ag-grid-renderer-date.component';
 import {GrootAgGridRendererNumbersComponent} from './groot-ag-grid-renderer-numbers/groot-ag-grid-renderer-numbers.component';
 import {GrootAgGridRendererTemplateComponent} from './groot-ag-grid-renderer-template/groot-ag-grid-renderer-template.component';
@@ -30,6 +40,7 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
   @Output() search = new EventEmitter<PaginationOptions>();
   @Output() cellClicked = new EventEmitter<CellClickedEvent>();
   @Output() columnsStatusChanged = new EventEmitter<string>();
+  @Output() selectionChanged = new EventEmitter<T[]>();
 
   @Input() defaultSortColumn: string;
   @Input() defaultSortReverseFlag = false;
@@ -429,5 +440,12 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
       }
     }
 
+  }
+
+  gridSelectionChanged() {
+    if (this.gridOptions.api) {
+      const rows = this.gridOptions.api.getSelectedRows();
+      this.selectionChanged.next(rows);
+    }
   }
 }

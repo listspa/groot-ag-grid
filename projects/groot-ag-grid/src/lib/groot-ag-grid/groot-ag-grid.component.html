@@ -26,9 +26,10 @@
   [noRowsOverlayComponentParams]="noRowsOverlayComponentParams"
   (dragStopped)="saveColumnOrder()"
   (cellClicked)="cellClicked.emit($event)"
-  [rowSelection]="checkboxSelection?'multiple':false"
-  [rowMultiSelectWithClick]="checkboxSelection?true:false"
-  [suppressRowClickSelection]="checkboxSelection?true:false"
+  [rowSelection]="checkboxSelection ? 'multiple' : false"
+  [rowMultiSelectWithClick]="checkboxSelection"
+  [suppressRowClickSelection]="checkboxSelection"
+  (selectionChanged)="gridSelectionChanged()"
 >
 </ag-grid-angular>
 
