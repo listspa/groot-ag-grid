@@ -1,0 +1,48 @@
+{
+  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "version": 1,
+  "newProjectRoot": "projects",
+  "projects": {
+    "groot-ag-grid": {
+      "root": "projects/groot-ag-grid",
+      "sourceRoot": "projects/groot-ag-grid/src",
+      "projectType": "library",
+      "prefix": "groot",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/groot-ag-grid/tsconfig.lib.json",
+            "project": "projects/groot-ag-grid/ng-package.json"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/groot-ag-grid/src/test.ts",
+            "tsConfig": "projects/groot-ag-grid/tsconfig.spec.json",
+            "karmaConfig": "projects/groot-ag-grid/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/groot-ag-grid/tsconfig.lib.json",
+              "projects/groot-ag-grid/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    }
+  },
+  "defaultProject": "groot-ag-grid",
+  "schematics": {
+    "@schematics/angular:component": {
+      "styleext": "scss"
+    }
+  }
+}

@@ -1,0 +1,21 @@
+<div class="ag-header-cell-label">
+  <span class="ag-header-cell-text"
+        role="columnheader">
+    <ng-container
+      *ngTemplateOutlet="template; context: {$implicit: params.column, col: params.column.getColDef()}"
+    ></ng-container>
+  </span>
+
+  <span class="ag-header-icon ag-sort-ascending-icon"
+        [class.ag-hidden]="sorted !== 'asc'">
+    <span class="ag-icon ag-icon-asc"></span>
+  </span>
+  <span class="ag-header-icon ag-sort-descending-icon"
+        [class.ag-hidden]="sorted !== 'desc'">
+    <span class="ag-icon ag-icon-desc"></span>
+  </span>
+  <span class="ag-header-icon ag-sort-none-icon"
+        [class.ag-hidden]="sorted !== '' || !params.column.getColDef().unSortIcon">
+    <span class="ag-icon ag-icon-none"></span>
+  </span>
+</div>

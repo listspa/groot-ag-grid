@@ -1,0 +1,17 @@
+stages:
+  - angular
+
+variables:
+  NPM_CONFIG_REGISTRY: "https://artifactory.list-group.com/artifactory/api/npm/npm/"
+
+test-angular:
+  image: artifactory.list-group.com/isp/libs/docker-img-maven-node/java8-node10-chrome
+  stage: angular
+  script:
+  - npm cache --force clean
+  - npm ci
+  - ./node_modules/.bin/ng test --watch=false --code-coverage=true --browsers=ChromeHeadlessNoSandbox
+  - npm run package
+  artifacts:
+    paths:
+      - dist/groot-tester

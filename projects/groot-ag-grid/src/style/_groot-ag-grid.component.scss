@@ -1,0 +1,22 @@
+groot-ag-grid {
+
+  .groot-checkbox-cell,
+  .groot-header-checkbox-cell {
+
+    .ag-icon {
+      right: 0.35rem;
+    }
+
+    .ag-icon.ag-icon-checkbox-indeterminate,
+    .ag-icon.ag-icon-checkbox-unchecked,
+    .ag-icon.ag-icon-checkbox-checked {
+      color: $body-color;
+    }
+
+  }
+
+  .groot-header-checkbox-cell.ag-header-cell {
+    padding-left: 0.6rem;
+  }
+
+}

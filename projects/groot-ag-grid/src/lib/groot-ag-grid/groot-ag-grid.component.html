@@ -1,0 +1,50 @@
+<groot-table-title-bar
+  [searchResults]="data"
+  [downloadExcelLabel]="downloadExcelLabel"
+  [downloadExcelUrl]="downloadExcelUrl"
+  [downloadExcelUrlProvider]="downloadExcelUrlProvider"
+  [downloadExcelArgsProvider]="downloadExcelArgs"
+  [downloadExcelIsAjax]="downloadExcelIsAjax"
+  [downloadExcelFileName]="downloadExcelFileName"
+  [showRefreshIcon]="showRefreshIcon"
+  [lastRefreshTimestamp]="lastRefreshTimestamp"
+  (refresh)="reloadTable()"
+  *ngIf="!hideTitleBar"
+>
+  <ng-container *ngTemplateOutlet="tableTitleRightArea"></ng-container>
+</groot-table-title-bar>
+
+<ag-grid-angular
+  style="width: 100%"
+  [style.height]="gridHeightCss"
+  class="ag-theme-balham ag-grid-rows-clickable"
+  [gridOptions]="gridOptions"
+  (sortChanged)="onSortChanged()"
+  (gridReady)="gridReady()"
+  (firstDataRendered)="firstDataRendered()"
+  noRowsOverlayComponent="GrootAgGridNoRowsOverlayComponent"
+  [noRowsOverlayComponentParams]="noRowsOverlayComponentParams"
+  (dragStopped)="saveColumnOrder()"
+  (cellClicked)="cellClicked.emit($event)"
+  [rowSelection]="checkboxSelection?'multiple':false"
+  [rowMultiSelectWithClick]="checkboxSelection?true:false"
+  [suppressRowClickSelection]="checkboxSelection?true:false"
+>
+</ag-grid-angular>
+
+<groot-table-pagination
+  *ngIf="data && data.totalNumRecords > 0 && data.totalNumRecords > data.pageLen"
+  [totalItems]="data.totalNumRecords"
+  [pageSize]="pageSize"
+  (pageNumChange)="onPageChanged($event)"
+  [loadedPageNum]="data.pageNum"
+></groot-table-pagination>
+
+<ng-template #accordionButtonTemplate let-row let-index="index">
+  <div (click)="toggleAccordion(row, index)"
+       *ngIf="row && !row.$isAccordionRow"
+       class="accordion-icon">
+    <i class="fa fa-chevron-down" *ngIf="!row.$showingAccordion"></i>
+    <i class="fa fa-chevron-up" *ngIf="row.$showingAccordion"></i>
+  </div>
+</ng-template>
