@@ -1,6 +1,6 @@
 {
   "name": "@listgroup/groot-ag-grid",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "repository": {
     "type": "git",
     "url": "https://gitlab.list-group.com/isp-bu/libs/isp.groot-ag-grid"
