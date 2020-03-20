@@ -5,6 +5,8 @@
 // Please keep this list in alphabetical order!!
 export * from './lib/groot-ag-grid/agGrid.utils';
 export * from './lib/groot-ag-grid/groot-ag-grid.component';
+export * from './lib/groot-ag-grid/groot-ag-grid-customization.consts';
+export * from './lib/groot-ag-grid/groot-ag-grid-customization.service';
 export * from './lib/groot-ag-grid/groot-ag-grid.module';
 export * from './lib/groot-ag-grid/groot-ag-grid-renderer-date/groot-ag-grid-renderer-date.component';
 export * from './lib/groot-ag-grid/groot-ag-grid-renderer-longstring/groot-ag-grid-renderer-longstring.component';

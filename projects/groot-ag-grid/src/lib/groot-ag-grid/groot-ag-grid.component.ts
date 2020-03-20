@@ -10,6 +10,7 @@ import {GrootAgGridRendererNumbersComponent} from './groot-ag-grid-renderer-numb
 import {GrootAgGridRendererTemplateComponent} from './groot-ag-grid-renderer-template/groot-ag-grid-renderer-template.component';
 import {GrootAgGridHeaderTemplateComponent} from './groot-ag-grid-header-template/groot-ag-grid-header-template.component';
 import {GrootAgGridRendererLongstringComponent} from "./groot-ag-grid-renderer-longstring/groot-ag-grid-renderer-longstring.component";
+import {GrootAgGridCustomizationService} from './groot-ag-grid-customization.service';
 
 const SPECIAL_TOOL_CELL: ColDef = {
   resizable: false,
@@ -208,6 +209,9 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
       longstringRenderer: GrootAgGridRendererLongstringComponent,
       templateRenderer: GrootAgGridRendererTemplateComponent,
       headerTemplateRenderer: GrootAgGridHeaderTemplateComponent,
+
+      // The registered components
+      ...this.grootAgGridCustomizationService.frameworkComponents,
     },
     isFullWidthCell: rowNode => rowNode.data && rowNode.data.$isAccordionRow,
     fullWidthCellRenderer: 'templateRenderer',
@@ -237,7 +241,8 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
   private rowsDisplayed: T[] = [];
   @ViewChild('accordionButtonTemplate') accordionButtonTemplate: TemplateRef<any>;
 
-  constructor(private translate: TranslateService) {
+  constructor(private translate: TranslateService,
+              private grootAgGridCustomizationService: GrootAgGridCustomizationService) {
   }
 
   ngOnInit(): void {
