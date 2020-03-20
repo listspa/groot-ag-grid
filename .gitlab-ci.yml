@@ -12,6 +12,3 @@ test-angular:
   - npm ci
 #  - ./node_modules/.bin/ng test --watch=false --code-coverage=true --browsers=ChromeHeadlessNoSandbox
   - npm run package
-  artifacts:
-    paths:
-      - dist/groot-tester
