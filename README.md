@@ -11,25 +11,10 @@ Assuming you have already installed Groot, run
 npm i @listgroup/groot-ag-grid ag-grid-angular ag-grid-community
 ``` 
 
-## Module management
+## Module
 
-Given how the Ag Grid library works, you cannot simply import a module, but you need to add the
-library's components to one of your modules. You will need at a minimum to do something like:
-
-```
-imports: [
-    ...,
-    AgGridModule.withComponents([
-      ...GROOT_AG_GRID_COMPONENTS,
-      // your custom components that need to be used inside the grid
-    ]),
-],
-declarations: [
-    // your module components
-    // your custom components that need to be used inside the grid
-    ...GROOT_AG_GRID_COMPONENTS,
-]
-```
+Simply import the Angular module `GrootAgGridModule` where you need to use
+the components.
 
 ## Custom components
 
@@ -52,6 +37,18 @@ Then you have to add to the `providers` section of your angular module:
 ```
 
 Note that the function needs to have a name, to be `export`-ed and needs to return a function, given how Angular works.
+
+Finally, in the module where you declare your cell components, you need to modify the imports section:
+
+```
+imports: [
+    // Various libraries
+    GrootAgGridModule,
+    AgGridModule.withComponents([
+        GarfieldTableRendererNumbersComponent,
+        // Other components to be registered
+    ]),
+```
 
 # Grid component API
 
