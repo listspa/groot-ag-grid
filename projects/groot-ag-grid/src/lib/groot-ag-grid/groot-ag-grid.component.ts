@@ -40,6 +40,7 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
   @Output() search = new EventEmitter<PaginationOptions>();
   @Output() cellClicked = new EventEmitter<CellClickedEvent>();
   @Output() columnsStatusChanged = new EventEmitter<string>();
+  @Output() bodyScroll = new EventEmitter<any>();
   @Output() selectionChanged = new EventEmitter<T[]>();
 
   @Input() defaultSortColumn: string;
@@ -57,10 +58,11 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
   @Input() showRefreshIcon = false;
   @Input() lastRefreshTimestamp: Date | string = null;
   @Input() rowHeight = 28;
-  @Input() accordionHeight = 60;
   @Input() keepServerSorting = true;
   @Input() rowClassRules?: { [cssClassName: string]: (((params: any) => boolean) | string) };
+  @Input() headerCheckboxSelection: boolean | ((params: any) => boolean);
   @Input() @ContentChild(GrootTableTitleRightAreaDirective, {read: TemplateRef}) tableTitleRightArea: TemplateRef<any>;
+  @Input() showPaginationIfEmpty = this.grootAgGridCustomizationService.showPaginationIfEmptyDefault;
 
   @Input() set searchResultsData(searchResultsData: PaginatedResponse<T> | LoadingFailed) {
     if (isLoadingFailed(searchResultsData)) {
@@ -91,6 +93,9 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
 
     if (this.gridOptions.columnApi) {
       this.gridOptions.columnApi.resetColumnState();
+    }
+    if (this.gridOptions.api) {
+      this.gridOptions.api.redrawRows();
     }
   }
 
@@ -138,7 +143,7 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
       const checkboxCell: ColDef = {
         ...SPECIAL_TOOL_CELL,
         checkboxSelection: true,
-        headerCheckboxSelection: true,
+        headerCheckboxSelection: this.headerCheckboxSelection,
         cellClass: 'groot-checkbox-cell',
         headerClass: 'groot-header-checkbox-cell'
       };
@@ -228,7 +233,7 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
     fullWidthCellRendererParams: {
       ngTemplate: null,
     },
-    getRowHeight: (rowNode: RowNode) => rowNode.data && rowNode.data.$isAccordionRow ? this.accordionHeight : this.rowHeight,
+    getRowHeight: (rowNode: RowNode) => rowNode.data && rowNode.data.$isAccordionRow ? this._accordionHeight : this.rowHeight,
     rowClassRules: {
       'accordion-row': rowNode => rowNode.data && rowNode.data.$isAccordionRow,
       'accordion-expanded': rowNode => rowNode.data && rowNode.data.$showingAccordion,
@@ -249,6 +254,7 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
   private checkboxSelection_ = false;
   private columnDefs_: ColDef[];
   private rowsDisplayed: T[] = [];
+  private _accordionHeight = 60;
   @ViewChild('accordionButtonTemplate') accordionButtonTemplate: TemplateRef<any>;
 
   constructor(private translate: TranslateService,
@@ -441,6 +447,10 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
       }
     }
 
+  }
+
+  onScroll($event: Event) {
+    this.bodyScroll.emit($event);
   }
 
   gridSelectionChanged() {

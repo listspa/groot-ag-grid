@@ -26,20 +26,23 @@
   [noRowsOverlayComponentParams]="noRowsOverlayComponentParams"
   (dragStopped)="saveColumnOrder()"
   (cellClicked)="cellClicked.emit($event)"
-  [rowSelection]="checkboxSelection ? 'multiple' : false"
+  [rowSelection]="checkboxSelection?'multiple':false"
   [rowMultiSelectWithClick]="checkboxSelection"
   [suppressRowClickSelection]="checkboxSelection"
+  (bodyScroll)="onScroll($event)"
   (selectionChanged)="gridSelectionChanged()"
->
-</ag-grid-angular>
+></ag-grid-angular>
+
 
 <groot-table-pagination
-  *ngIf="data && data.totalNumRecords > 0 && data.totalNumRecords > data.pageLen"
+  *ngIf="data && (showPaginationIfEmpty || (data.totalNumRecords > 0 && data.totalNumRecords > data.pageLen))"
+  [class.groot-paginator-hidden]="data.totalNumRecords <= 0 || data.totalNumRecords <= data.pageLen"
   [totalItems]="data.totalNumRecords"
   [pageSize]="pageSize"
   (pageNumChange)="onPageChanged($event)"
   [loadedPageNum]="data.pageNum"
 ></groot-table-pagination>
+
 
 <ng-template #accordionButtonTemplate let-row let-index="index">
   <div (click)="toggleAccordion(row, index)"

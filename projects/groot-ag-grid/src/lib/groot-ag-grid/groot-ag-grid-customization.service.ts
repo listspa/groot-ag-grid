@@ -6,6 +6,7 @@ type FrameworkComponents = { [key: string]: any };
   providedIn: 'root'
 })
 export class GrootAgGridCustomizationService {
+  showPaginationIfEmptyDefault = false;
   frameworkComponents: FrameworkComponents = {};
 
   registerFrameworkComponent(key: string, component: any) {

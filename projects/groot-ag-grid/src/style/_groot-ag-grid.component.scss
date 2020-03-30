@@ -32,6 +32,9 @@ $row-border-width: 1px !default;
   }
 }
 
+.groot-paginator-hidden {
+  visibility: hidden;
+}
 
 groot-ag-grid {
   .groot-header-checkbox-cell.ag-header-cell {
