@@ -38,7 +38,7 @@ Then you have to add to the `providers` section of your angular module:
 
 Note that the function needs to have a name, to be `export`-ed and needs to return a function, given how Angular works.
 
-Finally, in the module where you declare your cell components, you need to modify the imports section:
+In the module where you declare your cell components, you need to modify the imports section:
 
 ```
 imports: [
@@ -48,6 +48,12 @@ imports: [
         GarfieldTableRendererNumbersComponent,
         // Other components to be registered
     ]),
+```
+
+In your css file, add an include to the library css, _after_ including Groot:
+
+```
+@import "~@listgroup/groot-ag-grid/style/groot-ag-grid.component";
 ```
 
 # Grid component API
