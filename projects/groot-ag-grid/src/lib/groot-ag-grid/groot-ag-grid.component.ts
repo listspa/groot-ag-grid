@@ -85,7 +85,7 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
   }
 
   /**
-   * Note: the columns must have set colId to the name of the database colum.
+   * Note: the columns must have set colId to the name of the database column.
    */
   @Input() set columnDefs(columnDefs: ColDef[]) {
     this.columnDefs_ = columnDefs;
