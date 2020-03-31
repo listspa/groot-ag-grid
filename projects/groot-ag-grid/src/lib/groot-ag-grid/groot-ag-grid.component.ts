@@ -15,6 +15,7 @@ import {
   GrootAgGridNoRowsOverlayComponent,
   GrootAgGridNoRowsParams
 } from './groot-ag-grid-no-rows-overlay/groot-ag-grid-no-rows-overlay.component';
+import {GrootAgGridLoadingOverlayComponent} from './groot-ag-grid-loading-overlay/groot-ag-grid-loading-overlay.component';
 import {GrootAgGridRendererDateComponent} from './groot-ag-grid-renderer-date/groot-ag-grid-renderer-date.component';
 import {GrootAgGridRendererNumbersComponent} from './groot-ag-grid-renderer-numbers/groot-ag-grid-renderer-numbers.component';
 import {GrootAgGridRendererTemplateComponent} from './groot-ag-grid-renderer-template/groot-ag-grid-renderer-template.component';
@@ -223,6 +224,7 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
     columnDefs: [],
     frameworkComponents: {
       GrootAgGridNoRowsOverlayComponent,
+      GrootAgGridLoadingOverlayComponent,
       dateRenderer: GrootAgGridRendererDateComponent,
       numbersRenderer: GrootAgGridRendererNumbersComponent,
       templateRenderer: GrootAgGridRendererTemplateComponent,
@@ -286,7 +288,7 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
       this.gridOptions.rowClassRules = {
         ...this.gridOptions.rowClassRules,
         ...this.rowClassRules
-      }
+      };
     }
 
     this.resetDefaultSorting();

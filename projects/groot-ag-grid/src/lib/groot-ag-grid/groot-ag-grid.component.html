@@ -24,6 +24,7 @@
   (firstDataRendered)="firstDataRendered()"
   noRowsOverlayComponent="GrootAgGridNoRowsOverlayComponent"
   [noRowsOverlayComponentParams]="noRowsOverlayComponentParams"
+  loadingOverlayComponent="GrootAgGridLoadingOverlayComponent"
   (dragStopped)="saveColumnOrder()"
   (cellClicked)="cellClicked.emit($event)"
   [rowSelection]="checkboxSelection?'multiple':false"

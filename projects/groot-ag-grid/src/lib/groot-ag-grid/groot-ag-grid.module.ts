@@ -5,6 +5,7 @@ import {CommonModule} from '@angular/common';
 import {GrootAgGridHeaderTemplateComponent} from './groot-ag-grid-header-template/groot-ag-grid-header-template.component';
 import {GrootAgGridRendererNumbersComponent} from './groot-ag-grid-renderer-numbers/groot-ag-grid-renderer-numbers.component';
 import {GrootAgGridRendererDateComponent} from './groot-ag-grid-renderer-date/groot-ag-grid-renderer-date.component';
+import {GrootAgGridLoadingOverlayComponent} from './groot-ag-grid-loading-overlay/groot-ag-grid-loading-overlay.component';
 import {GrootAgGridNoRowsOverlayComponent} from './groot-ag-grid-no-rows-overlay/groot-ag-grid-no-rows-overlay.component';
 import {GrootAgGridComponent} from './groot-ag-grid.component';
 import {AgGridModule} from 'ag-grid-angular';
@@ -12,6 +13,7 @@ import {TranslateModule} from '@ngx-translate/core';
 
 export const GROOT_AG_GRID_COMPONENTS = [
   GrootAgGridComponent,
+  GrootAgGridLoadingOverlayComponent,
   GrootAgGridNoRowsOverlayComponent,
   GrootAgGridRendererDateComponent,
   GrootAgGridRendererNumbersComponent,
