@@ -81,6 +81,7 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
     }
 
     if (this.gridOptions.api) {
+      this.gridOptions.api.hideOverlay();
       this.gridOptions.api.setRowData(this.rowsDisplayed);
     }
   }
@@ -399,6 +400,9 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
       this.resetDefaultSorting();
     }
 
+    if (this.gridOptions.api) {
+      this.gridOptions.api.showLoadingOverlay();
+    }
     this.search.emit(this.getCurrentPagination());
   }
 
