@@ -8,8 +8,13 @@ type FrameworkComponents = { [key: string]: any };
 export class GrootAgGridCustomizationService {
   showPaginationIfEmptyDefault = false;
   frameworkComponents: FrameworkComponents = {};
+  overlays: Array<any> = [];
 
   registerFrameworkComponent(key: string, component: any) {
     this.frameworkComponents[key] = component;
+  }
+
+  registerOverlay(component: any) {
+    this.overlays.push(component);
   }
 }

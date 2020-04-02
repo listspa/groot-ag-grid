@@ -233,6 +233,7 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
 
       // The registered components
       ...this.grootAgGridCustomizationService.frameworkComponents,
+      ...this.grootAgGridCustomizationService.overlays,
     },
     isFullWidthCell: rowNode => rowNode.data && rowNode.data.$isAccordionRow,
     fullWidthCellRenderer: 'templateRenderer',
