@@ -11,7 +11,7 @@ import {ICellRendererAngularComp} from 'ag-grid-angular';
 })
 export class GrootAgGridRendererTemplateComponent implements ICellRendererAngularComp {
   template: TemplateRef<any>;
-  templateContext: { $implicit: any, index: number, params: any };
+  templateContext: { $implicit: any, row: any, index: number, params: any };
 
   agInit(params: ICellRendererParams): void {
     this.template = params['ngTemplate'];
@@ -21,6 +21,7 @@ export class GrootAgGridRendererTemplateComponent implements ICellRendererAngula
   refresh(params: any): boolean {
     this.templateContext = {
       $implicit: params.data,
+      row: params.data,
       index: params.rowIndex,
       params: params
     };
