@@ -341,7 +341,9 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
           }
         });
     } else {
-      this.gridOptions.api.setColumnDefs(this.gridOptions.columnDefs);
+      if (this.gridOptions.api) {
+        this.gridOptions.api.setColumnDefs(this.gridOptions.columnDefs);
+      }
     }
   }
 
