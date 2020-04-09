@@ -94,7 +94,7 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
     this.handleSpecialColumns();
 
     if (this.gridOptions.api) {
-      this.gridOptions.api.setColumnDefs(columnDefs);
+      this.gridOptions.api.setColumnDefs(this.gridOptions.columnDefs);
     }
     if (this.gridOptions.columnApi) {
       this.gridOptions.columnApi.resetColumnState();

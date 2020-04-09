@@ -1,5 +1,10 @@
 # Groot-ag-grid releases
 
+## Version 0.2.2 - 2020-04-09
+
+- fix: changing columns after the table was loaded should not remove the action
+  buttons or the checkboxes 
+
 ## Version 0.2.1 - 2020-04-02
 
 - added in the template-renderer the row as template argument
