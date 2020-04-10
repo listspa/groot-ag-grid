@@ -21,6 +21,7 @@ import {GrootAgGridRendererNumbersComponent} from './groot-ag-grid-renderer-numb
 import {GrootAgGridRendererTemplateComponent} from './groot-ag-grid-renderer-template/groot-ag-grid-renderer-template.component';
 import {GrootAgGridHeaderTemplateComponent} from './groot-ag-grid-header-template/groot-ag-grid-header-template.component';
 import {GrootAgGridCustomizationService} from './groot-ag-grid-customization.service';
+import {GrootAgGridSelection} from './groot-ag-grid-selection.model';
 
 const SPECIAL_TOOL_CELL: ColDef = {
   resizable: false,
@@ -42,7 +43,7 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
   @Output() cellClicked = new EventEmitter<CellClickedEvent>();
   @Output() columnsStatusChanged = new EventEmitter<string>();
   @Output() bodyScroll = new EventEmitter<any>();
-  @Output() selectionChanged = new EventEmitter<T[]>();
+  @Output() selectionChanged = new EventEmitter<GrootAgGridSelection<T>>();
 
   @Input() defaultSortColumn: string;
   @Input() defaultSortReverseFlag = false;
@@ -477,7 +478,9 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
   gridSelectionChanged() {
     if (this.gridOptions.api) {
       const rows = this.gridOptions.api.getSelectedRows();
-      this.selectionChanged.next(rows);
+      const indexes = this.gridOptions.api.getSelectedNodes().map(n => n.rowIndex);
+
+      this.selectionChanged.next({rows, indexes});
     }
   }
 }

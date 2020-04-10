@@ -1,5 +1,9 @@
 # Groot-ag-grid releases
 
+## Version 0.3.0 - 2020-04-10
+
+- feat: changed emitted event when selection changes
+
 ## Version 0.2.2 - 2020-04-09
 
 - fix: changing columns after the table was loaded should not remove the action
