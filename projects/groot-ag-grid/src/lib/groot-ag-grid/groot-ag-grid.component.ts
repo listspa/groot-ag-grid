@@ -60,6 +60,7 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
   @Input() showRefreshIcon = false;
   @Input() lastRefreshTimestamp: Date | string = null;
   @Input() rowHeight = 28;
+  @Input() getRowHeight: ((rowNode: RwNode) => number | null) = null;
   @Input() keepServerSorting = true;
   @Input() rowClassRules?: { [cssClassName: string]: (((params: any) => boolean) | string) };
   @Input() headerCheckboxSelection: boolean | ((params: any) => boolean);
@@ -241,7 +242,15 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
     fullWidthCellRendererParams: {
       ngTemplate: null,
     },
-    getRowHeight: (rowNode: RowNode) => rowNode.data && rowNode.data.$isAccordionRow ? this._accordionHeight : this.rowHeight,
+    getRowHeight: (rowNode: RowNode) => {
+      if (this.getRowHeight) {
+        const result = this.getRowHeight(rowNode);
+        if (result !== null && result !== undefined) {
+          return result;
+        }
+      }
+      return rowNode.data && rowNode.data.$isAccordionRow ? this._accordionHeight : this.rowHeight;
+    },
     rowClassRules: {
       'accordion-row': rowNode => rowNode.data && rowNode.data.$isAccordionRow,
       'accordion-expanded': rowNode => rowNode.data && rowNode.data.$showingAccordion,
