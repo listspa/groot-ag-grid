@@ -60,7 +60,7 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
   @Input() showRefreshIcon = false;
   @Input() lastRefreshTimestamp: Date | string = null;
   @Input() rowHeight = 28;
-  @Input() getRowHeight: ((rowNode: RwNode) => number | null) = null;
+  @Input() getRowHeight: ((rowNode: RowNode) => number | null) = null;
   @Input() keepServerSorting = true;
   @Input() rowClassRules?: { [cssClassName: string]: (((params: any) => boolean) | string) };
   @Input() headerCheckboxSelection: boolean | ((params: any) => boolean);
@@ -217,6 +217,30 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
     }
   }
 
+  get getRowStyle(): (rowNode: RowNode) => any {
+    return this._getRowStyle;
+  }
+
+  @Input()
+  set getRowStyle(value: (rowNode: RowNode) => any) {
+    this._getRowStyle = value;
+    if (this.gridOptions) {
+      this.gridOptions.getRowStyle = this.getRowStyle;
+    }
+  }
+
+  get getRowClass(): (rowNode: RowNode) => any {
+    return this._getRowClass;
+  }
+
+  @Input()
+  set getRowClass(value: (rowNode: RowNode) => any) {
+    this._getRowClass = value;
+    if (this.gridOptions) {
+      this.gridOptions.getRowClass = this._getRowClass;
+    }
+  }
+
   public data: PaginatedResponse<T> = null;
   public gridOptions: GridOptions = {
     defaultColDef: {
@@ -272,6 +296,8 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
   private columnDefs_: ColDef[];
   private rowsDisplayed: T[] = [];
   private _accordionHeight = 60;
+  private _getRowStyle: ((rowNode: RowNode) => any) = null;
+  private _getRowClass: ((rowNode: RowNode) => any) = null;
   @ViewChild('accordionButtonTemplate') accordionButtonTemplate: TemplateRef<any>;
 
   @Input() set accordionHeight(value: number) {
