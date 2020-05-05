@@ -8,7 +8,7 @@ import {
   PaginationOptions,
   SortPagination
 } from '@listgroup/groot';
-import {CellClickedEvent, ColDef, GridOptions, RowNode} from 'ag-grid-community';
+import {CellClickedEvent, ColDef, GridApi, GridOptions, RowNode} from 'ag-grid-community';
 import {TranslateService} from '@ngx-translate/core';
 import {toSortModel, toSortPagination} from './agGrid.utils';
 import {
@@ -44,6 +44,7 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
   @Output() columnsStatusChanged = new EventEmitter<string>();
   @Output() bodyScroll = new EventEmitter<any>();
   @Output() selectionChanged = new EventEmitter<GrootAgGridSelection<T>>();
+  @Output() agGridReady = new EventEmitter<GridApi>();
 
   @Input() defaultSortColumn: string;
   @Input() defaultSortReverseFlag = false;
@@ -408,6 +409,7 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
     this.gridOptions.api.setSortModel(toSortModel(this.sorting));
     this.gridOptions.api.setColumnDefs(this.gridOptions.columnDefs); // Update labels
     this.restoreColState();
+    this.agGridReady.next(this.gridOptions.api);
   }
 
   onSortChanged() {
