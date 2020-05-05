@@ -518,4 +518,10 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
       this.selectionChanged.next({rows, indexes});
     }
   }
+
+  resetRowHeights() {
+    if (this.gridOptions.api) {
+      this.gridOptions.api.resetRowHeights();
+    }
+  }
 }
