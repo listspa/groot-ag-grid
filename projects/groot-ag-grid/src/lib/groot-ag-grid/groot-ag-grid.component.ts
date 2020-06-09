@@ -8,7 +8,7 @@ import {
   PaginationOptions,
   SortPagination
 } from '@listgroup/groot';
-import {CellClickedEvent, ColDef, GridApi, GridOptions, RowNode} from 'ag-grid-community';
+import {CellClickedEvent, ColDef, GridApi, GridOptions, IsRowSelectable, RowNode} from 'ag-grid-community';
 import {TranslateService} from '@ngx-translate/core';
 import {toSortModel, toSortPagination} from './agGrid.utils';
 import {
@@ -111,7 +111,7 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
   @Input() set accordionTemplate(template: TemplateRef<any>) {
     this.accordionTemplate_ = template;
     this.gridOptions.fullWidthCellRendererParams.ngTemplate = template;
-    this.gridOptions.isRowSelectable = row => !row.data.$isAccordionRow;
+    this.gridOptions.isRowSelectable = row => !row.data.$isAccordionRow && this._isRowSelectable(row);
     this.handleSpecialColumns();
   }
 
@@ -243,7 +243,16 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
     }
   }
 
+  @Input()
+  set isRowSelectable(isRowSelectable: IsRowSelectable | null) {
+    this._isRowSelectable = isRowSelectable || (() => true);
+    if (this.gridOptions) {
+      this.gridOptions.isRowSelectable = this._isRowSelectable;
+    }
+  }
+
   public data: PaginatedResponse<T> = null;
+  private _isRowSelectable: IsRowSelectable = () => true;
   public gridOptions: GridOptions = {
     defaultColDef: {
       filter: false,
@@ -284,6 +293,7 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
     suppressCellSelection: true,
     enableCellTextSelection: true,
     suppressScrollOnNewData: true,
+    isRowSelectable: this._isRowSelectable,
   };
   public noRowsOverlayComponentParams: GrootAgGridNoRowsParams = {loadingError: false};
   private labelSub: Subscription;
