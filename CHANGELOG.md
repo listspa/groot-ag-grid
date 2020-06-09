@@ -1,5 +1,19 @@
 # Groot-ag-grid releases
 
+## Version 0.3.3 - 2020-06-09
+
+- feat: added event `gridReady`
+- feat: enabled single-row selection
+- feat: added api to mark a row as selectable or forbid it
+
+## Version 0.3.2 - 2020-05-05
+
+- feat: added api `resetRowHeights`
+
+## Version 0.3.1 - 2020-05-05
+
+- feat: added callbacks to compute row height, css classes, css style
+
 ## Version 0.3.0 - 2020-04-10
 
 - feat: changed emitted event when selection changes
