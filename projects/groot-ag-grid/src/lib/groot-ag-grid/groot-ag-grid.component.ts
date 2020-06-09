@@ -67,6 +67,7 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
   @Input() headerCheckboxSelection: boolean | ((params: any) => boolean);
   @Input() @ContentChild(GrootTableTitleRightAreaDirective, {read: TemplateRef}) tableTitleRightArea: TemplateRef<any>;
   @Input() showPaginationIfEmpty = this.grootAgGridCustomizationService.showPaginationIfEmptyDefault;
+  @Input() singleRowSelection = false;
 
   @Input() set searchResultsData(searchResultsData: PaginatedResponse<T> | LoadingFailed) {
     if (isLoadingFailed(searchResultsData)) {

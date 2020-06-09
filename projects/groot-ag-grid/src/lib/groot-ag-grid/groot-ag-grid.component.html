@@ -27,7 +27,7 @@
   loadingOverlayComponent="GrootAgGridLoadingOverlayComponent"
   (dragStopped)="saveColumnOrder()"
   (cellClicked)="cellClicked.emit($event)"
-  [rowSelection]="checkboxSelection?'multiple':false"
+  [rowSelection]="checkboxSelection ? 'multiple' : (singleRowSelection ? 'single' : false)"
   [rowMultiSelectWithClick]="checkboxSelection"
   [suppressRowClickSelection]="checkboxSelection"
   (bodyScroll)="onScroll($event)"
