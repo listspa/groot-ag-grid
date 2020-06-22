@@ -19,9 +19,9 @@ interface User {
 export class PageDemoTableComponent implements OnInit {
   columns: ColDef[];
   searchResultsData: PaginatedResponse<User>;
-  @ViewChild('cellTemplate', {static: true}) cellTemplate: TemplateRef<any>;
+  @ViewChild('cellTemplate') cellTemplate: TemplateRef<any>;
   selectionMode: 'single' | 'multi' = 'multi';
-  @ViewChild('gridSelection', {static: true}) gridSelection: GrootAgGridComponent<User>;
+  @ViewChild('gridSelection') gridSelection: GrootAgGridComponent<User>;
 
   constructor() {
   }
