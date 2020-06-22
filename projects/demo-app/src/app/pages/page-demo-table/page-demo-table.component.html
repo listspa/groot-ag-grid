@@ -1,0 +1,50 @@
+<groot-darwin-page-title title="Groot AG-Grid demo"></groot-darwin-page-title>
+
+<p>This is how a default, simple grid looks.</p>
+
+<groot-ag-grid
+  [columnDefs]="columns"
+  [searchResultsData]="searchResultsData"
+  (search)="search($event)"
+></groot-ag-grid>
+
+<ng-template #cellTemplate>
+  <groot-button class="btn-sm btn-outline-primary" label="test"></groot-button>
+</ng-template>
+
+
+<p class="mt-4"> This table shows various data types in our grid:</p>
+
+<ul>
+  <li>strings</li>
+  <li>numbers</li>
+  <li>a custom template renderer.</li>
+</ul>
+
+<p>
+  Please note that the grid pulls data whenever it needs them, by emitting the event <code>search</code>.
+  This event is also emitted at the startup, so you should not run your search in <code>ngOnInit</code>.
+  After you have the response, update your variable <code>searchResultsData</code> and the grid will refresh.
+</p>
+
+<h2>Selection</h2>
+
+<p>Enabling selections of rows is easy. There are two modes: single or multiple. The grid will emit an event
+  whenever the selection changes.</p>
+
+<div class="btn-group" btnRadioGroup [(ngModel)]="selectionMode">
+  <button class="btn btn-outline-primary" btnRadio="single">Single</button>
+  <button class="btn btn-outline-primary" btnRadio="multi">Multiple</button>
+</div>
+
+<groot-ag-grid
+  #gridSelection
+  [hideTitleBar]="true"
+  [columnDefs]="columns"
+  [searchResultsData]="searchResultsData"
+  (search)="search($event)"
+  [checkboxSelection]="selectionMode === 'multi'"
+  [headerCheckboxSelection]="selectionMode === 'multi'"
+  [singleRowSelection]="selectionMode === 'single'"
+  (selectionChanged)="setSelection($event)"
+></groot-ag-grid>
