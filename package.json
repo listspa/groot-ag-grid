@@ -62,6 +62,7 @@
     "release-it": "^13.6.3",
     "ts-node": "~8.3.0",
     "tslint": "~6.1.0",
-    "typescript": "~3.8.3"
+    "typescript": "~3.8.3",
+    "wrench": "^1.5.9"
   }
 }
