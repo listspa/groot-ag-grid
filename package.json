@@ -12,6 +12,7 @@
     "copy-assets": "node scripts/assets-copy.js",
     "npm_pack": "cd dist/groot-ag-grid && npm pack",
     "package": "npm run build_lib && npm run copy-assets && npm run npm_pack",
+    "build-demo-app": "ng build demo-app --prod",
     "release": "npm run build_lib && release-it --disable-metrics && npm run package && node scripts/publish.js"
   },
   "private": true,
