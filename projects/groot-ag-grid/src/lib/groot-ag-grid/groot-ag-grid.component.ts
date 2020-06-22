@@ -96,16 +96,6 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
   @Input() set columnDefs(columnDefs: ColDef[]) {
     this.columnDefs_ = columnDefs;
     this.handleSpecialColumns();
-
-    if (this.gridOptions.api) {
-      this.gridOptions.api.setColumnDefs(this.gridOptions.columnDefs);
-    }
-    if (this.gridOptions.columnApi) {
-      this.gridOptions.columnApi.resetColumnState();
-    }
-    if (this.gridOptions.api) {
-      this.gridOptions.api.redrawRows();
-    }
   }
 
   @Input() set accordionTemplate(template: TemplateRef<any>) {
@@ -135,10 +125,8 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
   }
 
   @Input() set checkboxSelection(enable: boolean) {
-    if (enable) {
-      this.checkboxSelection_ = enable;
-      this.handleSpecialColumns();
-    }
+    this.checkboxSelection_ = enable;
+    this.handleSpecialColumns();
   }
 
   get checkboxSelection(): boolean {
@@ -200,8 +188,14 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
     }
 
     this.gridOptions.columnDefs = colDefs;
+
     if (this.gridOptions.api) {
       this.translateHeaders();
+      this.gridOptions.api.setColumnDefs(this.gridOptions.columnDefs);
+      if (this.gridOptions.columnApi) {
+        this.gridOptions.columnApi.resetColumnState();
+      }
+      this.gridOptions.api.redrawRows();
     }
   }
 
