@@ -1,0 +1,55 @@
+<groot-darwin-page-title title="Customizing cells"></groot-darwin-page-title>
+
+<p>You can define the look&feel of a cell in various ways:</p>
+
+<ul>
+  <li>specify the cell type to use one of the default renderer</li>
+  <li>create a custom, reusable renderer</li>
+  <li>pass a custom angular template</li>
+</ul>
+
+<h2>Use a template</h2>
+
+<p>
+  The simple solution, that often is enough, is to create a custom template and use that to render a cell.
+  You can see <a
+  href="https://gitlab.list-group.com/isp-bu/libs/isp.groot-ag-grid/tree/master/projects/demo-app/src/app/pages/page-demo-table">a
+  sample on GitLab</a>.
+</p>
+
+<h2>Create a custom renderer</h2>
+
+<p>
+  To create a custom renderer, you need to create a component that implements the <code>ICellRendererAngularComp</code>
+  interface. See the <a href="https://www.ag-grid.com/javascript-grid-cell-rendering/" target="_blank">ag-grid
+  documentation</a> for details. After you have created your component, you will need to register it in the grid.
+  To do so, two steps are required.
+</p>
+
+<p>First you need to register your component in ag-grid: in your module add:</p>
+
+<pre><code>AgGridModule.withComponents([
+    MyCustomRendererComponent,
+    // Other components to be registered
+]),</code></pre>
+
+<p>Multiple module can register multiple components; ag-grid will merge them all.</p>
+
+<p>The next step is to map a string that will allow you to refer to that component. To do so define a function:</p>
+
+<pre><code>export function registerCustomGridComponents(grootAgGridCustomizationService: GrootAgGridCustomizationService) &#123;
+  return () => &#123;
+    grootAgGridCustomizationService.registerFrameworkComponent('myComp', MyCustomRendererComponent);
+  };
+}</code></pre>
+
+<p>and add in the <code>providers</code> section of your module:</p>
+
+<pre><code>&#123;provide: APP_INITIALIZER, useFactory: registerCustomGridComponents, multi: true, deps: [GrootAgGridCustomizationService]}</code></pre>
+
+<p>After this, you will be able to refer in the <code>colDef</code> to your component using <code>myComp</code>.</p>
+
+<p>
+  You can also use this mechanism to override the standard components for dates and numbers;
+  simply use <code>GrootAgGridRenderer.numbers</code> as key.
+</p>
