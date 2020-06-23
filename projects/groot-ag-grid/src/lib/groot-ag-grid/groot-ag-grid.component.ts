@@ -163,6 +163,7 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
         cellRendererParams: {
           ngTemplate: this.accordionButtonTemplate
         },
+        cellClass: 'groot-accordion-icon-cell',
       };
       colDefs.unshift(accordionCell);
     }
@@ -175,6 +176,7 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
           cellRendererParams: {
             ngTemplate: template
           },
+          cellClass: 'groot-additional-buttons-cell',
         };
 
         colDefs.unshift(actionButtonCell);

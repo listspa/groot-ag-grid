@@ -18,6 +18,7 @@ $ag-suppress-legacy-var-import: true;
     header-background-color: $table-header-background-color,
     header-foreground-color: $table-header-foreground-color,
     secondary-foreground-color: $table-header-icon-color,
+    selected-row-background-color: $lighter-primary,
   ));
 }
 
@@ -41,24 +42,25 @@ $ag-suppress-legacy-var-import: true;
   visibility: hidden;
 }
 
-//groot-ag-grid {
-//  .groot-header-checkbox-cell.ag-header-cell {
-//    padding-left: 7px;
-//  }
-//
-//  .groot-checkbox-cell.ag-cell {
-//    padding: 0 6px;
-//  }
-//
-//  .ag-theme-balham .ag-selection-checkbox,
-//  .ag-theme-balham .ag-checkbox {
-//    .ag-input-wrapper {
-//      overflow: visible;
-//    }
-//
-//    .ag-icon {
-//      font-size: 13px;
-//      line-height: 13px;
+groot-ag-grid {
+  .groot-header-checkbox-cell.ag-header-cell {
+    padding-left: 7px;
+  }
+
+  .groot-checkbox-cell.ag-cell,
+  .groot-accordion-icon-cell.ag-cell {
+    padding: 0 6px;
+  }
+
+  //  .ag-theme-balham .ag-selection-checkbox,
+  //  .ag-theme-balham .ag-checkbox {
+  //    .ag-input-wrapper {
+  //      overflow: visible;
+  //    }
+  //
+  //    .ag-icon {
+  //      font-size: 13px;
+  //      line-height: 13px;
 //      border-radius: 2px;
 //      position: relative;
 //
@@ -103,7 +105,7 @@ $ag-suppress-legacy-var-import: true;
 //      }
 //    }
 //  }
-//}
+}
 
 .groot-loading-indicator-spinner.no-left-margin {
   left: auto;
