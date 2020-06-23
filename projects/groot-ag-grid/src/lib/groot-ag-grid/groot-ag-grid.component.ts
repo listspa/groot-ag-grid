@@ -64,7 +64,6 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
   @Input() getRowHeight: ((rowNode: RowNode) => number | null) = null;
   @Input() keepServerSorting = true;
   @Input() rowClassRules?: { [cssClassName: string]: (((params: any) => boolean) | string) };
-  @Input() headerCheckboxSelection: boolean | ((params: any) => boolean);
   @ContentChild(GrootTableTitleRightAreaDirective, {read: TemplateRef}) tableTitleRightArea: TemplateRef<any>;
   @Input() showPaginationIfEmpty = this.grootAgGridCustomizationService.showPaginationIfEmptyDefault;
   @Input() singleRowSelection = false;
@@ -133,6 +132,15 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
     return this.checkboxSelection_;
   }
 
+  @Input() set headerCheckboxSelection(value: boolean | ((params: any) => boolean)) {
+    this.headerCheckboxSelection_ = value;
+    this.handleSpecialColumns();
+  }
+
+  get headerCheckboxSelection(): boolean | ((params: any) => boolean) {
+    return this.headerCheckboxSelection_;
+  }
+
   private handleSpecialColumns() {
     const colDefs = [...this.columnDefs_];
 
@@ -140,7 +148,7 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
       const checkboxCell: ColDef = {
         ...SPECIAL_TOOL_CELL,
         checkboxSelection: true,
-        headerCheckboxSelection: this.headerCheckboxSelection,
+        headerCheckboxSelection: this.headerCheckboxSelection_,
         cellClass: 'groot-checkbox-cell',
         headerClass: 'groot-header-checkbox-cell'
       };
@@ -299,6 +307,7 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
   private actionButtonTemplateRight_: boolean;
   private additionalButtonsTemplate_: TemplateRef<any>[];
   private checkboxSelection_ = false;
+  private headerCheckboxSelection_: boolean | ((params: any) => boolean);
   private columnDefs_: ColDef[];
   private rowsDisplayed: T[] = [];
   private _accordionHeight = 60;
