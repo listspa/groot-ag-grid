@@ -29,6 +29,7 @@ import {PageDemoTableComponent} from './pages/page-demo-table/page-demo-table.co
 import {GrootAgGridModule} from '../../../groot-ag-grid/src/lib/groot-ag-grid/groot-ag-grid.module';
 import {AgGridModule} from 'ag-grid-angular';
 import {ButtonsModule} from 'ngx-bootstrap/buttons';
+import {PageHomepageComponent} from './pages/page-homepage/page-homepage.component';
 
 // Required as a separate function for AOT compilation
 export function HttpLoaderFactory(http: HttpClient) {
@@ -38,7 +39,8 @@ export function HttpLoaderFactory(http: HttpClient) {
 @NgModule({
   declarations: [
     AppComponent,
-    PageDemoTableComponent
+    PageDemoTableComponent,
+    PageHomepageComponent
   ],
   imports: [
     BrowserModule,
