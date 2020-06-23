@@ -304,7 +304,7 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
   private _accordionHeight = 60;
   private _getRowStyle: ((rowNode: RowNode) => any) = null;
   private _getRowClass: ((rowNode: RowNode) => any) = null;
-  @ViewChild('accordionButtonTemplate') accordionButtonTemplate: TemplateRef<any>;
+  @ViewChild('accordionButtonTemplate', {static: true}) accordionButtonTemplate: TemplateRef<any>;
 
   @Input() set accordionHeight(value: number) {
     this._accordionHeight = value;

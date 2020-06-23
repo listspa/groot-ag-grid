@@ -1,2 +1,12 @@
+$gray-default-bg: #f2f2f2;
+$gray-default-bg-dark: #e4e4e4;
+$gray-default-border: #cbcbcb;
+
+$table-header-bg: $gray-default-bg-dark;
+$table-border-color: $gray-default-border;
+$table-header-background-color: $table-header-bg;
+$table-header-icon-color: black;
+
+
 @import "~@listgroup/groot/style/groot";
 @import "projects/groot-ag-grid/src/style/groot-ag-grid.component";
