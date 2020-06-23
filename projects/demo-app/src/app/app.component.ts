@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {TranslationsLanguageService} from '@listgroup/groot';
+import {SimpleNavBarItem, TranslationsLanguageService} from '@listgroup/groot';
 
 @Component({
   selector: 'app-root',
@@ -7,6 +7,11 @@ import {TranslationsLanguageService} from '@listgroup/groot';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
+  menu: SimpleNavBarItem[] = [
+    {label: 'Basic sample', url: '/demo-simple'},
+    {label: 'Customizing cells', url: '/custom-components'},
+  ];
+
   constructor(_: TranslationsLanguageService) {
   }
 }
