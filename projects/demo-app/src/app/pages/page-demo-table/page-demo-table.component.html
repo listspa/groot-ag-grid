@@ -3,6 +3,7 @@
 <p>This is how a default, simple grid looks.</p>
 
 <groot-ag-grid
+  class="mb-4"
   [columnDefs]="columns"
   [searchResultsData]="searchResultsData"
   (search)="search($event)"
@@ -12,8 +13,7 @@
   <groot-button class="btn-sm btn-outline-primary" label="test"></groot-button>
 </ng-template>
 
-
-<p class="mt-4"> This table shows various data types in our grid:</p>
+<p> This table shows various data types in our grid:</p>
 
 <ul>
   <li>strings</li>
@@ -38,6 +38,7 @@
 </div>
 
 <groot-ag-grid
+  class="mt-4 mb-4"
   #gridSelection
   [hideTitleBar]="true"
   [columnDefs]="columns"
@@ -48,3 +49,20 @@
   [singleRowSelection]="selectionMode === 'single'"
   (selectionChanged)="setSelection($event)"
 ></groot-ag-grid>
+
+<h2>Accordions</h2>
+
+<p>You can use a template to show an accordion with additional details for each row.</p>
+
+<groot-ag-grid
+  [hideTitleBar]="true"
+  [columnDefs]="columns"
+  [searchResultsData]="searchResultsData"
+  (search)="search($event)"
+  [accordionHeight]="30"
+  [accordionTemplate]="accordionTemplate"
+>
+  <ng-template #accordionTemplate let-row>
+    <p>Here you can show more details about the row. For instance, here we show {{row.name}}.</p>
+  </ng-template>
+</groot-ag-grid>
