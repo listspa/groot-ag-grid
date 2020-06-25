@@ -34,7 +34,7 @@ import {PageCustomComponentsComponent} from './pages/page-custom-components/page
 
 // Required as a separate function for AOT compilation
 export function HttpLoaderFactory(http: HttpClient) {
-  return new GrootTranslateHttpLoader(http);
+  return new GrootTranslateHttpLoader(http, '/demo-app/assets/i18n/');
 }
 
 @NgModule({
