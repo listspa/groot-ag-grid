@@ -1,6 +1,6 @@
 {
   "name": "groot-ag-grid",
-  "version": "1.0.0-ng10-alpha.1",
+  "version": "1.0.0-ng10-alpha.2",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
