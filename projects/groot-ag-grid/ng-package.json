@@ -1,7 +1,10 @@
 {
   "$schema": "../../node_modules/ng-packagr/ng-package.schema.json",
   "dest": "../../dist/groot-ag-grid",
+  "assets": [
+    "./src/style"
+  ],
   "lib": {
-    "entryFile": "src/public_api.ts"
+    "entryFile": "src/public-api.ts"
   }
 }
