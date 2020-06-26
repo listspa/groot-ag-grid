@@ -1,5 +1,9 @@
 # Groot-ag-grid releases
 
+## Version 0.4.0 - 2020-06-26
+
+- feat: allowed to pass a `NoGridDataMessage` to show a warning in the grid
+
 ## Version 0.3.3 - 2020-06-09
 
 - feat: added event `gridReady`
