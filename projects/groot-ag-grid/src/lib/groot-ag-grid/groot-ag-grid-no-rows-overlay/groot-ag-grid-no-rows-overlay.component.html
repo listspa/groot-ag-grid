@@ -1,8 +1,16 @@
-<div class="alert alert-info p-3"
-     *ngIf="!params.loadingError">
-  {{'common.noRowsFound' | translate}}
-</div>
-<div class="alert alert-danger p-3"
-     *ngIf="params.loadingError">
-  {{'common.dynamicGui.cannotLoad.details' | translate}}
+<div class="alert p-3"
+     [class.alert-info]="params.style === 'info' || (!params.style && !params.loadingError)"
+     [class.alert-warning]="params.style === 'warning'"
+     [class.alert-danger]="params.style === 'danger' || (!params.style && params.loadingError)">
+  <ng-container *ngIf="!params.message">
+    <ng-container *ngIf="!params.loadingError">
+      {{'common.noRowsFound' | translate}}
+    </ng-container>
+    <ng-container *ngIf="params.loadingError">
+      {{'common.dynamicGui.cannotLoad.details' | translate}}
+    </ng-container>
+  </ng-container>
+  <ng-container *ngIf="params.message">
+    {{params.message | translate}}
+  </ng-container>
 </div>
