@@ -22,6 +22,7 @@ import {GrootAgGridRendererTemplateComponent} from './groot-ag-grid-renderer-tem
 import {GrootAgGridHeaderTemplateComponent} from './groot-ag-grid-header-template/groot-ag-grid-header-template.component';
 import {GrootAgGridCustomizationService} from './groot-ag-grid-customization.service';
 import {GrootAgGridSelection} from './groot-ag-grid-selection.model';
+import {isNoGridDataMessage, NoGridDataMessage} from './no-grid-data.model';
 
 const SPECIAL_TOOL_CELL: ColDef = {
   resizable: false,
@@ -68,13 +69,19 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
   @Input() showPaginationIfEmpty = this.grootAgGridCustomizationService.showPaginationIfEmptyDefault;
   @Input() singleRowSelection = false;
 
-  @Input() set searchResultsData(searchResultsData: PaginatedResponse<T> | LoadingFailed) {
-    if (isLoadingFailed(searchResultsData)) {
-      this.noRowsOverlayComponentParams.loadingError = true;
+  @Input() set searchResultsData(searchResultsData: PaginatedResponse<T> | NoGridDataMessage | LoadingFailed) {
+    if (isNoGridDataMessage(searchResultsData)) {
+      this.noRowsOverlayComponentParams.loadingError = false;
+      this.noRowsOverlayComponentParams.message = searchResultsData.message;
+      this.noRowsOverlayComponentParams.style = searchResultsData.style;
+      this.data = null;
+      this.rowsDisplayed = [];
+    } else if (isLoadingFailed(searchResultsData)) {
+      this.noRowsOverlayComponentParams = {loadingError: true, message: null, style: null};
       this.data = null;
       this.rowsDisplayed = [];
     } else {
-      this.noRowsOverlayComponentParams.loadingError = false;
+      this.noRowsOverlayComponentParams = {loadingError: false, message: null, style: null};
       this.data = searchResultsData;
       if (this.data) {
         this.rowsDisplayed = this.data.records;
@@ -299,7 +306,7 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
     suppressScrollOnNewData: true,
     isRowSelectable: this._isRowSelectable,
   };
-  public noRowsOverlayComponentParams: GrootAgGridNoRowsParams = {loadingError: false};
+  public noRowsOverlayComponentParams: GrootAgGridNoRowsParams = {loadingError: false,};
   private labelSub: Subscription;
   private _currentPageNum = 0;
   private sorting: SortPagination;

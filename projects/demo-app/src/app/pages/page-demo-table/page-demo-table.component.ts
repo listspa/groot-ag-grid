@@ -1,9 +1,10 @@
 import {Component, OnInit, TemplateRef, ViewChild} from '@angular/core';
 import {ColDef} from 'ag-grid-community';
 import {GrootAgGridRenderer} from '../../../../../groot-ag-grid/src/lib/groot-ag-grid/groot-ag-grid-customization.consts';
-import {PaginatedResponse, PaginationOptions} from '@listgroup/groot';
+import {LoadingFailed, PaginatedResponse, PaginationOptions} from '@listgroup/groot';
 import {GrootAgGridSelection} from '../../../../../groot-ag-grid/src/lib/groot-ag-grid/groot-ag-grid-selection.model';
 import {GrootAgGridComponent} from '../../../../../groot-ag-grid/src/lib/groot-ag-grid/groot-ag-grid.component';
+import {NoGridDataMessage} from '../../../../../groot-ag-grid/src/lib/groot-ag-grid/no-grid-data.model';
 
 interface User {
   id: string;
@@ -22,6 +23,8 @@ export class PageDemoTableComponent implements OnInit {
   @ViewChild('cellTemplate', {static: true}) cellTemplate: TemplateRef<any>;
   selectionMode: 'single' | 'multi' = 'multi';
   @ViewChild('gridSelection', {static: true}) gridSelection: GrootAgGridComponent<User>;
+  loadingFailedData: LoadingFailed = {loadingFailed: true};
+  alertData: NoGridDataMessage = {message: 'A generic warning', style: 'warning'};
 
   constructor() {
   }
@@ -69,5 +72,13 @@ export class PageDemoTableComponent implements OnInit {
 
   setSelection(event: GrootAgGridSelection<User>) {
     console.log('Selection set to %o', event);
+  }
+
+  searchLoadingFailed() {
+    this.loadingFailedData = {...this.loadingFailedData};
+  }
+
+  searchAlertData() {
+    this.alertData = {...this.alertData};
   }
 }
