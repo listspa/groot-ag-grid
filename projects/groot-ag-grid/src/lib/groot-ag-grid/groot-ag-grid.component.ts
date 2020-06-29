@@ -78,11 +78,15 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
       this.data = null;
       this.rowsDisplayed = [];
     } else if (isLoadingFailed(searchResultsData)) {
-      this.noRowsOverlayComponentParams = {loadingError: true, message: null, style: null};
+      this.noRowsOverlayComponentParams.loadingError = true;
+      this.noRowsOverlayComponentParams.message = null;
+      this.noRowsOverlayComponentParams.style = null;
       this.data = null;
       this.rowsDisplayed = [];
     } else {
-      this.noRowsOverlayComponentParams = {loadingError: false, message: null, style: null};
+      this.noRowsOverlayComponentParams.loadingError = false;
+      this.noRowsOverlayComponentParams.message = null;
+      this.noRowsOverlayComponentParams.style = null;
       this.data = searchResultsData;
       if (this.data) {
         this.rowsDisplayed = this.data.records;
