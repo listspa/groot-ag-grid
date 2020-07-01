@@ -2,6 +2,7 @@ $table-header-background-color: $light-primary !default;
 $table-header-foreground-color: color-yiq($table-header-background-color) !default;
 $table-accordion-bg: $gray-300 !default;
 $table-header-icon-color: $gray-800 !default;
+$table-header-font-size: 0.925em !default;
 
 $ag-suppress-legacy-var-import: true;
 
@@ -36,6 +37,10 @@ $ag-suppress-legacy-var-import: true;
     background-color: $table-accordion-bg;
     border-top: 0;
   }
+}
+
+.ag-header-row {
+  font-size: $table-header-font-size;
 }
 
 .groot-paginator-hidden {
