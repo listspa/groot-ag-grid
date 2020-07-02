@@ -10,12 +10,14 @@ import {GrootAgGridNoRowsOverlayComponent} from './groot-ag-grid-no-rows-overlay
 import {GrootAgGridComponent} from './groot-ag-grid.component';
 import {AgGridModule} from 'ag-grid-angular';
 import {TranslateModule} from '@ngx-translate/core';
+import {GrootAgGridRendererBooleansComponent} from './groot-ag-grid-renderer-booleans/groot-ag-grid-renderer-booleans.component';
 
 export const GROOT_AG_GRID_COMPONENTS = [
   GrootAgGridComponent,
   GrootAgGridLoadingOverlayComponent,
   GrootAgGridNoRowsOverlayComponent,
   GrootAgGridRendererDateComponent,
+  GrootAgGridRendererBooleansComponent,
   GrootAgGridRendererNumbersComponent,
   GrootAgGridRendererTemplateComponent,
   GrootAgGridHeaderTemplateComponent,
