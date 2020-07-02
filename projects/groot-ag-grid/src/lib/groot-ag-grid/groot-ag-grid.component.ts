@@ -17,7 +17,7 @@ import {
 } from './groot-ag-grid-no-rows-overlay/groot-ag-grid-no-rows-overlay.component';
 import {GrootAgGridLoadingOverlayComponent} from './groot-ag-grid-loading-overlay/groot-ag-grid-loading-overlay.component';
 import {GrootAgGridRendererBooleansComponent} from './groot-ag-grid-renderer-booleans/groot-ag-grid-renderer-booleans.component';
-import {GrootAgGridRendererDateComponent} from './groot-ag-grid-renderer-date/groot-ag-grid-renderer-date.component';
+import {GrootAgGridRendererDatesComponent} from './groot-ag-grid-renderer-dates/groot-ag-grid-renderer-dates.component';
 import {GrootAgGridRendererNumbersComponent} from './groot-ag-grid-renderer-numbers/groot-ag-grid-renderer-numbers.component';
 import {GrootAgGridRendererTemplateComponent} from './groot-ag-grid-renderer-template/groot-ag-grid-renderer-template.component';
 import {GrootAgGridHeaderTemplateComponent} from './groot-ag-grid-header-template/groot-ag-grid-header-template.component';
@@ -280,7 +280,7 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
       GrootAgGridNoRowsOverlayComponent,
       GrootAgGridLoadingOverlayComponent,
       booleansRenderer: GrootAgGridRendererBooleansComponent,
-      datesRenderer: GrootAgGridRendererDateComponent,
+      datesRenderer: GrootAgGridRendererDatesComponent,
       numbersRenderer: GrootAgGridRendererNumbersComponent,
       templateRenderer: GrootAgGridRendererTemplateComponent,
       headerTemplateRenderer: GrootAgGridHeaderTemplateComponent,

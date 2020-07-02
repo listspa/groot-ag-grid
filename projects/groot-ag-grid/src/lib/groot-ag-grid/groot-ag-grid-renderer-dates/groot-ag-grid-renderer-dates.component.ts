@@ -4,7 +4,7 @@ import {ICellRendererAngularComp} from 'ag-grid-angular';
 @Component({
   templateUrl: './groot-ag-grid-renderer-date.component.html'
 })
-export class GrootAgGridRendererDateComponent implements ICellRendererAngularComp {
+export class GrootAgGridRendererDatesComponent implements ICellRendererAngularComp {
   params: any;
 
   agInit(params: any): void {
