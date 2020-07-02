@@ -2,6 +2,13 @@
 
 TODO: differences about scss
 
+
+## Removed and deprecated properties
+
+We have renamed, for coherence, `GrootAgGridRenderer.date` to `dates`.
+
+## CSS
+
 If you are aligning a cell to the right, such as a number, you need to add to your
 `colDef` the property `cellClass: 'ag-cell-right'`.
 
