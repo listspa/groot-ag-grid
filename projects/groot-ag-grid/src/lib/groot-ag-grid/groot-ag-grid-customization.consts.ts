@@ -1,5 +1,9 @@
 export const GrootAgGridRenderer = {
-  date: 'dateRenderer',
+  booleans: 'booleansRenderer',
+  dates: 'datesRenderer',
   numbers: 'numbersRenderer',
   template: 'templateRenderer',
+
+  /** @deprecated: use `dates` */
+  date: 'datesRenderer',
 };

@@ -11,6 +11,7 @@ interface User {
   name: string;
   age: number;
   birthDate: Date;
+  grownUp: boolean;
 }
 
 @Component({
@@ -47,7 +48,12 @@ export class PageDemoTableComponent implements OnInit {
       {
         colId: 'birthDate',
         field: 'birthDate',
-        cellRenderer: GrootAgGridRenderer.date,
+        cellRenderer: GrootAgGridRenderer.dates,
+      },
+      {
+        colId: 'grownUp',
+        field: 'grownUp',
+        cellRenderer: GrootAgGridRenderer.booleans,
       },
       {
         colId: 'buttons',
@@ -63,9 +69,9 @@ export class PageDemoTableComponent implements OnInit {
       pageLen: event.pageLen,
       totalNumRecords: 3,
       records: [
-        {id: 'U001', name: 'Andrea Bergia', age: 34, birthDate: new Date('1985-12-04')},
-        {id: 'U002', name: 'John Peterson', age: 44, birthDate: new Date('1975-01-03')},
-        {id: 'U003', name: 'Donald Trump', age: 99, birthDate: new Date('1921-06-05')},
+        {id: 'U001', name: 'Andrea Bergia', age: 34, birthDate: new Date('1985-12-04'), grownUp: true,},
+        {id: 'U002', name: 'John Peterson', age: 44, birthDate: new Date('1975-01-03'), grownUp: true,},
+        {id: 'U003', name: 'Donald Trump', age: 99, birthDate: new Date('1921-06-05'), grownUp: false,},
       ]
     };
   }
