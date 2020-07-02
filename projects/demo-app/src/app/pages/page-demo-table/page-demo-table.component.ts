@@ -44,6 +44,7 @@ export class PageDemoTableComponent implements OnInit {
         colId: 'age',
         field: 'age',
         cellRenderer: GrootAgGridRenderer.numbers,
+        cellClass: 'ag-cell-right'
       },
       {
         colId: 'birthDate',
@@ -54,6 +55,7 @@ export class PageDemoTableComponent implements OnInit {
         colId: 'grownUp',
         field: 'grownUp',
         cellRenderer: GrootAgGridRenderer.booleans,
+        cellClass: 'ag-cell-center',
       },
       {
         colId: 'buttons',

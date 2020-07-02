@@ -43,6 +43,14 @@ $ag-suppress-legacy-var-import: true;
   font-size: $table-header-font-size;
 }
 
+.ag-cell.ag-cell-center .ag-cell-wrapper {
+  justify-content: center;
+}
+
+.ag-cell.ag-cell-right .ag-cell-wrapper {
+  justify-content: flex-end;
+}
+
 .groot-paginator-hidden {
   visibility: hidden;
 }
