@@ -69,6 +69,7 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
   @ContentChild(GrootTableTitleRightAreaDirective, {read: TemplateRef}) tableTitleRightArea: TemplateRef<any>;
   @Input() showPaginationIfEmpty = this.grootAgGridCustomizationService.showPaginationIfEmptyDefault;
   @Input() singleRowSelection = false;
+  @Input() rowMultiSelectWithClick = false;
 
   @Input() set searchResultsData(searchResultsData: PaginatedResponse<T> | NoGridDataMessage | LoadingFailed) {
     if (isNoGridDataMessage(searchResultsData)) {
@@ -311,6 +312,7 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
     enableCellTextSelection: true,
     suppressScrollOnNewData: true,
     isRowSelectable: this._isRowSelectable,
+    rowMultiSelectWithClick: false,
   };
   public noRowsOverlayComponentParams: GrootAgGridNoRowsParams = {loadingError: false,};
   private labelSub: Subscription;

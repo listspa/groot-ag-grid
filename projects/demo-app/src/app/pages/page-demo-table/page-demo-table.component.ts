@@ -22,7 +22,7 @@ export class PageDemoTableComponent implements OnInit {
   columns: ColDef[];
   searchResultsData: PaginatedResponse<User>;
   @ViewChild('cellTemplate', {static: true}) cellTemplate: TemplateRef<any>;
-  selectionMode: 'single' | 'multi' = 'multi';
+  selectionMode: 'single' | 'multi' | 'multi-click' = 'multi';
   @ViewChild('gridSelection', {static: true}) gridSelection: GrootAgGridComponent<User>;
   loadingFailedData: LoadingFailed = {loadingFailed: true};
   alertData: NoGridDataMessage = {message: 'A generic warning', style: 'warning'};
@@ -74,6 +74,7 @@ export class PageDemoTableComponent implements OnInit {
         {id: 'U001', name: 'Andrea Bergia', age: 34, birthDate: new Date('1985-12-04'), grownUp: true,},
         {id: 'U002', name: 'John Peterson', age: 44, birthDate: new Date('1975-01-03'), grownUp: true,},
         {id: 'U003', name: 'Donald Trump', age: 99, birthDate: new Date('1921-06-05'), grownUp: false,},
+        {id: 'U004', name: 'Baby Boy', age: 4, birthDate: new Date('2016-07-02'), grownUp: false,},
       ]
     };
   }

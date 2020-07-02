@@ -37,6 +37,7 @@
 <div class="btn-group" btnRadioGroup [(ngModel)]="selectionMode">
   <button class="btn btn-outline-primary" btnRadio="single">Single</button>
   <button class="btn btn-outline-primary" btnRadio="multi">Multiple</button>
+  <button class="btn btn-outline-primary" btnRadio="multi-click">Multiple with clicks</button>
 </div>
 
 <groot-ag-grid
@@ -49,6 +50,7 @@
   [checkboxSelection]="selectionMode === 'multi'"
   [headerCheckboxSelection]="selectionMode === 'multi'"
   [singleRowSelection]="selectionMode === 'single'"
+  [rowMultiSelectWithClick]="selectionMode === 'multi-click'"
   (selectionChanged)="setSelection($event)"
 ></groot-ag-grid>
 
