@@ -34,10 +34,13 @@
 <p>Enabling selections of rows is easy. There are two modes: single or multiple. The grid will emit an event
   whenever the selection changes.</p>
 
-<div class="btn-group" btnRadioGroup [(ngModel)]="selectionMode">
-  <button class="btn btn-outline-primary" btnRadio="single">Single</button>
-  <button class="btn btn-outline-primary" btnRadio="multi">Multiple</button>
-  <button class="btn btn-outline-primary" btnRadio="multi-click">Multiple with clicks</button>
+<div class="buttons-list-left">
+  <div class="btn-group" btnRadioGroup [(ngModel)]="selectionMode">
+    <button class="btn btn-outline-primary" btnRadio="single">Single</button>
+    <button class="btn btn-outline-primary" btnRadio="multi">Multiple</button>
+    <button class="btn btn-outline-primary" btnRadio="multi-click">Multiple with clicks</button>
+  </div>
+  <groot-button label="Clear selection" (click)="gridSelection.clearSelection()"></groot-button>
 </div>
 
 <groot-ag-grid
