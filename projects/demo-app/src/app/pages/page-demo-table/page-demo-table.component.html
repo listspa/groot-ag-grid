@@ -75,6 +75,27 @@
   </ng-template>
 </groot-ag-grid>
 
+<h2>Action buttons</h2>
+
+<p>You can show an "action button" on each row</p>
+
+<groot-ag-grid
+  class="mb-4"
+  [hideTitleBar]="true"
+  [columnDefs]="columns"
+  [searchResultsData]="searchResultsData"
+  (search)="search($event)"
+  [actionButtonTemplate]="actionsTemplate"
+>
+  <ng-template #actionsTemplate let-row>
+    <groot-actions-button [insideTable]="true">
+      <groot-actions-button-entry label="open"></groot-actions-button-entry>
+      <groot-actions-button-entry label="remove"></groot-actions-button-entry>
+      <groot-actions-button-entry label="send email"></groot-actions-button-entry>
+    </groot-actions-button>
+  </ng-template>
+</groot-ag-grid>
+
 <h2>Loading failed and more info</h2>
 
 <p>You can show a "loading failed" by passing a <code>LoadingFailed</code> instance to the grid rather than the data:
