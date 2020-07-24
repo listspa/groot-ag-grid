@@ -275,6 +275,7 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
       filter: false,
       sortable: true,
       resizable: true,
+      lockPinned: true,
     },
     columnDefs: [],
     frameworkComponents: {
