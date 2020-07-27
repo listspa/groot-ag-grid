@@ -15,6 +15,7 @@
 </groot-table-title-bar>
 
 <ag-grid-angular
+  #grid
   style="width: 100%"
   [style.height]="gridHeightCss"
   class="ag-theme-balham ag-grid-rows-clickable"
@@ -33,6 +34,7 @@
   [suppressDragLeaveHidesColumns]="true"
   (bodyScroll)="onScroll($event)"
   (selectionChanged)="gridSelectionChanged()"
+  [alignedGrids]="alignedGridsComponents"
 ></ag-grid-angular>
 
 

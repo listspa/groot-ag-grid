@@ -112,8 +112,34 @@
 <p>You can also show a custom message by passing a <code>NoGridDataMessage</code> instance:</p>
 
 <groot-ag-grid
+  class="mb-4"
   [hideTitleBar]="true"
   [columnDefs]="columns"
   [searchResultsData]="alertData"
   (search)="searchAlertData()"
+></groot-ag-grid>
+
+<h2>Aligned grids</h2>
+
+<p>You can set two grids to be aligned, meaning the columns have the same width and they scroll together.
+  For more details, see
+  <a target="_blank" href="https://www.ag-grid.com/javascript-grid-aligned-grids/">the AG-Grid documentation.</a>
+</p>
+
+<groot-ag-grid
+  #alignedGrid1
+  [hideTitleBar]="true"
+  [columnDefs]="columns"
+  [searchResultsData]="searchResultsData"
+  (search)="search($event)"
+  [alignedGrids]="[alignedGrid2]"
+></groot-ag-grid>
+<groot-ag-grid
+  #alignedGrid2
+  class="mb-4"
+  [hideTitleBar]="true"
+  [columnDefs]="columns"
+  [searchResultsData]="searchResultsData"
+  (search)="search($event)"
+  [alignedGrids]="[alignedGrid1]"
 ></groot-ag-grid>
