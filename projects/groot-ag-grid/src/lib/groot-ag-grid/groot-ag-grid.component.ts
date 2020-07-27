@@ -24,6 +24,7 @@ import {GrootAgGridHeaderTemplateComponent} from './groot-ag-grid-header-templat
 import {GrootAgGridCustomizationService} from './groot-ag-grid-customization.service';
 import {GrootAgGridSelection} from './groot-ag-grid-selection.model';
 import {isNoGridDataMessage, NoGridDataMessage} from './no-grid-data.model';
+import {AgGridAngular} from 'ag-grid-angular';
 
 const SPECIAL_TOOL_CELL: ColDef = {
   resizable: false,
@@ -319,7 +320,9 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
   private _accordionHeight = 60;
   private _getRowStyle: ((rowNode: RowNode) => any) = null;
   private _getRowClass: ((rowNode: RowNode) => any) = null;
+  public alignedGridsComponents: AgGridAngular[] = [];
   @ViewChild('accordionButtonTemplate') accordionButtonTemplate: TemplateRef<any>;
+  @ViewChild('grid') grid: AgGridAngular;
 
   @Input() set accordionHeight(value: number) {
     this._accordionHeight = value;
@@ -328,6 +331,15 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
 
   get accordionHeight(): number {
     return this._accordionHeight;
+  }
+
+  @Input()
+  set alignedGrids(value: GrootAgGridComponent<any>[]) {
+    if (!value) {
+      this.alignedGridsComponents = [];
+    } else {
+      this.alignedGridsComponents = value.map(v => v.grid);
+    }
   }
 
   constructor(private translate: TranslateService,
