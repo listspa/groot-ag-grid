@@ -219,7 +219,9 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
   }
 
   private restoreColState() {
+    console.log('restore col state');
     if (this._savedColumnState && this.gridOptions.columnApi) {
+      console.log('restore col state inner');
       const parsedState = JSON.parse(this._savedColumnState);
       if (parsedState) {
         this.gridOptions.columnApi.setColumnState(parsedState);
@@ -456,6 +458,10 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
   }
 
   firstDataRendered() {
+    this.autoSizeColumns();
+  }
+
+  autoSizeColumns() {
     this.gridOptions.columnApi.autoSizeAllColumns();
   }
 

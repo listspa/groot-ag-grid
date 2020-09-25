@@ -1,5 +1,9 @@
 # Groot-ag-grid releases
 
+## Version 0.4.2 - 2020-09-25
+
+- fix: fixed autosize columns issue with invisible grids
+
 ## Version 0.4.1 - 2020-06-29
 
 - fix: fixed issue with `NoGridDataMessage`
