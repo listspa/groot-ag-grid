@@ -9,6 +9,7 @@
   [showRefreshIcon]="showRefreshIcon"
   [lastRefreshTimestamp]="lastRefreshTimestamp"
   (refresh)="reloadTable()"
+  [label]="titleLabel"
   *ngIf="!hideTitleBar"
 >
   <ng-container *ngTemplateOutlet="tableTitleRightArea"></ng-container>

@@ -1,5 +1,9 @@
 # Groot-ag-grid releases
 
+## Version 0.4.3 - 2020-10-02
+
+- feat: added customizable table title
+
 ## Version 0.4.2 - 2020-09-25
 
 - fix: fixed autosize columns issue with invisible grids

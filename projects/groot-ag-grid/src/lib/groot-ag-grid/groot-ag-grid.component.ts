@@ -72,6 +72,7 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
   @Input() showPaginationIfEmpty = this.grootAgGridCustomizationService.showPaginationIfEmptyDefault;
   @Input() singleRowSelection = false;
   @Input() rowMultiSelectWithClick = false;
+  @Input() titleLabel = 'common.searchResults';
 
   @Input() set searchResultsData(searchResultsData: PaginatedResponse<T> | NoGridDataMessage | LoadingFailed) {
     if (isNoGridDataMessage(searchResultsData)) {
