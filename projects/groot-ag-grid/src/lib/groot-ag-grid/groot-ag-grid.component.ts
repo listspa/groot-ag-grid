@@ -32,7 +32,7 @@ const SPECIAL_TOOL_CELL: ColDef = {
   sortable: false,
   suppressMenu: true,
   suppressMovable: true,
-  suppressToolPanel: true,
+  suppressColumnsToolPanel: true,
   maxWidth: 30,
   width: 30,
 };
