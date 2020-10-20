@@ -51,6 +51,10 @@ $ag-suppress-legacy-var-import: true;
   justify-content: flex-end;
 }
 
+.ag-cell.ag-cell-height-100 .ag-cell-wrapper .ag-cell-value {
+  height: 100%;
+}
+
 .groot-paginator-hidden {
   visibility: hidden;
 }
