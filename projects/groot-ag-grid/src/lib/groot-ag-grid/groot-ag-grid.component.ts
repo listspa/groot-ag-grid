@@ -214,10 +214,6 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
 
     if (this.gridOptions.api) {
       this.translateHeaders();
-      this.gridOptions.api.setColumnDefs(this.gridOptions.columnDefs);
-      if (this.gridOptions.columnApi) {
-        this.gridOptions.columnApi.resetColumnState();
-      }
       this.gridOptions.api.redrawRows();
     }
   }
@@ -334,6 +330,7 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
   public alignedGridsComponents: AgGridAngular[] = [];
   @ViewChild('accordionButtonTemplate', {static: true}) accordionButtonTemplate: TemplateRef<any>;
   @ViewChild('grid', {static: true}) grid: AgGridAngular;
+  private _initialized = false;
 
   @Input() set accordionHeight(value: number) {
     this._accordionHeight = value;
@@ -375,6 +372,7 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
 
     this.resetDefaultSorting();
     this.translateHeaders();
+    this._initialized = true;
   }
 
   private keepServerSort(valueA: any, valueB: any, nodeA: RowNode, nodeB: RowNode, isInverted: boolean) {
@@ -394,6 +392,7 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
       this.labelSub.unsubscribe();
     }
 
+    const columnState = this.gridOptions.api ? this.gridOptions.columnApi.getColumnState() : null;
     const labelKeys = this.gridOptions.columnDefs
       .filter((col: ColDef) => this.getColumnLabel(col))
       .map((col: ColDef) => this.getColumnLabel(col));
@@ -418,11 +417,13 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
           if (this.gridOptions.api) {
             // Update labels in the grid
             this.gridOptions.api.setColumnDefs(this.gridOptions.columnDefs);
+            this.gridOptions.columnApi.applyColumnState({state: columnState});
           }
         });
     } else {
       if (this.gridOptions.api) {
         this.gridOptions.api.setColumnDefs(this.gridOptions.columnDefs);
+        this.gridOptions.columnApi.applyColumnState({state: columnState});
       }
     }
   }
@@ -490,9 +491,11 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
         };
       }
     });
-    if (!this.sorting) {
-      this.resetDefaultSorting();
-    }
+
+    // NOTE: In previous versions we emitted the default field. We might have to restore this behavior.
+    // if (!this.sorting) {
+    //   this.resetDefaultSorting();
+    // }
 
     this.reloadTable(false);
   }
@@ -502,7 +505,7 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
   }
 
   reloadTable(resetPageNumber = false, resetSortField = false) {
-    if (!this.sorting) {
+    if (!this._initialized) {
       // Before our ngOnInit
       return;
     }
@@ -523,8 +526,8 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
 
   getCurrentPagination(): PaginationOptions {
     return {
-      sortField: this.sorting.sortField || this.defaultSortColumn,
-      sortReversed: this.sorting.sortReversed,
+      sortField: this.sorting && this.sorting.sortField,
+      sortReversed: this.sorting && this.sorting.sortReversed,
       pageNum: this._currentPageNum,
       pageLen: this.pageSize
     };
