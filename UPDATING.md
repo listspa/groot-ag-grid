@@ -1,13 +1,18 @@
 # Updating to Angular 10
 
-TODO: differences about scss
-
-
 ## Removed and deprecated properties
 
 We have renamed, for coherence, `GrootAgGridRenderer.date` to `dates`.
 
-## CSS
+## SCSS
+
+Replace the scss import to be:
+
+```
+@import "~@listgroup/groot-ag-grid/src/style/groot-ag-grid.component";
+```
+
+## Alignments
 
 If you are aligning a cell to the right, such as a number, you need to add to your
 `colDef` the property `cellClass: 'ag-cell-right'`.
