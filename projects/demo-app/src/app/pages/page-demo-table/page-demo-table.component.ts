@@ -69,7 +69,7 @@ export class PageDemoTableComponent implements OnInit {
     this.searchResultsData = {
       pageNum: event.pageNum,
       pageLen: event.pageLen,
-      totalNumRecords: 3,
+      totalNumRecords: 4,
       records: [
         {id: 'U001', name: 'Andrea Bergia', age: 34, birthDate: new Date('1985-12-04'), grownUp: true,},
         {id: 'U002', name: 'John Peterson', age: 44, birthDate: new Date('1975-01-03'), grownUp: true,},
@@ -77,6 +77,23 @@ export class PageDemoTableComponent implements OnInit {
         {id: 'U004', name: 'Baby Boy', age: 4, birthDate: new Date('2016-07-02'), grownUp: false,},
       ]
     };
+
+    this.applySort(event);
+  }
+
+  private applySort(event: PaginationOptions) {
+    // Apply sort
+    if (event.sortField) {
+      this.searchResultsData.records.sort((r1, r2) => {
+        if (r1[event.sortField] < r2[event.sortField]) {
+          return event.sortReversed ? +1 : -1;
+        } else if (r1[event.sortField] > r2[event.sortField]) {
+          return event.sortReversed ? -1 : +1;
+        } else {
+          return 0;
+        }
+      });
+    }
   }
 
   setSelection(event: GrootAgGridSelection<User>) {

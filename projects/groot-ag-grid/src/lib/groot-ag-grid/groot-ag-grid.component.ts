@@ -10,7 +10,6 @@ import {
 } from '@listgroup/groot';
 import {CellClickedEvent, ColDef, GridApi, GridOptions, IsRowSelectable, RowNode} from 'ag-grid-community';
 import {TranslateService} from '@ngx-translate/core';
-import {toSortModel, toSortPagination} from './agGrid.utils';
 import {
   GrootAgGridNoRowsOverlayComponent,
   GrootAgGridNoRowsParams
@@ -450,18 +449,47 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
   }
 
   gridReady() {
-    this.gridOptions.api.setSortModel(toSortModel(this.sorting));
     this.gridOptions.api.setColumnDefs(this.gridOptions.columnDefs); // Update labels
     this.restoreColState();
+    const sortingSet = this.setSorting();
     this.agGridReady.next(this.gridOptions.api);
+
+    // Avoid reloading if we changed the sort - if we did, we will receive an `onSortChange` event
+    if (!sortingSet) {
+      this.reloadTable(true);
+    }
+  }
+
+  private setSorting(): boolean {
+    if (this.sorting && this.sorting.sortField) {
+      const columnState = this.gridOptions.columnApi.getColumnState();
+      columnState.forEach(col => {
+        if (col.colId === this.sorting.sortField) {
+          col.sort = this.sorting.sortReversed ? 'desc' : 'asc';
+        } else {
+          col.sort = null;
+        }
+      });
+      this.gridOptions.columnApi.applyColumnState({
+        state: columnState,
+      });
+      return true;
+    }
+    return false;
   }
 
   onSortChanged() {
-    const sortModel = this.gridOptions.api.getSortModel()[0];
-    if (!sortModel) {
+    this.sorting = null;
+    this.gridOptions.columnApi.getColumnState().forEach(col => {
+      if (col.sort && col.colId && !this.sorting) {
+        this.sorting = {
+          sortField: col.colId,
+          sortReversed: col.sort === 'desc',
+        };
+      }
+    });
+    if (!this.sorting) {
       this.resetDefaultSorting();
-    } else {
-      this.sorting = toSortPagination(sortModel);
     }
 
     this.reloadTable(false);

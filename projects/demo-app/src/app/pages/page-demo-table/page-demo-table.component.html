@@ -7,6 +7,8 @@
   [columnDefs]="columns"
   [searchResultsData]="searchResultsData"
   (search)="search($event)"
+  [defaultSortColumn]="'id'"
+  [defaultSortReverseFlag]="true"
 ></groot-ag-grid>
 
 <ng-template #cellTemplate>
