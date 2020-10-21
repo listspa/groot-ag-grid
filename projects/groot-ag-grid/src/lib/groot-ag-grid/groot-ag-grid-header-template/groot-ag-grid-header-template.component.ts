@@ -8,10 +8,10 @@ import {IHeaderAngularComp} from 'ag-grid-angular';
 @Component({
   templateUrl: './groot-ag-grid-header-template.component.html',
   styles: [`
-      :host {
-          display: block;
-          width: 100%;
-      }
+    :host {
+      display: block;
+      width: 100%;
+    }
   `]
 })
 export class GrootAgGridHeaderTemplateComponent implements IHeaderAngularComp {
@@ -21,24 +21,30 @@ export class GrootAgGridHeaderTemplateComponent implements IHeaderAngularComp {
 
   agInit(params: IHeaderParams): void {
     this.template = params['ngTemplate'];
-
     this.params = params;
     this.params.column.addEventListener('sortChanged', () => this.onSortChanged());
     this.onSortChanged();
   }
 
-  onSortChanged() {
+  refresh(params: IHeaderParams): boolean {
+    this.template = params['ngTemplate'];
+    this.params = params;
+    this.onSortChanged();
+    return true;
+  }
+
+  onSortChanged(): void {
     if (this.params.column.isSortAscending()) {
-      this.sorted = 'asc'
+      this.sorted = 'asc';
     } else if (this.params.column.isSortDescending()) {
-      this.sorted = 'desc'
+      this.sorted = 'desc';
     } else {
-      this.sorted = ''
+      this.sorted = '';
     }
   }
 
   @HostListener('click', [])
-  toggleSort() {
+  toggleSort(): void {
     switch (this.sorted) {
       case 'asc':
         this.changeSort('desc');
@@ -54,7 +60,7 @@ export class GrootAgGridHeaderTemplateComponent implements IHeaderAngularComp {
     }
   }
 
-  private changeSort(order) {
+  private changeSort(order): void {
     this.params.setSort(order, false);
-  };
+  }
 }

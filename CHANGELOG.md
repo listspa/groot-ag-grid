@@ -1,5 +1,9 @@
 # Groot-ag-grid releases
 
+## Version 1.0.0 - 2020-10-21
+
+- breaking: Angular 10 and ag-grid 24 are now required (see UPDATING.md)
+
 ## Version 0.4.3 - 2020-10-02
 
 - feat: added customizable table title

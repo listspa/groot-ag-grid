@@ -3,17 +3,19 @@
 <p>This is how a default, simple grid looks.</p>
 
 <groot-ag-grid
+  class="mb-4"
   [columnDefs]="columns"
   [searchResultsData]="searchResultsData"
   (search)="search($event)"
+  [defaultSortColumn]="'id'"
+  [defaultSortReverseFlag]="true"
 ></groot-ag-grid>
 
 <ng-template #cellTemplate>
   <groot-button class="btn-sm btn-outline-primary" label="test"></groot-button>
 </ng-template>
 
-
-<p class="mt-4"> This table shows various data types in our grid:</p>
+<p> This table shows various data types in our grid:</p>
 
 <ul>
   <li>strings</li>
@@ -44,6 +46,7 @@
 </div>
 
 <groot-ag-grid
+  class="mt-4 mb-4"
   #gridSelection
   [hideTitleBar]="true"
   [columnDefs]="columns"
@@ -71,6 +74,27 @@
 >
   <ng-template #accordionTemplate let-row>
     <p>Here you can show more details about the row. For instance, here we show {{row.name}}.</p>
+  </ng-template>
+</groot-ag-grid>
+
+<h2>Action buttons</h2>
+
+<p>You can show an "action button" on each row</p>
+
+<groot-ag-grid
+  class="mb-4"
+  [hideTitleBar]="true"
+  [columnDefs]="columns"
+  [searchResultsData]="searchResultsData"
+  (search)="search($event)"
+  [actionButtonTemplate]="actionsTemplate"
+>
+  <ng-template #actionsTemplate let-row>
+    <groot-actions-button [insideTable]="true">
+      <groot-actions-button-entry label="open"></groot-actions-button-entry>
+      <groot-actions-button-entry label="remove"></groot-actions-button-entry>
+      <groot-actions-button-entry label="send email"></groot-actions-button-entry>
+    </groot-actions-button>
   </ng-template>
 </groot-ag-grid>
 

@@ -1,35 +1,59 @@
-$active: $primary !default;
-$odd-row-background-color: $white !default;
-$font-family: $font-family-sans-serif !default;
-$font-size: $font-size-base !default;
-$border-color: $gray-250 !default;
-$header-background-color: $light-primary !default;
-$header-foreground-color: color-yiq($header-background-color) !default;
-$icon-color: $table-header-active-color !default;
-$font-family: $font-family-base !default;
-$ag-grid-border-color: $gray-200 !default;
-$ag-grid-accordion-bg: $gray-300 !default;
-$row-border-width: 1px !default;
+$table-header-background-color: $light-primary !default;
+$table-header-foreground-color: color-yiq($table-header-background-color) !default;
+$table-accordion-bg: $gray-300 !default;
+$table-header-icon-color: $gray-800 !default;
+$table-header-font-size: 0.925em !default;
+$table-checkbox-size: 15px;
+
+$ag-suppress-legacy-var-import: true;
 
 @import "~ag-grid-community/src/styles/ag-grid";
-@import "~ag-grid-community/src/styles/ag-theme-balham/sass/ag-theme-balham";
+@import "~ag-grid-community/src/styles/ag-theme-balham/sass/ag-theme-balham-mixin";
+
+.ag-theme-balham {
+  @include ag-theme-balham((
+    balham-active-color: $primary,
+    odd-row-background-color: $white,
+    font-family: $font-family-sans-serif,
+    font-size: $font-size-base,
+    border-color: $table-border-color,
+    header-background-color: $table-header-background-color,
+    header-foreground-color: $table-header-foreground-color,
+    secondary-foreground-color: $table-header-icon-color,
+    selected-row-background-color: $lighter-primary,
+  ));
+}
 
 .ag-grid-rows-clickable .ag-row {
   cursor: pointer;
 }
 
 .ag-theme-balham .ag-row {
-  border-color: $ag-grid-border-color;
-
   &.accordion-expanded {
-    background-color: $ag-grid-accordion-bg;
+    background-color: $table-accordion-bg;
     border-bottom: 0;
   }
 
   &.accordion-row {
-    background-color: $ag-grid-accordion-bg;
+    background-color: $table-accordion-bg;
     border-top: 0;
   }
+}
+
+.ag-header-row {
+  font-size: $table-header-font-size;
+}
+
+.ag-cell.ag-cell-center .ag-cell-wrapper {
+  justify-content: center;
+}
+
+.ag-cell.ag-cell-right .ag-cell-wrapper {
+  justify-content: flex-end;
+}
+
+.ag-cell.ag-cell-height-100 .ag-cell-wrapper .ag-cell-value {
+  height: 100%;
 }
 
 .groot-paginator-hidden {
@@ -41,60 +65,78 @@ groot-ag-grid {
     padding-left: 7px;
   }
 
-  .groot-checkbox-cell.ag-cell {
+  .groot-checkbox-cell.ag-cell,
+  .groot-accordion-icon-cell.ag-cell {
     padding: 0 6px;
   }
 
-  .ag-theme-balham .ag-selection-checkbox,
-  .ag-theme-balham .ag-checkbox {
-    .ag-input-wrapper {
-      overflow: visible;
+  .groot-action-button-cell.ag-cell {
+    padding: 0;
+  }
+
+  // Checkbox
+  .ag-theme-balham .ag-checkbox-input-wrapper {
+    // All states
+
+    height: $table-checkbox-size;
+    width: $table-checkbox-size;
+    line-height: $table-checkbox-size;
+    background-color: transparent;
+
+    &:focus-within {
+      box-shadow: none;
     }
 
-    .ag-icon {
-      font-size: 13px;
-      line-height: 13px;
-      border-radius: 2px;
-      position: relative;
+    &::after, &.ag-checked::after, &.ag-indeterminate::after {
+      content: "";
+      background: transparent;
+    }
 
-      &:before {
-        visibility: hidden;
+    input.ag-checkbox-input {
+      opacity: 1;
+
+      &::before {
+        content: "";
+        border: 1px solid $gray-500;
+        display: block;
+        width: $table-checkbox-size;
+        height: $table-checkbox-size;
+        border-radius: $border-radius;
       }
     }
 
-    .ag-icon-checkbox-unchecked {
-      border: 1px solid $gray-500;
-    }
+    // Checked-only
 
-    .ag-icon-checkbox-indeterminate {
-      border: 1px solid $gray-500;
+    &.ag-checked input.ag-checkbox-input {
+      &::before {
+        background-color: $primary;
+        border-color: $primary;
+      }
 
       &::after {
         content: "";
+        background: 50%/60% 60% no-repeat;
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8' viewBox='0 0 8 8'%3e%3cpath fill='%23FFFFFF' d='M6.564.75l-3.59 3.612-1.538-1.55L0 4.26l2.974 2.99L8 2.193z'/%3e%3c/svg%3e");;
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: $table-checkbox-size;
+        height: $table-checkbox-size;
+      }
+    }
 
+    // Indeterminate-only
+
+    &.ag-indeterminate input.ag-checkbox-input {
+      &::after {
+        content: "";
         background: 50%/60% 60% no-repeat;
         background-image: str-replace(url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3e%3cpath fill='#{$gray-500}' d='m 23 10 h -23 v 4 h 23 v -4 z'/%3e%3c/svg%3e"), "#", "%23");
-
         position: absolute;
         left: 0;
-        width: 1rem;
-        height: 1rem;
-      }
-    }
-
-    .ag-icon-checkbox-checked {
-      border: 1px solid $primary;
-      color: $white;
-      background-color: $primary;
-
-      &::after {
-        content: "";
-        background: 50%/60% 60% no-repeat;
-        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8' viewBox='0 0 8 8'%3e%3cpath fill='%23FFFFFF' d='M6.564.75l-3.59 3.612-1.538-1.55L0 4.26l2.974 2.99L8 2.193z'/%3e%3c/svg%3e");
-        position: absolute;
-        left: 0;
-        width: 1rem;
-        height: 1rem;
+        top: 0;
+        width: $table-checkbox-size;
+        height: $table-checkbox-size;
       }
     }
   }
@@ -102,4 +144,8 @@ groot-ag-grid {
 
 .groot-loading-indicator-spinner.no-left-margin {
   left: auto;
+}
+
+groot-ag-grid {
+  display: block;
 }

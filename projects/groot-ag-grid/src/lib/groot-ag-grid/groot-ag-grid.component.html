@@ -32,6 +32,7 @@
   [rowSelection]="(checkboxSelection || rowMultiSelectWithClick) ? 'multiple' : (singleRowSelection ? 'single' : false)"
   [rowMultiSelectWithClick]="checkboxSelection || rowMultiSelectWithClick"
   [suppressRowClickSelection]="checkboxSelection"
+  [suppressDragLeaveHidesColumns]="true"
   (bodyScroll)="onScroll($event)"
   (selectionChanged)="gridSelectionChanged()"
   [alignedGrids]="alignedGridsComponents"
