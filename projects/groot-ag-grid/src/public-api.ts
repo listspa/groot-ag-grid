@@ -3,7 +3,6 @@
  */
 
 // Please keep this list in alphabetical order!!
-export * from './lib/groot-ag-grid/agGrid.utils';
 export * from './lib/groot-ag-grid/groot-ag-grid.component';
 export * from './lib/groot-ag-grid/groot-ag-grid-customization.consts';
 export * from './lib/groot-ag-grid/groot-ag-grid-customization.service';
