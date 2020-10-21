@@ -463,9 +463,11 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
   private setSorting(): boolean {
     if (this.sorting && this.sorting.sortField) {
       const columnState = this.gridOptions.columnApi.getColumnState();
+      let found = false;
       columnState.forEach(col => {
         if (col.colId === this.sorting.sortField) {
           col.sort = this.sorting.sortReversed ? 'desc' : 'asc';
+          found = true;
         } else {
           col.sort = null;
         }
@@ -473,7 +475,7 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
       this.gridOptions.columnApi.applyColumnState({
         state: columnState,
       });
-      return true;
+      return found;
     }
     return false;
   }
