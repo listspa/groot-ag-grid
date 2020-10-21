@@ -37,6 +37,7 @@
     "file-saver": "^2.0.2",
     "filesize": "^6.1.0",
     "font-awesome": "^4.7.0",
+    "mdn-polyfills": "^5.20.0",
     "ngx-bootstrap": "^6.1.0",
     "rxjs": "~6.6.0",
     "tslib": "^2.0.0",
