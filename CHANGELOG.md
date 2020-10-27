@@ -1,5 +1,9 @@
 # Groot-ag-grid releases
 
+## Version 1.0.2 - 2020-10-27
+
+- Fixed some issues with Angular 10's Ivy compiler and aot build of final applications
+
 ## Version 1.0.1 - 2020-10-22
 
 - Added missing files in `public-api`

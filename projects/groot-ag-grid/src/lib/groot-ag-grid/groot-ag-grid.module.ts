@@ -24,12 +24,13 @@ export const GROOT_AG_GRID_COMPONENTS = [
 ];
 
 // Needed to solve an AOT compilation error with Ivy. See https://github.com/ng-packagr/ng-packagr/issues/778
+export const translateModuleForChild: ModuleWithProviders<TranslateModule> = TranslateModule.forChild();
 export const agGridModule: ModuleWithProviders<AgGridModule> = AgGridModule.withComponents(GROOT_AG_GRID_COMPONENTS);
 
 @NgModule({
   imports: [
     CommonModule,
-    TranslateModule,
+    translateModuleForChild,
     GrootModule,
     agGridModule,
   ],
