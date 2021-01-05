@@ -24,6 +24,7 @@ import {GrootAgGridCustomizationService} from './groot-ag-grid-customization.ser
 import {GrootAgGridSelection} from './groot-ag-grid-selection.model';
 import {isNoGridDataMessage, NoGridDataMessage} from './no-grid-data.model';
 import {AgGridAngular} from 'ag-grid-angular';
+import {ColGroupDef} from 'ag-grid-community/dist/lib/entities/colDef';
 
 const SPECIAL_TOOL_CELL: ColDef = {
   resizable: false,
@@ -106,7 +107,7 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
   /**
    * Note: the columns must have set colId to the name of the database column.
    */
-  @Input() set columnDefs(columnDefs: ColDef[]) {
+  @Input() set columnDefs(columnDefs: (ColDef | ColGroupDef)[]) {
     this.columnDefs_ = columnDefs;
     this.handleSpecialColumns();
   }
@@ -325,7 +326,7 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
   private additionalButtonsTemplate_: TemplateRef<any>[];
   private checkboxSelection_ = false;
   private headerCheckboxSelection_: boolean | ((params: any) => boolean);
-  private columnDefs_: ColDef[];
+  private columnDefs_: (ColDef | ColGroupDef)[];
   private rowsDisplayed: T[] = [];
   private _accordionHeight = 60;
   private _getRowStyle: ((rowNode: RowNode) => any) = null;
@@ -397,12 +398,12 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
 
     const columnState = this.gridOptions.api ? this.gridOptions.columnApi.getColumnState() : null;
     const labelKeys = this.gridOptions.columnDefs
-      .filter((col: ColDef) => this.getColumnLabel(col))
-      .map((col: ColDef) => this.getColumnLabel(col));
+      .filter((col: ColDef | ColGroupDef) => this.getColumnLabel(col))
+      .map((col: ColDef | ColGroupDef) => this.getColumnLabel(col));
     if (labelKeys.length > 0) {
       this.labelSub = this.translate.stream(labelKeys)
         .subscribe(labels => {
-          this.gridOptions.columnDefs.forEach((col: ColDef, i) => {
+          this.gridOptions.columnDefs.forEach((col: ColDef | ColGroupDef, i) => {
             const label = this.getColumnLabel(col);
             if (!label) {
               return;
@@ -431,10 +432,10 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
     }
   }
 
-  private getColumnLabel(col: ColDef): string {
+  private getColumnLabel(col: ColDef | ColGroupDef): string {
     if (col.headerName !== undefined) {
       return col.headerName;
-    } else if (col.colId) {
+    } else if ('colId' in col && col.colId) {
       return this.labelPrefix + col.colId;
     } else {
       return null;

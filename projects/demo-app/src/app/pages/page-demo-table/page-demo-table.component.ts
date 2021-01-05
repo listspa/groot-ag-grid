@@ -5,6 +5,7 @@ import {LoadingFailed, PaginatedResponse, PaginationOptions} from '@listgroup/gr
 import {GrootAgGridSelection} from '../../../../../groot-ag-grid/src/lib/groot-ag-grid/groot-ag-grid-selection.model';
 import {GrootAgGridComponent} from '../../../../../groot-ag-grid/src/lib/groot-ag-grid/groot-ag-grid.component';
 import {NoGridDataMessage} from '../../../../../groot-ag-grid/src/lib/groot-ag-grid/no-grid-data.model';
+import {ColGroupDef} from 'ag-grid-community/dist/lib/entities/colDef';
 
 interface User {
   id: string;
@@ -20,6 +21,7 @@ interface User {
 })
 export class PageDemoTableComponent implements OnInit {
   columns: ColDef[];
+  columnsGroup: ColGroupDef[];
   searchResultsData: PaginatedResponse<User>;
   @ViewChild('cellTemplate', {static: true}) cellTemplate: TemplateRef<any>;
   selectionMode: 'single' | 'multi' | 'multi-click' = 'multi';
@@ -62,6 +64,49 @@ export class PageDemoTableComponent implements OnInit {
         cellRenderer: GrootAgGridRenderer.template,
         cellRendererParams: {ngTemplate: this.cellTemplate}
       }
+    ];
+
+    this.columnsGroup = [{
+      headerName: 'Group 1',
+      children: [
+        {
+          colId: 'id',
+          field: 'id',
+        },
+        {
+          colId: 'name',
+          field: 'name',
+        },
+      ]
+    }, {
+      headerName: 'Group 2',
+      children: [
+        {
+          colId: 'age',
+          field: 'age',
+          cellRenderer: GrootAgGridRenderer.numbers,
+          cellClass: 'ag-cell-right'
+        },
+        {
+          colId: 'birthDate',
+          field: 'birthDate',
+          cellRenderer: GrootAgGridRenderer.dates,
+        },
+        {
+          colId: 'grownUp',
+          field: 'grownUp',
+          cellRenderer: GrootAgGridRenderer.booleans,
+          cellClass: 'ag-cell-center',
+          columnGroupShow: 'open'
+        },
+        {
+          colId: 'buttons',
+          cellRenderer: GrootAgGridRenderer.template,
+          cellRendererParams: {ngTemplate: this.cellTemplate},
+          columnGroupShow: 'open'
+        }
+      ]
+    }
     ];
   }
 
