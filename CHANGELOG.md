@@ -1,5 +1,13 @@
 # Groot-ag-grid releases
 
+## Version 2.0.1 - 2021-01-07
+
+- Added support for translations of children columns in column groups
+
+## Version 2.0.0 - 2021-01-05
+
+- Added support for grouped columns
+
 ## Version 1.0.2 - 2020-10-27
 
 - Fixed some issues with Angular 10's Ivy compiler and aot build of final applications

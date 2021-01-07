@@ -226,9 +226,7 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
   }
 
   private restoreColState() {
-    console.log('restore col state');
     if (this._savedColumnState && this.gridOptions.columnApi) {
-      console.log('restore col state inner');
       const parsedState = JSON.parse(this._savedColumnState);
       if (parsedState) {
         this.gridOptions.columnApi.setColumnState(parsedState);
@@ -397,25 +395,26 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
     }
 
     const columnState = this.gridOptions.api ? this.gridOptions.columnApi.getColumnState() : null;
-    const labelKeys = this.gridOptions.columnDefs
-      .filter((col: ColDef | ColGroupDef) => this.getColumnLabel(col))
-      .map((col: ColDef | ColGroupDef) => this.getColumnLabel(col));
+    let labelKeys : string[] = [];
+    this.gridOptions.columnDefs.forEach((col: ColDef | ColGroupDef) => {
+      if ("children" in col) {
+        col.children.forEach(child => {
+          labelKeys.push(this.getColumnLabel(child))
+        })
+      } else {
+        labelKeys.push(this.getColumnLabel(col))
+      }
+    })
     if (labelKeys.length > 0) {
       this.labelSub = this.translate.stream(labelKeys)
         .subscribe(labels => {
           this.gridOptions.columnDefs.forEach((col: ColDef | ColGroupDef, i) => {
-            const label = this.getColumnLabel(col);
-            if (!label) {
-              return;
-            }
-
-            if (Array.isArray(labels)) {
-              col.headerName = labels[i];
+            if ("children" in col) {
+              col.children.forEach(child => {
+                this.getTranslationForLeafColumn(child, labels, i);
+              })
             } else {
-              const value = labels[this.getColumnLabel(col)];
-              if (value) {
-                col.headerName = value;
-              }
+              this.getTranslationForLeafColumn(col, labels, i);
             }
           });
           if (this.gridOptions.api) {
@@ -428,6 +427,22 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
       if (this.gridOptions.api) {
         this.gridOptions.api.setColumnDefs(this.gridOptions.columnDefs);
         this.gridOptions.columnApi.applyColumnState({state: columnState});
+      }
+    }
+  }
+
+  private getTranslationForLeafColumn(child: ColDef | ColGroupDef, labels, i: number) {
+    const label = this.getColumnLabel(child);
+    if (!label) {
+      return;
+    }
+
+    if (Array.isArray(labels)) {
+      child.headerName = labels[i];
+    } else {
+      const value = labels[this.getColumnLabel(child)];
+      if (value) {
+        child.headerName = value;
       }
     }
   }
