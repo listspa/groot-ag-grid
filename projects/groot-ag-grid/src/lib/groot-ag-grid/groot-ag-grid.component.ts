@@ -1,4 +1,14 @@
-import {Component, ContentChild, EventEmitter, Input, OnDestroy, OnInit, Output, TemplateRef, ViewChild} from '@angular/core';
+import {
+  Component,
+  ContentChild,
+  EventEmitter,
+  Input,
+  OnDestroy,
+  OnInit,
+  Output,
+  TemplateRef,
+  ViewChild
+} from '@angular/core';
 import {Subscription} from 'rxjs';
 import {
   GrootTableTitleRightAreaDirective,
@@ -395,15 +405,14 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
     }
 
     const columnState = this.gridOptions.api ? this.gridOptions.columnApi.getColumnState() : null;
-    let labelKeys : string[] = [];
+    let labelKeys: string[] = [];
     this.gridOptions.columnDefs.forEach((col: ColDef | ColGroupDef) => {
       if ("children" in col) {
         col.children.forEach(child => {
           labelKeys.push(this.getColumnLabel(child))
-        })
-      } else {
-        labelKeys.push(this.getColumnLabel(col))
+        });
       }
+      labelKeys.push(this.getColumnLabel(col))
     })
     if (labelKeys.length > 0) {
       this.labelSub = this.translate.stream(labelKeys)
@@ -413,9 +422,8 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
               col.children.forEach(child => {
                 this.getTranslationForLeafColumn(child, labels, i);
               })
-            } else {
-              this.getTranslationForLeafColumn(col, labels, i);
             }
+            this.getTranslationForLeafColumn(col, labels, i);
           });
           if (this.gridOptions.api) {
             // Update labels in the grid

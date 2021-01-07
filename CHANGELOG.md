@@ -1,5 +1,9 @@
 # Groot-ag-grid releases
 
+## Version 2.0.2 - 2021-01-07
+
+- Fixed an issue resulting in missing translations for column groups header names
+
 ## Version 2.0.1 - 2021-01-07
 
 - Added support for translations of children columns in column groups
