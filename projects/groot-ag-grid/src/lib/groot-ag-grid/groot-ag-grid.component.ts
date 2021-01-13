@@ -1,14 +1,4 @@
-import {
-  Component,
-  ContentChild,
-  EventEmitter,
-  Input,
-  OnDestroy,
-  OnInit,
-  Output,
-  TemplateRef,
-  ViewChild
-} from '@angular/core';
+import {Component, ContentChild, EventEmitter, Input, OnDestroy, OnInit, Output, TemplateRef, ViewChild} from '@angular/core';
 import {Subscription} from 'rxjs';
 import {
   GrootTableTitleRightAreaDirective,
@@ -18,7 +8,7 @@ import {
   PaginationOptions,
   SortPagination
 } from '@listgroup/groot';
-import {CellClickedEvent, ColDef, GridApi, GridOptions, IsRowSelectable, RowNode} from 'ag-grid-community';
+import {CellClickedEvent, ColDef, ColGroupDef, GridApi, GridOptions, IsRowSelectable, RowNode} from 'ag-grid-community';
 import {TranslateService} from '@ngx-translate/core';
 import {
   GrootAgGridNoRowsOverlayComponent,
@@ -34,7 +24,6 @@ import {GrootAgGridCustomizationService} from './groot-ag-grid-customization.ser
 import {GrootAgGridSelection} from './groot-ag-grid-selection.model';
 import {isNoGridDataMessage, NoGridDataMessage} from './no-grid-data.model';
 import {AgGridAngular} from 'ag-grid-angular';
-import {ColGroupDef} from 'ag-grid-community/dist/lib/entities/colDef';
 
 const SPECIAL_TOOL_CELL: ColDef = {
   resizable: false,

@@ -1,5 +1,9 @@
 # Groot-ag-grid releases
 
+## Version 2.0.3 - 2021-01-13
+
+- Fixed an erroneous import path that caused a warning in client applications
+
 ## Version 2.0.2 - 2021-01-07
 
 - Fixed an issue resulting in missing translations for column groups header names
