@@ -32,6 +32,7 @@
   [rowSelection]="(checkboxSelection || rowMultiSelectWithClick) ? 'multiple' : (singleRowSelection ? 'single' : false)"
   [rowMultiSelectWithClick]="checkboxSelection || rowMultiSelectWithClick"
   [suppressRowClickSelection]="checkboxSelection"
+  [suppressRowTransform]="suppressRowTransform"
   [suppressDragLeaveHidesColumns]="true"
   (bodyScroll)="onScroll($event)"
   (selectionChanged)="gridSelectionChanged()"
@@ -54,7 +55,7 @@
   <div (click)="toggleAccordion(row, index)"
        *ngIf="row && !row.$isAccordionRow"
        class="accordion-icon">
-    <i class="fa fa-chevron-down" *ngIf="!row.$showingAccordion"></i>
-    <i class="fa fa-chevron-up" *ngIf="row.$showingAccordion"></i>
+    <i class="fa fa-chevron-down" *ngIf="!row.$showingAccordion" aria-hidden="true"></i>
+    <i class="fa fa-chevron-up" *ngIf="row.$showingAccordion" aria-hidden="true"></i>
   </div>
 </ng-template>

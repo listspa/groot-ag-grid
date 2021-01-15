@@ -59,6 +59,7 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
   @Output() selectionChanged = new EventEmitter<GrootAgGridSelection<T>>();
   @Output() agGridReady = new EventEmitter<GridApi>();
 
+  @Input() disableSorting: boolean = false;
   @Input() defaultSortColumn: string;
   @Input() defaultSortReverseFlag = false;
   @Input() pageSize = 15;
@@ -82,6 +83,7 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
   @Input() singleRowSelection = false;
   @Input() rowMultiSelectWithClick = false;
   @Input() titleLabel = 'common.searchResults';
+  @Input() suppressRowTransform = false;
 
   @Input() set searchResultsData(searchResultsData: PaginatedResponse<T> | NoGridDataMessage | LoadingFailed) {
     if (isNoGridDataMessage(searchResultsData)) {
@@ -392,6 +394,9 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
   }
 
   private resetDefaultSorting() {
+    if (this.gridOptions.defaultColDef) {
+      this.gridOptions.defaultColDef.sortable = !this.disableSorting;
+    }
     this.sorting = {sortField: this.defaultSortColumn, sortReversed: this.defaultSortReverseFlag};
   }
 
@@ -489,7 +494,7 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
   }
 
   private setSorting(): boolean {
-    if (this.sorting && this.sorting.sortField) {
+    if (!this.disableSorting && this.sorting && this.sorting.sortField) {
       const columnState = this.gridOptions.columnApi.getColumnState();
       let found = false;
       columnState.forEach(col => {

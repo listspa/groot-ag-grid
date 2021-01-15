@@ -1,5 +1,13 @@
 # Groot-ag-grid releases
 
+## Version 2.0.3 - 2021-01-15
+
+- Added option `suppressRowTransform`. It has to be set to `true` when you need row-span feature of ag-grid.
+Look at [AG Grid webpage](https://www.ag-grid.com/documentation/javascript/row-spanning/) for more info.
+- Added option `disableSorting`, to disable sorting for all the columns in the table. It sets the `defaultCol`
+sorting property to `false`.
+- Fixed a SONAR warning: the `<i>` tag, when used, must be set with attribute `aria-hidden="true"`.
+
 ## Version 2.0.2 - 2021-01-07
 
 - Fixed an issue resulting in missing translations for column groups header names
