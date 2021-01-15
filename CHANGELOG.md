@@ -1,6 +1,6 @@
 # Groot-ag-grid releases
 
-## Version 2.0.4 - 2021-01-15
+## Version 2.0.5 - 2021-01-15
 
 - Added option `suppressRowTransform`. It has to be set to `true` when you need row-span feature of ag-grid.
   Look at [AG Grid webpage](https://www.ag-grid.com/documentation/javascript/row-spanning/) for more info.
