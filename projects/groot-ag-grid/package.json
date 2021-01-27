@@ -6,11 +6,12 @@
     "url": "https://gitlab.list-group.com/isp-bu/libs/isp.groot-ag-grid"
   },
   "peerDependencies": {
-    "@angular/cdk": "^10.2.5",
-    "@angular/core": "^10.1.6",
-    "@listgroup/groot": "^1.0.0",
-    "ag-grid-angular": "^24.1.0",
-    "ag-grid-community": "^24.1.0"
+    "@angular/cdk": "^11.1.0",
+    "@angular/common": "^11.1.0",
+    "@angular/core": "^11.1.0",
+    "@listgroup/groot": "^2.0.0-alpha.0",
+    "ag-grid-angular": "^25.0.1",
+    "ag-grid-community": "^25.0.1"
   },
   "dependencies": {
     "tslib": "^2.0.0"
