@@ -6,6 +6,9 @@ import {GrootAgGridSelection} from '../../../../../groot-ag-grid/src/lib/groot-a
 import {GrootAgGridComponent} from '../../../../../groot-ag-grid/src/lib/groot-ag-grid/groot-ag-grid.component';
 import {NoGridDataMessage} from '../../../../../groot-ag-grid/src/lib/groot-ag-grid/no-grid-data.model';
 import {ColGroupDef} from 'ag-grid-community/dist/lib/entities/colDef';
+import {GrootAgGridColumnSelectorModalComponent} from '../../../../../groot-ag-grid/src/lib/groot-ag-grid/groot-ag-grid-column-selector-modal/groot-ag-grid-column-selector-modal.component';
+import {Subject} from 'rxjs';
+import {BsModalService} from 'ngx-bootstrap/modal';
 
 interface User {
   id: string;
@@ -30,7 +33,7 @@ export class PageDemoTableComponent implements OnInit {
   alertData: NoGridDataMessage = {message: 'A generic warning', style: 'warning'};
   selection: GrootAgGridSelection<User>;
 
-  constructor() {
+  constructor(private bsModalService: BsModalService) {
   }
 
   ngOnInit(): void {
@@ -156,6 +159,22 @@ export class PageDemoTableComponent implements OnInit {
   }
 
   showColumnSelector() {
+    const reset = new Subject<void>();
+    reset.subscribe(() => console.log('reset column order'));
 
+    const save = new Subject<string[]>();
+    save.subscribe(cols => console.log('save and apply selected columns: ', cols));
+
+    this.bsModalService.show(GrootAgGridColumnSelectorModalComponent, {
+      initialState: {
+        labelsPrefix: '',
+        availableColumns: this.columns,
+        selectedColumns: this.columns.map(c => c.colId),
+        reset,
+        save,
+      },
+      class: 'modal-lg groot-darwin-modal',
+      backdrop: 'static'
+    });
   }
 }

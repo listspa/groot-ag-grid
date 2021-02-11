@@ -5,6 +5,7 @@ import {BsModalRef} from 'ngx-bootstrap/modal';
 import {Subject} from 'rxjs';
 
 @Component({
+  selector: 'groot-ag-grid-columns-selector-modal',
   templateUrl: './groot-ag-grid-column-selector-modal.component.html',
 })
 export class GrootAgGridColumnSelectorModalComponent implements OnInit {
