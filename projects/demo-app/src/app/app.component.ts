@@ -8,7 +8,7 @@ import {SimpleNavBarItem, TranslationsLanguageService} from '@listgroup/groot';
 })
 export class AppComponent {
   menu: SimpleNavBarItem[] = [
-    {label: 'Basic sample', url: '/demo-simple'},
+    {label: 'Samples', url: '/demo-simple'},
     {label: 'Customizing cells', url: '/custom-components'},
   ];
 

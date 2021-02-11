@@ -28,6 +28,7 @@ export class PageDemoTableComponent implements OnInit {
   @ViewChild('gridSelection', {static: true}) gridSelection: GrootAgGridComponent<User>;
   loadingFailedData: LoadingFailed = {loadingFailed: true};
   alertData: NoGridDataMessage = {message: 'A generic warning', style: 'warning'};
+  selection: GrootAgGridSelection<User>;
 
   constructor() {
   }
@@ -143,6 +144,7 @@ export class PageDemoTableComponent implements OnInit {
 
   setSelection(event: GrootAgGridSelection<User>) {
     console.log('Selection set to %o', event);
+    this.selection = event;
   }
 
   searchLoadingFailed() {
@@ -151,5 +153,9 @@ export class PageDemoTableComponent implements OnInit {
 
   searchAlertData() {
     this.alertData = {...this.alertData};
+  }
+
+  showColumnSelector() {
+
   }
 }

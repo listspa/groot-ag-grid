@@ -16,7 +16,7 @@
     <div class="flex-grow-1"></div>
 
     <ng-container *ngIf="actions">
-      <div class="actions">
+      <div class="actions link-as-button-container">
         <ng-container *ngTemplateOutlet="actions"></ng-container>
       </div>
     </ng-container>
@@ -35,7 +35,7 @@
     <div class="flex-grow-1"></div>
 
     <ng-container *ngIf="actionsSelection">
-      <div class="actions">
+      <div class="actions link-as-button-container">
         <ng-container *ngTemplateOutlet="actionsSelection; context: {selection: selection}"></ng-container>
       </div>
     </ng-container>

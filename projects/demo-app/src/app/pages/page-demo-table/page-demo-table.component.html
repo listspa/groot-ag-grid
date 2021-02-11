@@ -159,3 +159,37 @@
   [searchResultsData]="searchResultsData"
   (search)="search($event)"
 ></groot-ag-grid>
+
+<h2>Table headers and column selector</h2>
+
+<p>You can show a table header and the column's selector window:</p>
+
+<groot-ag-grid-table-header
+  [gridData]="searchResultsData"
+  [totalNumRecords]="searchResultsData ? searchResultsData.totalNumRecords : null"
+  [selection]="selection"
+  [actions]="tplHeaderActions"
+  [actionsSelection]="tplHeaderSelectionActions"
+  (clearSelection)="gridHeader.clearSelection()"
+  (clickedColumnSelector)="showColumnSelector()"
+>
+  <ng-template #tplHeaderActions>
+    <span class="link-as-button" translate>common.insert</span>
+    <span class="link-as-button" translate>common.download</span>
+  </ng-template>
+
+  <ng-template #tplHeaderSelectionActions>
+    <span class="link-as-button" translate>Download selected</span>
+  </ng-template>
+</groot-ag-grid-table-header>
+
+<groot-ag-grid
+  #gridHeader
+  class="mb-4"
+  [columnDefs]="columns"
+  [searchResultsData]="searchResultsData"
+  (search)="search($event)"
+  [defaultSortColumn]="'id'"
+  [defaultSortReverseFlag]="true"
+  [hideTitleBar]="true"
+></groot-ag-grid>
