@@ -1,0 +1,65 @@
+<div class="modal-header bg-primary">
+  <h4 class="modal-title pull-left" translate>common.selectColumns</h4>
+  <button type="button" class="close pull-right" aria-label="Close" (click)="close()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <div class="d-flex" cdkDropListGroup>
+    <div class="columns-container">
+      <h5 translate>common.selectColumns.available</h5>
+      <ul class="columns"
+          cdkDropList
+          [cdkDropListData]="available"
+          (cdkDropListDropped)="drop( $event)">
+        <li class="element" *ngFor="let field of available" cdkDrag>
+          {{(field.headerName || labelsPrefix + field.colId) | translate}}
+        </li>
+
+        <li class="empty" *ngIf="available.length == 0" translate>
+          common.selectColumns.empty
+        </li>
+      </ul>
+    </div>
+
+    <div class="columns-separator"></div>
+
+    <div class="columns-container">
+      <h5 translate>common.selectColumns.selected</h5>
+      <ul class="columns"
+          cdkDropList
+          [cdkDropListData]="selected"
+          (cdkDropListDropped)="drop( $event)">
+        <li class="element" *ngFor="let field of selected" cdkDrag>
+          {{(field.headerName || labelsPrefix + field.colId) | translate}}
+        </li>
+
+        <li class="empty" *ngIf="selected.length == 0">
+          <span translate>common.dragHere</span>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Buttons -->
+  <div class="d-flex justify-content-between">
+    <groot-button
+      label="common.reset"
+      classes="btn-outline-primary"
+      (click)="resetClicked()"
+    ></groot-button>
+
+    <div class="buttons-list-right">
+      <groot-button
+        label="common.cancel"
+        classes="btn-outline-primary"
+        (click)="close()"
+      ></groot-button>
+
+      <groot-button
+        label="common.apply"
+        (click)="apply()"
+      ></groot-button>
+    </div>
+  </div>
+</div>

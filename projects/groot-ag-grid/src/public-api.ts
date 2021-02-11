@@ -3,6 +3,7 @@
  */
 
 // Please keep this list in alphabetical order!!
+export * from './lib/groot-ag-grid/groot-ag-grid-column-selector-modal/groot-ag-grid-column-selector-modal.component';
 export * from './lib/groot-ag-grid/groot-ag-grid-header-template/groot-ag-grid-header-template.component';
 export * from './lib/groot-ag-grid/groot-ag-grid-loading-overlay/groot-ag-grid-loading-overlay.component';
 export * from './lib/groot-ag-grid/groot-ag-grid-no-rows-overlay/groot-ag-grid-no-rows-overlay.component';

@@ -11,9 +11,11 @@ import {GrootAgGridComponent} from './groot-ag-grid.component';
 import {AgGridModule} from 'ag-grid-angular';
 import {TranslateModule} from '@ngx-translate/core';
 import {GrootAgGridRendererBooleansComponent} from './groot-ag-grid-renderer-booleans/groot-ag-grid-renderer-booleans.component';
+import {GrootAgGridColumnSelectorModalComponent} from './groot-ag-grid-column-selector-modal/groot-ag-grid-column-selector-modal.component';
 
 export const GROOT_AG_GRID_COMPONENTS = [
   GrootAgGridComponent,
+  GrootAgGridColumnSelectorModalComponent,
   GrootAgGridLoadingOverlayComponent,
   GrootAgGridNoRowsOverlayComponent,
   GrootAgGridRendererDatesComponent,
@@ -30,6 +32,7 @@ export const agGridModule: ModuleWithProviders<AgGridModule> = AgGridModule.with
 @NgModule({
   imports: [
     CommonModule,
+    DragDropModule,
     translateModuleForChild,
     GrootModule,
     agGridModule,
