@@ -2,8 +2,15 @@
 
 ## Version 4.0.0 - 2021-02-11
 
-- Added table header and modal for selecting columns
 - BREAKING CHANGE: You need to change the scss import to `groot-ag-grid` (without the `.component`)
+- Groot 2.1.0 is now required
+- For having the headers with a "darwin" (gray rather than blue) look and feel, load the skin's scss file before the
+  main one. The import sequence should be:
+  ```
+  @import "~@listgroup/groot-ag-grid/src/style/skin/darwin";
+  @import "~@listgroup/groot-ag-grid/src/style/groot-ag-grid";
+  ```
+- Added table header and modal for selecting columns, available only in "darwin" skin
 
 ## Version 3.0.0 - 2021-01-28
 
