@@ -1,0 +1,58 @@
+<div class="table-header-area">
+  <div class="table-header">
+    <div class="columns-selector"
+         *ngIf="showColumnSelector"
+         [title]="'common.selectColumns' | translate"
+         (click)="openColumnSelector()">
+      <i class="fa fa-gears clickable"></i>
+    </div>
+    <div *ngIf="totalNumRecords !== null">
+      <span class="rows-count-label" translate>common.numRowsFound</span>
+      <span class="rows-count-counter"> {{totalNumRecords | number:'0.0'}}</span>
+    </div>
+    <div *ngIf="loading">
+      <span class="rows-count-label" translate>combo.loading</span>
+    </div>
+    <div class="flex-grow-1"></div>
+
+    <ng-container *ngIf="actions">
+      <div class="actions">
+        <ng-container *ngTemplateOutlet="actions"></ng-container>
+      </div>
+    </ng-container>
+
+    <ng-container *ngTemplateOutlet="quickSearchTpl"></ng-container>
+  </div>
+  <div class="table-header table-header-selection"
+       [class.open]="selection && selection.rows.length > 0">
+    <div *ngIf="gridData">
+      <span class="rows-count-label" translate>common.numRowsSelected</span>
+      <span *ngIf="selection && selection.rows"
+            class="rows-count-counter"> {{selection.rows.length | number:'0.0'}}</span>
+      <span class="link-as-button ml-3" translate (click)="deSelectAll()">common.clearSelection</span>
+    </div>
+
+    <div class="flex-grow-1"></div>
+
+    <ng-container *ngIf="actionsSelection">
+      <div class="actions">
+        <ng-container *ngTemplateOutlet="actionsSelection; context: {selection: selection}"></ng-container>
+      </div>
+    </ng-container>
+
+    <ng-container *ngTemplateOutlet="quickSearchTpl"></ng-container>
+  </div>
+</div>
+
+<ng-template #quickSearchTpl>
+  <div class="quick-search" *ngIf="showQuickSearch" [class.filled]="!!quickSearchText">
+    <div class="input-group input-group-sm">
+      <input type="text" class="form-control"
+             [placeholder]="'common.quickSearch' | translate"
+             [(ngModel)]="quickSearchText"
+             (keydown.enter)="enterOnQuickSearch()">
+      <i class="fa fa-search"></i>
+      <i class="fa fa-times" (click)="resetQuickSearch()"></i>
+    </div>
+  </div>
+</ng-template>

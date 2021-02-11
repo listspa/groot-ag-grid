@@ -11,6 +11,7 @@ export * from './lib/groot-ag-grid/groot-ag-grid-renderer-booleans/groot-ag-grid
 export * from './lib/groot-ag-grid/groot-ag-grid-renderer-dates/groot-ag-grid-renderer-dates.component';
 export * from './lib/groot-ag-grid/groot-ag-grid-renderer-numbers/groot-ag-grid-renderer-numbers.component';
 export * from './lib/groot-ag-grid/groot-ag-grid-renderer-template/groot-ag-grid-renderer-template.component';
+export * from './lib/groot-ag-grid/groot-ag-grid-table-header/groot-ag-grid-table-header.component';
 export * from './lib/groot-ag-grid/groot-ag-grid.component';
 export * from './lib/groot-ag-grid/groot-ag-grid-customization.consts';
 export * from './lib/groot-ag-grid/groot-ag-grid.module';
