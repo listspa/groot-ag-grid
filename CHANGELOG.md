@@ -1,5 +1,10 @@
 # Groot-ag-grid releases
 
+## Version 4.0.0 - 2021-02-11
+
+- Added table header and modal for selecting columns
+- BREAKING CHANGE: You need to change the scss import to `groot-ag-grid` (without the `.component`)
+
 ## Version 3.0.0 - 2021-01-28
 
 - Updated to Angular 11
