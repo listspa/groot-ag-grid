@@ -21,6 +21,7 @@ $ag-suppress-legacy-var-import: true;
     header-foreground-color: $table-header-foreground-color,
     secondary-foreground-color: $table-header-icon-color,
     selected-row-background-color: $lighter-primary,
+    header-column-separator-color: $table-header-column-separator-color,
   ));
 }
 

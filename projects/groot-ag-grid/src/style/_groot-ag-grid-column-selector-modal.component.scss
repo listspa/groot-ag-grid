@@ -43,7 +43,7 @@ groot-ag-grid-columns-selector-modal, .groot-ag-grid-columns-selector-modal {
     &:before {
       content: '';
       display: block;
-      border-left: 1px solid #cbcbcb;
+      border-left: 1px solid $gray-darwin-border;
       height: 32rem;
       margin-left: $separator-width / 2;
       margin-right: $separator-width / 2;
