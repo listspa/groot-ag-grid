@@ -1,5 +1,10 @@
 # Groot-ag-grid releases
 
+## Version 4.0.1 - 2021-02-26
+
+- improved input type of `gridData` for `groot-ag-grid-table-header`
+- added `showClearSelection` to `groot-ag-grid-table-header` for hiding the "clear selection" button
+
 ## Version 4.0.0 - 2021-02-11
 
 - BREAKING CHANGE: You need to change the scss import to `groot-ag-grid` (without the `.component`)

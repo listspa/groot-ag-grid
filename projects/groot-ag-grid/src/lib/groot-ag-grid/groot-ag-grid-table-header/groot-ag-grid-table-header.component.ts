@@ -1,6 +1,7 @@
 import {Component, EventEmitter, Input, Output, TemplateRef} from '@angular/core';
-import {PaginatedResponse} from '@listgroup/groot';
+import {LoadingFailed, PaginatedResponse} from '@listgroup/groot';
 import {GrootAgGridSelection} from '../groot-ag-grid-selection.model';
+import {NoGridDataMessage} from '../no-grid-data.model';
 
 @Component({
   selector: 'groot-ag-grid-table-header',
@@ -15,10 +16,11 @@ export class GrootAgGridTableHeaderComponent<T> {
   @Input() loading = false;
   @Input() showColumnSelector = true;
   @Input() selection: GrootAgGridSelection<T>;
-  @Input() gridData: PaginatedResponse<T> | null = null;
+  @Input() gridData: PaginatedResponse<T> | null | LoadingFailed | NoGridDataMessage = null;
   @Input() actions: TemplateRef<any>;
   @Input() actionsSelection: TemplateRef<any>;
   @Input() showQuickSearch = true;
+  @Input() showClearSelection = true;
 
   quickSearchText: string;
 
