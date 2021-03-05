@@ -1,14 +1,4 @@
-import {
-  Component,
-  ContentChild,
-  EventEmitter,
-  Input,
-  OnDestroy,
-  OnInit,
-  Output,
-  TemplateRef,
-  ViewChild
-} from '@angular/core';
+import {Component, ContentChild, EventEmitter, Input, OnDestroy, OnInit, Output, TemplateRef, ViewChild} from '@angular/core';
 import {Subscription} from 'rxjs';
 import {
   GrootTableTitleRightAreaDirective,
@@ -323,6 +313,7 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
     suppressScrollOnNewData: true,
     isRowSelectable: this._isRowSelectable,
     rowMultiSelectWithClick: false,
+    applyColumnDefOrder: true,
   };
   public noRowsOverlayComponentParams: GrootAgGridNoRowsParams = {loadingError: false,};
   private labelSub: Subscription;
