@@ -1,5 +1,9 @@
 # Groot-ag-grid releases
 
+## Version 2.0.4 - 2021-03-05
+
+- fix: column order should be used when changing column definition. See ISPGROOT-103
+
 ## Version 2.0.3 - 2021-01-13
 
 - Fixed an erroneous import path that caused a warning in client applications

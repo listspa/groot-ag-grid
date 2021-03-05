@@ -311,6 +311,7 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
     suppressScrollOnNewData: true,
     isRowSelectable: this._isRowSelectable,
     rowMultiSelectWithClick: false,
+    applyColumnDefOrder: true,
   };
   public noRowsOverlayComponentParams: GrootAgGridNoRowsParams = {loadingError: false,};
   private labelSub: Subscription;
