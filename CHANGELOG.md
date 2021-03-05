@@ -1,5 +1,9 @@
 # Groot-ag-grid releases
 
+## Version 4.0.2 - 2021-03-05
+
+- fix: column order should be used when changing column definition. See ISPGROOT-103
+
 ## Version 4.0.1 - 2021-02-26
 
 - improved input type of `gridData` for `groot-ag-grid-table-header`
