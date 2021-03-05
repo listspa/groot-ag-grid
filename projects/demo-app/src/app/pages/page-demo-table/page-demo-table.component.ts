@@ -23,6 +23,7 @@ interface User {
   styleUrls: ['./page-demo-table.component.scss']
 })
 export class PageDemoTableComponent implements OnInit {
+  availableColumns: ColDef[];
   columns: ColDef[];
   columnsGroup: ColGroupDef[];
   searchResultsData: PaginatedResponse<User>;
@@ -37,7 +38,7 @@ export class PageDemoTableComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.columns = [
+    this.availableColumns = [
       {
         colId: 'id',
         field: 'id',
@@ -69,6 +70,7 @@ export class PageDemoTableComponent implements OnInit {
         cellRendererParams: {ngTemplate: this.cellTemplate}
       }
     ];
+    this.columns = [...this.availableColumns];
 
     this.columnsGroup = [{
       headerName: 'Group 1',
@@ -160,15 +162,18 @@ export class PageDemoTableComponent implements OnInit {
 
   showColumnSelector() {
     const reset = new Subject<void>();
-    reset.subscribe(() => console.log('reset column order'));
+    reset.subscribe(() => this.columns = [...this.availableColumns]);
 
     const save = new Subject<string[]>();
-    save.subscribe(cols => console.log('save and apply selected columns: ', cols));
+    save.subscribe(cols => {
+      console.table('save and apply selected columns: ', cols);
+      this.columns = cols.map(colName => this.availableColumns.find(col => col.colId === colName));
+    });
 
     this.bsModalService.show(GrootAgGridColumnSelectorModalComponent, {
       initialState: {
         labelsPrefix: '',
-        availableColumns: this.columns,
+        availableColumns: this.availableColumns,
         selectedColumns: this.columns.map(c => c.colId),
         reset,
         save,
