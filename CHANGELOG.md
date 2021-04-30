@@ -1,5 +1,10 @@
 # Groot-ag-grid releases
 
+## Version 5.0.0 - 2021-04-30
+
+- BREAKING CHANGE: Groot 3 and Ag-Grid 25.2 are now required
+- fix: made everything work Ag-Grid 25.2
+
 ## Version 4.0.2 - 2021-03-05
 
 - fix: column order should be used when changing column definition. See ISPGROOT-103
