@@ -74,7 +74,7 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
   @Input() titleLabel = 'common.searchResults';
   @Input() suppressRowTransform = false;
 
-  @Input() set searchResultsData(searchResultsData: PaginatedResponse<T> | NoGridDataMessage | LoadingFailed) {
+  @Input() set searchResultsData(searchResultsData: PaginatedResponse<T> | NoGridDataMessage | LoadingFailed | null | undefined) {
     if (isNoGridDataMessage(searchResultsData)) {
       this.noRowsOverlayComponentParams.loadingError = false;
       this.noRowsOverlayComponentParams.message = searchResultsData.message;
@@ -315,7 +315,7 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
     rowMultiSelectWithClick: false,
     applyColumnDefOrder: true,
   };
-  public noRowsOverlayComponentParams: GrootAgGridNoRowsParams = {loadingError: false,};
+  public noRowsOverlayComponentParams: GrootAgGridNoRowsParams = {loadingError: false, api: null};
   private labelSub: Subscription;
   private _currentPageNum = 0;
   private sorting: SortPagination;
