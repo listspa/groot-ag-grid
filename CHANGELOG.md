@@ -1,5 +1,9 @@
 # Groot-ag-grid releases
 
+## Version 5.0.1 - 2021-06-01
+
+- Increased slightly minimum height to improve "no rows" positioning
+
 ## Version 5.0.0 - 2021-04-30
 
 - BREAKING CHANGE: Groot 3 and Ag-Grid 25.2 are now required

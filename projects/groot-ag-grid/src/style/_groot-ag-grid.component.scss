@@ -141,6 +141,13 @@ groot-ag-grid {
       }
     }
   }
+
+  .ag-theme-balham .ag-layout-auto-height .ag-center-cols-clipper,
+  .ag-theme-balham .ag-layout-auto-height .ag-center-cols-container,
+  .ag-theme-balham .ag-layout-print .ag-center-cols-clipper,
+  .ag-theme-balham .ag-layout-print .ag-center-cols-container {
+    min-height: 5rem;
+  }
 }
 
 .groot-loading-indicator-spinner.no-left-margin {
