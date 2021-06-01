@@ -1,5 +1,9 @@
 # Groot-ag-grid releases
 
+## Version 4.0.3 - 2021-06-01
+
+- Increased slightly minimum height to improve "no rows" positioning
+
 ## Version 4.0.2 - 2021-03-05
 
 - fix: column order should be used when changing column definition. See ISPGROOT-103
