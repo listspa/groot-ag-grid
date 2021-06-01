@@ -31,6 +31,7 @@ export class PageDemoTableComponent implements OnInit {
   selectionMode: 'single' | 'multi' | 'multi-click' = 'multi';
   @ViewChild('gridSelection', {static: true}) gridSelection: GrootAgGridComponent<User>;
   loadingFailedData: LoadingFailed = {loadingFailed: true};
+  emptyData: PaginatedResponse<User>;
   alertData: NoGridDataMessage = {message: 'A generic warning', style: 'warning'};
   selection: GrootAgGridSelection<User>;
 
@@ -181,5 +182,9 @@ export class PageDemoTableComponent implements OnInit {
       class: 'modal-lg groot-darwin-modal',
       backdrop: 'static'
     });
+  }
+
+  searchEmptyData() {
+    this.emptyData = {pageNum: 0, pageLen: 10, records: [], totalNumRecords: 0};
   }
 }

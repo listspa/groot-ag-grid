@@ -107,6 +107,14 @@
   class="mb-4 mt-4"
   [hideTitleBar]="true"
   [columnDefs]="columns"
+  [searchResultsData]="emptyData"
+  (search)="searchEmptyData()"
+></groot-ag-grid>
+
+<groot-ag-grid
+  class="mb-4 mt-4"
+  [hideTitleBar]="true"
+  [columnDefs]="columns"
   [searchResultsData]="loadingFailedData"
   (search)="searchLoadingFailed()"
 ></groot-ag-grid>
