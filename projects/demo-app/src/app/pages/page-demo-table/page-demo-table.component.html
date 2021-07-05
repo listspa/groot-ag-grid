@@ -201,3 +201,20 @@
   [defaultSortReverseFlag]="true"
   [hideTitleBar]="true"
 ></groot-ag-grid>
+
+<h2>Tree (Requires Ag-Grid Enterprise)</h2>
+
+<p>Take a look at the source code and the
+  <a href="https://www.ag-grid.com/angular-grid/tree-data/" target="_blank">Ag-Grid documentation</a>.
+</p>
+
+<groot-ag-grid
+  [modules]="treeModules"
+  class="mb-4"
+  [columnDefs]="columnsTree"
+  [searchResultsData]="searchResultsDataTree"
+  [getDataPath]="getDataPath"
+  (search)="searchTree()"
+  [hideTitleBar]="true"
+  [autoGroupColumnDef]="treeGroupColDef"
+></groot-ag-grid>

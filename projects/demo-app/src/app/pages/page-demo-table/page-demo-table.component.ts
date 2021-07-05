@@ -9,6 +9,8 @@ import {ColGroupDef} from 'ag-grid-community/dist/lib/entities/colDef';
 import {GrootAgGridColumnSelectorModalComponent} from '../../../../../groot-ag-grid/src/lib/groot-ag-grid/groot-ag-grid-column-selector-modal/groot-ag-grid-column-selector-modal.component';
 import {Subject} from 'rxjs';
 import {BsModalService} from 'ngx-bootstrap/modal';
+import {RowGroupingModule} from '@ag-grid-enterprise/all-modules';
+import {EnterpriseCoreModule} from '@ag-grid-enterprise/core/dist/cjs/agGridEnterpriseModule';
 
 interface User {
   id: string;
@@ -16,6 +18,13 @@ interface User {
   age: number;
   birthDate: Date;
   grownUp: boolean;
+}
+
+interface CategoryData {
+  macroCategory: string;
+  category?: string;
+  subCategory?: string;
+  count: number;
 }
 
 @Component({
@@ -34,6 +43,20 @@ export class PageDemoTableComponent implements OnInit {
   emptyData: PaginatedResponse<User>;
   alertData: NoGridDataMessage = {message: 'A generic warning', style: 'warning'};
   selection: GrootAgGridSelection<User>;
+
+  treeModules = [EnterpriseCoreModule, RowGroupingModule];
+  searchResultsDataTree: PaginatedResponse<CategoryData>;
+  columnsTree: ColDef[];
+  treeGroupColDef: ColDef;
+  getDataPath = data => {
+    if (data.subCategory) {
+      return [data.macroCategory, data.category, data.subCategory];
+    } else if (data.category) {
+      return [data.macroCategory, data.category];
+    } else {
+      return [data.macroCategory];
+    }
+  };
 
   constructor(private bsModalService: BsModalService) {
   }
@@ -115,25 +138,36 @@ export class PageDemoTableComponent implements OnInit {
       ]
     }
     ];
+
+    this.columnsTree = [
+      // First column is the auto group
+      {colId: 'count', field: 'count', cellRenderer: GrootAgGridRenderer.numbers, cellClass: 'ag-cell-right'},
+    ];
+    this.treeGroupColDef = {
+      headerName: 'Category',
+      cellRendererParams: {
+        suppressCount: true,
+      }
+    };
   }
 
-  search(event: PaginationOptions) {
+  search(event: PaginationOptions): void {
     this.searchResultsData = {
       pageNum: event.pageNum,
       pageLen: event.pageLen,
       totalNumRecords: 4,
       records: [
-        {id: 'U001', name: 'Andrea Bergia', age: 34, birthDate: new Date('1985-12-04'), grownUp: true,},
-        {id: 'U002', name: 'John Peterson', age: 44, birthDate: new Date('1975-01-03'), grownUp: true,},
-        {id: 'U003', name: 'Donald Trump', age: 99, birthDate: new Date('1921-06-05'), grownUp: false,},
-        {id: 'U004', name: 'Baby Boy', age: 4, birthDate: new Date('2016-07-02'), grownUp: false,},
+        {id: 'U001', name: 'Andrea Bergia', age: 34, birthDate: new Date('1985-12-04'), grownUp: true},
+        {id: 'U002', name: 'John Peterson', age: 44, birthDate: new Date('1975-01-03'), grownUp: true},
+        {id: 'U003', name: 'Donald Trump', age: 99, birthDate: new Date('1921-06-05'), grownUp: false},
+        {id: 'U004', name: 'Baby Boy', age: 4, birthDate: new Date('2016-07-02'), grownUp: false},
       ]
     };
 
     this.applySort(event);
   }
 
-  private applySort(event: PaginationOptions) {
+  private applySort(event: PaginationOptions): void {
     // Apply sort
     if (event.sortField) {
       this.searchResultsData.records.sort((r1, r2) => {
@@ -148,20 +182,20 @@ export class PageDemoTableComponent implements OnInit {
     }
   }
 
-  setSelection(event: GrootAgGridSelection<User>) {
+  setSelection(event: GrootAgGridSelection<User>): void {
     console.log('Selection set to %o', event);
     this.selection = event;
   }
 
-  searchLoadingFailed() {
+  searchLoadingFailed(): void {
     this.loadingFailedData = {...this.loadingFailedData};
   }
 
-  searchAlertData() {
+  searchAlertData(): void {
     this.alertData = {...this.alertData};
   }
 
-  showColumnSelector() {
+  showColumnSelector(): void {
     const reset = new Subject<void>();
     reset.subscribe(() => this.columns = [...this.availableColumns]);
 
@@ -184,7 +218,23 @@ export class PageDemoTableComponent implements OnInit {
     });
   }
 
-  searchEmptyData() {
+  searchEmptyData(): void {
     this.emptyData = {pageNum: 0, pageLen: 10, records: [], totalNumRecords: 0};
+  }
+
+  searchTree(): void {
+    this.searchResultsDataTree = {
+      pageNum: 0,
+      pageLen: 10,
+      totalNumRecords: 8,
+      records: [
+        {macroCategory: 'Liquid product', count: 47},
+        {macroCategory: 'Liquid product', category: 'Cash', count: 24},
+        {macroCategory: 'Liquid product', category: 'Cash', subCategory: 'Cash', count: 10},
+        {macroCategory: 'Liquid product', category: 'Cash', subCategory: 'Traveller\'s cheque', count: 14},
+        {macroCategory: 'Liquid product', category: 'Treasury bills', count: 23},
+        {macroCategory: 'Liquid product', category: 'Treasury bills', subCategory: 'Treasury bills', count: 23},
+      ]
+    };
   }
 }

@@ -24,6 +24,7 @@ import {GrootAgGridCustomizationService} from './groot-ag-grid-customization.ser
 import {GrootAgGridSelection} from './groot-ag-grid-selection.model';
 import {isNoGridDataMessage, NoGridDataMessage} from './no-grid-data.model';
 import {AgGridAngular} from 'ag-grid-angular';
+import {GetDataPath} from 'ag-grid-community/dist/lib/entities/gridOptions';
 
 const SPECIAL_TOOL_CELL: ColDef = {
   resizable: false,
@@ -73,6 +74,8 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
   @Input() rowMultiSelectWithClick = false;
   @Input() titleLabel = 'common.searchResults';
   @Input() suppressRowTransform = false;
+  @Input() modules: Array<any> = null;
+  @Input() autoGroupColumnDef: ColDef = null;
 
   @Input() set searchResultsData(searchResultsData: PaginatedResponse<T> | NoGridDataMessage | LoadingFailed | null | undefined) {
     if (isNoGridDataMessage(searchResultsData)) {
@@ -267,6 +270,17 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
     }
   }
 
+  @Input()
+  set getDataPath(fun: GetDataPath) {
+    if (fun) {
+      this.gridOptions.treeData = true;
+      this.gridOptions.getDataPath = fun;
+    } else {
+      this.gridOptions.treeData = false;
+      this.gridOptions.getDataPath = null;
+    }
+  }
+
   public data: PaginatedResponse<T> = null;
   private _isRowSelectable: IsRowSelectable = () => true;
   public gridOptions: GridOptions = {
@@ -314,6 +328,8 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
     isRowSelectable: this._isRowSelectable,
     rowMultiSelectWithClick: false,
     applyColumnDefOrder: true,
+    treeData: false,
+    getDataPath: null,
   };
   public noRowsOverlayComponentParams: GrootAgGridNoRowsParams = {loadingError: false, api: null};
   private labelSub: Subscription;
@@ -402,21 +418,21 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
     const columnState = this.gridOptions.api ? this.gridOptions.columnApi.getColumnState() : null;
     let labelKeys: string[] = [];
     this.gridOptions.columnDefs.forEach((col: ColDef | ColGroupDef) => {
-      if ("children" in col) {
+      if ('children' in col) {
         col.children.forEach(child => {
-          labelKeys.push(this.getColumnLabel(child))
+          labelKeys.push(this.getColumnLabel(child));
         });
       }
-      labelKeys.push(this.getColumnLabel(col))
-    })
+      labelKeys.push(this.getColumnLabel(col));
+    });
     if (labelKeys.length > 0) {
       this.labelSub = this.translate.stream(labelKeys)
         .subscribe(labels => {
           this.gridOptions.columnDefs.forEach((col: ColDef | ColGroupDef, i) => {
-            if ("children" in col) {
+            if ('children' in col) {
               col.children.forEach(child => {
                 this.getTranslationForLeafColumn(child, labels, i);
-              })
+              });
             }
             this.getTranslationForLeafColumn(col, labels, i);
           });
