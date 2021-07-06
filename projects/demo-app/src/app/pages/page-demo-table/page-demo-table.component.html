@@ -204,9 +204,21 @@
 
 <h2>Tree (Requires Ag-Grid Enterprise)</h2>
 
-<p>Take a look at the source code and the
+<p>Take a look at the source code for this page on GitLab and the
   <a href="https://www.ag-grid.com/angular-grid/tree-data/" target="_blank">Ag-Grid documentation</a>.
 </p>
+
+<p>
+  You need to:
+</p>
+
+<ul>
+  <li>pass in the <code>modules</code> input to the component an array of Ag-Grid enterprise modules,
+    which must include at least <code>RowGroupingModule</code>;
+  </li>
+  <li>pass the function <code>getDataPath</code> - the behavior can be found in the Ag-Grid documentation;</li>
+  <li>(optionally) define a <code>autoGroupColumnDef</code> - again, see the AG-Grid documentation.</li>
+</ul>
 
 <groot-ag-grid
   [modules]="treeModules"

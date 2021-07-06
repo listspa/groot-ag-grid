@@ -1,5 +1,9 @@
 # Groot-ag-grid releases
 
+## Version 5.1.0 - 2021-07-06
+
+- Integrated ag-grid enterprise (optionally) and added a minimal support for tree tables
+
 ## Version 5.0.1 - 2021-06-01
 
 - Increased slightly minimum height to improve "no rows" positioning
