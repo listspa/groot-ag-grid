@@ -8,7 +8,7 @@ import {
   PaginationOptions,
   SortPagination
 } from '@listgroup/groot';
-import {CellClickedEvent, ColDef, ColGroupDef, GridApi, GridOptions, IsRowSelectable, RowNode} from 'ag-grid-community';
+import {CellClickedEvent, CellMouseDownEvent, ColDef, ColGroupDef, GridApi, GridOptions, IsRowSelectable, RowNode} from 'ag-grid-community';
 import {TranslateService} from '@ngx-translate/core';
 import {
   GrootAgGridNoRowsOverlayComponent,
@@ -43,6 +43,7 @@ const SPECIAL_TOOL_CELL: ColDef = {
 export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
   @Output() search = new EventEmitter<PaginationOptions>();
   @Output() cellClicked = new EventEmitter<CellClickedEvent>();
+  @Output() cellMiddleClicked = new EventEmitter<CellClickedEvent>();
   @Output() columnsStatusChanged = new EventEmitter<string>();
   @Output() bodyScroll = new EventEmitter<any>();
   @Output() selectionChanged = new EventEmitter<GrootAgGridSelection<T>>();
@@ -633,6 +634,20 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
   clearSelection() {
     if (this.gridOptions.api) {
       this.gridOptions.api.deselectAll();
+    }
+  }
+
+  cellMouseDown(event: CellMouseDownEvent) {
+    if (!event) {
+      return;
+    }
+
+    const ev = event.event as MouseEvent;
+    if (ev.button === 1) {      // Middle button click
+      event.event.preventDefault();
+      event.event.stopImmediatePropagation();
+
+      this.cellMiddleClicked.next(event);
     }
   }
 }
