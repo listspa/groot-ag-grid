@@ -10,8 +10,8 @@
     "sonar": "npm run lint && sonar-scanner",
     "e2e": "ng e2e",
     "build_lib": "ng build groot-ag-grid --prod",
-    "npm_pack": "cd dist/groot-ag-grid && npm pack",
-    "package": "npm run build_lib && npm run npm_pack",
+    "npm_pack_only": "cd dist/groot-ag-grid && npm pack",
+    "package": "npm run build_lib && npm run npm_pack_only",
     "release": "npm run build_lib && release-it --disable-metrics && npm run package && node scripts/publish.js",
     "build-demo-app": "ng build demo-app --prod"
   },
