@@ -3,7 +3,7 @@
   "version": "5.1.2",
   "repository": {
     "type": "git",
-    "url": "https://gitlab.list-group.com/isp-bu/libs/isp.groot-ag-grid"
+    "url": "https://github.com/listspa/groot-ag-grid"
   },
   "license": "Apache-2.0",
   "peerDependencies": {
