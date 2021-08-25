@@ -1,8 +1,8 @@
 # Groot-ag-grid releases
 
-## Version 5.1.0 - 2021-07-06
+## Version 5.1.1 - 2021-07-06
 
-- Integrated ag-grid enterprise (optionally) and added a minimal support for tree tables
+- Integrated changes of 5.0.2, 5.0.3 and 5.0.4 in the 5.1.x branch.
 
 ## Version 5.0.4 - 2021-08-25
 
@@ -16,6 +16,10 @@
 ## Version 5.0.2 - 2021-08-12
 
 - Emit new event on middle-click on a grid's cell
+
+## Version 5.1.0 - 2021-07-06
+
+- Integrated ag-grid enterprise (optionally) and added a minimal support for tree tables
 
 ## Version 5.0.1 - 2021-06-01
 
