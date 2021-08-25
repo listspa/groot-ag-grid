@@ -26,7 +26,7 @@
     "@angular/platform-browser": "~11.1.0",
     "@angular/platform-browser-dynamic": "~11.1.0",
     "@angular/router": "~11.1.0",
-    "@listgroup/groot": "^3.0.3",
+    "@listgroup/groot": "^3.2.2",
     "@ng-select/ng-select": "^5.1.0",
     "@ngx-translate/core": "^13.0.0",
     "@ngx-translate/http-loader": "^6.0.0",
@@ -38,8 +38,8 @@
     "filesize": "^6.1.0",
     "font-awesome": "^4.7.0",
     "mdn-polyfills": "^5.20.0",
-    "ngx-currency": "^2.5.2",
     "ngx-bootstrap": "^6.2.0",
+    "ngx-currency": "^2.5.2",
     "rxjs": "~6.6.0",
     "tslib": "^2.0.0",
     "zone.js": "~0.11.3"

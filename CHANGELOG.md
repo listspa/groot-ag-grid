@@ -1,5 +1,10 @@
 # Groot-ag-grid releases
 
+## Version 5.0.4 - 2021-08-25
+
+- Replaced the quick search in the header with the new groot component `groot-quick-search`
+- Now requires Groot 3.2.2 or above
+
 ## Version 5.0.3 - 2021-08-20
 
 - Added variable `isGridReady` that indicates whether the grid has emitted the `gridReady` event
