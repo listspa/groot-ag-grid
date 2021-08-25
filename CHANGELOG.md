@@ -4,6 +4,19 @@
 
 - Integrated ag-grid enterprise (optionally) and added a minimal support for tree tables
 
+## Version 5.0.4 - 2021-08-25
+
+- Replaced the quick search in the header with the new groot component `groot-quick-search`
+- Now requires Groot 3.2.2 or above
+
+## Version 5.0.3 - 2021-08-20
+
+- Added variable `isGridReady` that indicates whether the grid has emitted the `gridReady` event
+
+## Version 5.0.2 - 2021-08-12
+
+- Emit new event on middle-click on a grid's cell
+
 ## Version 5.0.1 - 2021-06-01
 
 - Increased slightly minimum height to improve "no rows" positioning

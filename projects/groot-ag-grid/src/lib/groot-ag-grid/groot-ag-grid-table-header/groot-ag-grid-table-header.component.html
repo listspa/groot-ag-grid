@@ -45,14 +45,9 @@
 </div>
 
 <ng-template #quickSearchTpl>
-  <div class="quick-search" *ngIf="showQuickSearch" [class.filled]="!!quickSearchText">
-    <div class="input-group input-group-sm">
-      <input type="text" class="form-control"
-             [placeholder]="'common.quickSearch' | translate"
-             [(ngModel)]="quickSearchText"
-             (keydown.enter)="enterOnQuickSearch()">
-      <i class="fa fa-search"></i>
-      <i class="fa fa-times" (click)="resetQuickSearch()"></i>
-    </div>
-  </div>
+  <groot-quick-search
+    [(ngModel)]="quickSearchText"
+    (enter)="enterOnQuickSearch()"
+    (reset)="resetQuickSearch()"
+  ></groot-quick-search>
 </ng-template>

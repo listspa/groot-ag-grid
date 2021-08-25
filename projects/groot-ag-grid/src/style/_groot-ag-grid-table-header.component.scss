@@ -36,52 +36,6 @@ groot-ag-grid-table-header, .groot-ag-grid-table-header {
     margin-right: 0.5em;
   }
 
-  .quick-search {
-    margin-left: 2px;
-
-    @media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
-      min-width: 11rem;
-    }
-
-    .input-group {
-      position: relative;
-    }
-
-    .form-control {
-      border-radius: $input-height-sm !important;
-    }
-
-    /* IE - TO TEST */
-    ::-ms-clear {
-      display: none;
-    }
-
-
-    // Icons
-
-    i {
-      position: absolute;
-      right: 0.8em;
-      top: 0.4em;
-      z-index: 4;
-      cursor: pointer;
-    }
-
-    i.fa-times {
-      display: none;
-    }
-
-    &.filled {
-      i.fa-search {
-        display: none;
-      }
-
-      i.fa-times {
-        display: block;
-      }
-    }
-  }
-
   .table-header-selection {
     position: absolute;
     top: 0;

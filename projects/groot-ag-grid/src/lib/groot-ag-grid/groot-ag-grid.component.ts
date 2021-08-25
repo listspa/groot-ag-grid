@@ -352,6 +352,7 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
   @ViewChild('accordionButtonTemplate', {static: true}) accordionButtonTemplate: TemplateRef<any>;
   @ViewChild('grid', {static: true}) grid: AgGridAngular;
   private _initialized = false;
+  public isGridReady = false;
 
   @Input() set accordionHeight(value: number) {
     this._accordionHeight = value;
@@ -489,6 +490,7 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
   }
 
   gridReady() {
+    this.isGridReady = true;
     this.gridOptions.api.setColumnDefs(this.gridOptions.columnDefs); // Update labels
     this.restoreColState();
     const sortingSet = this.setSorting();
