@@ -15,10 +15,10 @@ export class GrootAgGridTableHeaderComponent<T> {
   @Input() totalNumRecords: number | null = null;
   @Input() loading = false;
   @Input() showColumnSelector = true;
-  @Input() selection: GrootAgGridSelection<T>;
+  @Input() selection: GrootAgGridSelection<T> | null = null;
   @Input() gridData: PaginatedResponse<T> | null | LoadingFailed | NoGridDataMessage = null;
-  @Input() actions: TemplateRef<any>;
-  @Input() actionsSelection: TemplateRef<any>;
+  @Input() actions: TemplateRef<any> | null = null;
+  @Input() actionsSelection: TemplateRef<any> | null = null;
   @Input() showQuickSearch = true;
   @Input() showClearSelection = true;
 

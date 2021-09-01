@@ -68,8 +68,8 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
   @Input() rowHeight = 28;
   @Input() getRowHeight: ((rowNode: RowNode) => number | null) = null;
   @Input() keepServerSorting = true;
-  @Input() rowClassRules?: { [cssClassName: string]: (((params: any) => boolean) | string) };
-  @ContentChild(GrootTableTitleRightAreaDirective, {read: TemplateRef}) tableTitleRightArea: TemplateRef<any>;
+  @Input() rowClassRules?: { [cssClassName: string]: (((params: any) => boolean) | string) } | null = null;
+  @ContentChild(GrootTableTitleRightAreaDirective, {read: TemplateRef}) tableTitleRightArea: TemplateRef<any> | null = null;
   @Input() showPaginationIfEmpty = this.grootAgGridCustomizationService.showPaginationIfEmptyDefault;
   @Input() singleRowSelection = false;
   @Input() rowMultiSelectWithClick = false;
@@ -117,14 +117,14 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
     this.handleSpecialColumns();
   }
 
-  @Input() set accordionTemplate(template: TemplateRef<any>) {
+  @Input() set accordionTemplate(template: TemplateRef<any> | null) {
     this.accordionTemplate_ = template;
     this.gridOptions.fullWidthCellRendererParams.ngTemplate = template;
     this.gridOptions.isRowSelectable = row => !row.data.$isAccordionRow && this._isRowSelectable(row);
     this.handleSpecialColumns();
   }
 
-  @Input() set actionButtonTemplate(template: TemplateRef<any>) {
+  @Input() set actionButtonTemplate(template: TemplateRef<any> | null) {
     this.actionButtonTemplate_ = template;
     this.handleSpecialColumns();
   }
@@ -134,7 +134,7 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
     this.handleSpecialColumns();
   }
 
-  @Input() set additionalButtonsTemplate(template: TemplateRef<any> | TemplateRef<any>[]) {
+  @Input() set additionalButtonsTemplate(template: TemplateRef<any> | TemplateRef<any>[] | null) {
     if (Array.isArray(template)) {
       this.additionalButtonsTemplate_ = template;
     } else {
