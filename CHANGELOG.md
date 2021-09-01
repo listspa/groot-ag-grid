@@ -1,5 +1,13 @@
 # Groot-ag-grid releases
 
+## Version 5.1.3 - 2021-09-01
+
+- Explicitly annotated many nullable `@Input` properties as `| null`
+
+## Version 5.1.2 - 2021-08-25
+
+- Made the library opensource and published it on GitHub.com and npmjs.org
+
 ## Version 5.1.1 - 2021-07-06
 
 - Integrated changes of 5.0.2, 5.0.3 and 5.0.4 in the 5.1.x branch.
