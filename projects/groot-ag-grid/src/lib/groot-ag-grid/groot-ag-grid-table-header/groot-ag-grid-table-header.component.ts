@@ -24,9 +24,6 @@ export class GrootAgGridTableHeaderComponent<T> {
 
   quickSearchText: string;
 
-  constructor() {
-  }
-
   enterOnQuickSearch(): void {
     this.quickSearch.emit(this.quickSearchText);
   }

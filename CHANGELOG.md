@@ -1,5 +1,9 @@
 # Groot-ag-grid releases
 
+## Version 5.1.4 - 2021-09-03
+
+- fix: `showQuickSearch` should work in header
+
 ## Version 5.1.3 - 2021-09-01
 
 - Explicitly annotated many nullable `@Input` properties as `| null`

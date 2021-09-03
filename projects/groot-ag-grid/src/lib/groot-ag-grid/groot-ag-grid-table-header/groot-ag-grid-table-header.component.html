@@ -46,6 +46,7 @@
 
 <ng-template #quickSearchTpl>
   <groot-quick-search
+    *ngIf="showQuickSearch"
     [(ngModel)]="quickSearchText"
     (enter)="enterOnQuickSearch()"
     (reset)="resetQuickSearch()"
