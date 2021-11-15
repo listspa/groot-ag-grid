@@ -6,7 +6,7 @@
          (click)="openColumnSelector()">
       <i class="fa fa-gears clickable"></i>
     </div>
-    <div *ngIf="totalNumRecords !== null">
+    <div *ngIf="totalNumRecords !== null && !loading">
       <span class="rows-count-label" translate>common.numRowsFound</span>
       <span class="rows-count-counter"> {{totalNumRecords | number:'0.0'}}</span>
     </div>

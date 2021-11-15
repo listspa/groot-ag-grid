@@ -1,5 +1,9 @@
 # Groot-ag-grid releases
 
+## Version 5.1.5 - 2021-11-15
+
+- fix: in header, when loading we should hide "found: xxx"
+
 ## Version 5.1.4 - 2021-09-03
 
 - fix: `showQuickSearch` should work in header
