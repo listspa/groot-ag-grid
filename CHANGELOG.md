@@ -1,5 +1,9 @@
 # Groot-ag-grid releases
 
+## Version 5.1.6 - 2021-12-14
+
+- fix: fixed version of Groot in `peerDependencies` of published `package.json`
+
 ## Version 5.1.5 - 2021-11-15
 
 - fix: in header, when loading we should hide "found: xxx"
