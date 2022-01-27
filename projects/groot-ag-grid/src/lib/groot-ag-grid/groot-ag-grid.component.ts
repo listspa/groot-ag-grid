@@ -40,7 +40,7 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
   @Output() selectionChanged = new EventEmitter<GrootAgGridSelection<T>>();
   @Output() agGridReady = new EventEmitter<GridApi>();
 
-  @Input() disableSorting: boolean = false;
+  @Input() disableSorting = false;
   @Input() defaultSortColumn: string;
   @Input() defaultSortReverseFlag = false;
   @Input() pageSize = 15;
@@ -179,7 +179,7 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
     }
 
     if (this.additionalButtonsTemplate_ && this.additionalButtonsTemplate_.length > 0) {
-      for (let template of this.additionalButtonsTemplate_) {
+      for (const template of this.additionalButtonsTemplate_) {
         const actionButtonCell: ColDef = {
           ...SPECIAL_TOOL_CELL,
           cellRenderer: 'templateRenderer',
@@ -220,7 +220,7 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
     this.restoreColState();
   }
 
-  private restoreColState() {
+  private restoreColState(): void {
     if (this._savedColumnState && this.gridOptions.columnApi) {
       const parsedState = JSON.parse(this._savedColumnState);
       if (parsedState) {
@@ -387,18 +387,18 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
     this._initialized = true;
   }
 
-  private keepServerSort(valueA: any, valueB: any, nodeA: RowNode, nodeB: RowNode, isInverted: boolean) {
+  private keepServerSort(valueA: any, valueB: any, nodeA: RowNode, nodeB: RowNode, isInverted: boolean): number {
     return 0;
   }
 
-  private resetDefaultSorting() {
+  private resetDefaultSorting(): void {
     if (this.gridOptions.defaultColDef) {
       this.gridOptions.defaultColDef.sortable = !this.disableSorting;
     }
     this.sorting = {sortField: this.defaultSortColumn, sortReversed: this.defaultSortReverseFlag};
   }
 
-  private translateHeaders() {
+  private translateHeaders(): void {
     if (!this.gridOptions.columnDefs || !this.gridOptions.columnDefs.length) {
       return;
     }
@@ -408,7 +408,7 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
     }
 
     const columnState = this.gridOptions.api ? this.gridOptions.columnApi.getColumnState() : null;
-    let labelKeys: string[] = [];
+    const labelKeys: string[] = [];
     this.gridOptions.columnDefs.forEach((col: ColDef | ColGroupDef) => {
       if ('children' in col) {
         col.children.forEach(child => {
@@ -442,7 +442,7 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
     }
   }
 
-  private getTranslationForLeafColumn(child: ColDef | ColGroupDef, labels, i: number) {
+  private getTranslationForLeafColumn(child: ColDef | ColGroupDef, labels, i: number): void {
     const label = this.getColumnLabel(child);
     if (!label) {
       return;
@@ -474,12 +474,12 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
     }
   }
 
-  onPageChanged(pageNum: number) {
+  onPageChanged(pageNum: number): void {
     this._currentPageNum = pageNum;
     this.reloadTable(false);
   }
 
-  gridReady() {
+  gridReady(): void {
     this.isGridReady = true;
     this.gridOptions.api.setColumnDefs(this.gridOptions.columnDefs); // Update labels
     this.restoreColState();
@@ -512,7 +512,7 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
     return false;
   }
 
-  onSortChanged() {
+  onSortChanged(): void {
     this.sorting = null;
     this.gridOptions.columnApi.getColumnState().forEach(col => {
       if (col.sort && col.colId && !this.sorting) {
@@ -531,15 +531,15 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
     this.reloadTable(false);
   }
 
-  firstDataRendered() {
+  firstDataRendered(): void {
     this.autoSizeColumns();
   }
 
-  autoSizeColumns() {
+  autoSizeColumns(): void {
     this.gridOptions.columnApi.autoSizeAllColumns();
   }
 
-  reloadTable(resetPageNumber = false, resetSortField = false) {
+  reloadTable(resetPageNumber = false, resetSortField = false): void {
     if (!this._initialized) {
       // Before our ngOnInit
       return;
@@ -568,12 +568,12 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
     };
   }
 
-  saveColumnOrder() {
+  saveColumnOrder(): void {
     const state = this.gridOptions.columnApi.getColumnState();
     this.columnsStatusChanged.emit(JSON.stringify(state));
   }
 
-  toggleAccordion(row, index) {
+  toggleAccordion(row, index): void {
     row.$showingAccordion = !row.$showingAccordion;
 
     const selectedRows: RowNode[] = this.gridOptions.api.getSelectedNodes();
@@ -600,6 +600,7 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
 
     if (selectedRows) {
       if (row.$showingAccordion) {
+        // tslint:disable-next-line:prefer-for-of
         for (let i = 0; i < selectedRows.length; i++) {
           if (selectedRows[i].rowIndex <= index) {
             this.gridOptions.api.selectIndex(selectedRows[i].rowIndex, true, false);
@@ -608,6 +609,7 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
           }
         }
       } else {
+        // tslint:disable-next-line:prefer-for-of
         for (let i = 0; i < selectedRows.length; i++) {
           if (selectedRows[i].rowIndex <= index) {
             this.gridOptions.api.selectIndex(selectedRows[i].rowIndex, true, false);
@@ -620,11 +622,11 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
 
   }
 
-  onScroll($event: Event) {
+  onScroll($event: Event): void {
     this.bodyScroll.emit($event);
   }
 
-  gridSelectionChanged() {
+  gridSelectionChanged(): void {
     if (this.gridOptions.api) {
       const rows = this.gridOptions.api.getSelectedRows();
       const indexes = this.gridOptions.api.getSelectedNodes().map(n => n.rowIndex);
@@ -633,19 +635,19 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
     }
   }
 
-  resetRowHeights() {
+  resetRowHeights(): void {
     if (this.gridOptions.api) {
       this.gridOptions.api.resetRowHeights();
     }
   }
 
-  clearSelection() {
+  clearSelection(): void {
     if (this.gridOptions.api) {
       this.gridOptions.api.deselectAll();
     }
   }
 
-  cellMouseDown(event: CellMouseDownEvent) {
+  cellMouseDown(event: CellMouseDownEvent): void {
     if (!event) {
       return;
     }
