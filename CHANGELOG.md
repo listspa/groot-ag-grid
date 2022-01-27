@@ -3,6 +3,7 @@
 ## Version 5.2.0 - 2022-01-27
 
 - feat: added component `groot-ag-grid-table-action`
+- fix: fixed an exception if order of properties is incorrect
 
 ## Version 5.1.6 - 2021-12-14
 

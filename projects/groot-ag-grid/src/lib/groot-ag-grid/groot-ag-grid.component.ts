@@ -1,19 +1,9 @@
 import {Component, ContentChild, EventEmitter, Input, OnDestroy, OnInit, Output, TemplateRef, ViewChild} from '@angular/core';
 import {Subscription} from 'rxjs';
-import {
-  GrootTableTitleRightAreaDirective,
-  isLoadingFailed,
-  LoadingFailed,
-  PaginatedResponse,
-  PaginationOptions,
-  SortPagination
-} from '@listgroup/groot';
+import {GrootTableTitleRightAreaDirective, isLoadingFailed, LoadingFailed, PaginatedResponse, PaginationOptions, SortPagination} from '@listgroup/groot';
 import {CellClickedEvent, CellMouseDownEvent, ColDef, ColGroupDef, GridApi, GridOptions, IsRowSelectable, RowNode} from 'ag-grid-community';
 import {TranslateService} from '@ngx-translate/core';
-import {
-  GrootAgGridNoRowsOverlayComponent,
-  GrootAgGridNoRowsParams
-} from './groot-ag-grid-no-rows-overlay/groot-ag-grid-no-rows-overlay.component';
+import {GrootAgGridNoRowsOverlayComponent, GrootAgGridNoRowsParams} from './groot-ag-grid-no-rows-overlay/groot-ag-grid-no-rows-overlay.component';
 import {GrootAgGridLoadingOverlayComponent} from './groot-ag-grid-loading-overlay/groot-ag-grid-loading-overlay.component';
 import {GrootAgGridRendererBooleansComponent} from './groot-ag-grid-renderer-booleans/groot-ag-grid-renderer-booleans.component';
 import {GrootAgGridRendererDatesComponent} from './groot-ag-grid-renderer-dates/groot-ag-grid-renderer-dates.component';
@@ -161,8 +151,8 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
     return this.headerCheckboxSelection_;
   }
 
-  private handleSpecialColumns() {
-    const colDefs = [...this.columnDefs_];
+  private handleSpecialColumns(): void {
+    const colDefs = this.columnDefs_ ? [...this.columnDefs_] : [];
 
     if (this.checkboxSelection_) {
       const checkboxCell: ColDef = {
