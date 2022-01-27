@@ -1,5 +1,9 @@
 # Groot-ag-grid releases
 
+## Version 5.2.0 - 2022-01-27
+
+- feat: added component `groot-ag-grid-table-action`
+
 ## Version 5.1.6 - 2021-12-14
 
 - fix: fixed version of Groot in `peerDependencies` of published `package.json`

@@ -15,6 +15,7 @@ import {GrootAgGridColumnSelectorModalComponent} from './groot-ag-grid-column-se
 import {DragDropModule} from '@angular/cdk/drag-drop';
 import {GrootAgGridTableHeaderComponent} from './groot-ag-grid-table-header/groot-ag-grid-table-header.component';
 import {FormsModule} from '@angular/forms';
+import {GrootAgGridTableActionComponent} from './groot-ag-grid-table-actions/groot-ag-grid-table-action.component';
 
 export const GROOT_AG_GRID_COMPONENTS = [
   GrootAgGridComponent,
@@ -26,6 +27,7 @@ export const GROOT_AG_GRID_COMPONENTS = [
   GrootAgGridRendererNumbersComponent,
   GrootAgGridRendererTemplateComponent,
   GrootAgGridHeaderTemplateComponent,
+  GrootAgGridTableActionComponent,
   GrootAgGridTableHeaderComponent,
 ];
 

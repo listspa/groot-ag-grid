@@ -182,12 +182,12 @@
   (clickedColumnSelector)="showColumnSelector()"
 >
   <ng-template #tplHeaderActions>
-    <span class="link-as-button" translate>common.insert</span>
-    <span class="link-as-button" translate>common.download</span>
+    <groot-ag-grid-table-action label="common.insert"></groot-ag-grid-table-action>
+    <groot-ag-grid-table-action label="common.download"></groot-ag-grid-table-action>
   </ng-template>
 
   <ng-template #tplHeaderSelectionActions>
-    <span class="link-as-button" translate>Download selected</span>
+    <groot-ag-grid-table-action label="Download selected"></groot-ag-grid-table-action>
   </ng-template>
 </groot-ag-grid-table-header>
 
