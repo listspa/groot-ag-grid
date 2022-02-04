@@ -14,7 +14,6 @@ import {GrootAgGridCustomizationService} from './groot-ag-grid-customization.ser
 import {GrootAgGridSelection} from './groot-ag-grid-selection.model';
 import {isNoGridDataMessage, NoGridDataMessage} from './no-grid-data.model';
 import {AgGridAngular} from 'ag-grid-angular';
-import {GetDataPath} from 'ag-grid-community/dist/lib/entities/gridOptions';
 
 const SPECIAL_TOOL_CELL: ColDef = {
   resizable: false,
@@ -26,6 +25,8 @@ const SPECIAL_TOOL_CELL: ColDef = {
   maxWidth: 30,
   width: 30,
 };
+
+export declare type GetDataPath = (data: any) => string[];
 
 @Component({
   selector: 'groot-ag-grid',

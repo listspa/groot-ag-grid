@@ -1,5 +1,9 @@
 # Groot-ag-grid releases
 
+## Version 5.2.1 - 2022-02-04
+
+- fix: fixed warning in applications about deep import paths in libraries
+
 ## Version 5.2.0 - 2022-01-27
 
 - feat: added component `groot-ag-grid-table-action`
