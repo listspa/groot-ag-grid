@@ -397,6 +397,7 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
       this.gridOptions.defaultColDef.sortable = !this.disableSorting;
     }
     this.sorting = {sortField: this.defaultSortColumn, sortReversed: this.defaultSortReverseFlag};
+    this.gridOptions.frameworkComponents.headerTemplateRenderer.sorted = '';
   }
 
   private translateHeaders(): void {
