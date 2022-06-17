@@ -558,8 +558,6 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
       this.resetDefaultSorting();
     }
 
-    this.gridOptions?.frameworkComponents?.headerTemplateRenderer?.resetQuickSearch();
-
     if (this.gridOptions.api) {
       this.gridOptions.api.showLoadingOverlay();
     }
