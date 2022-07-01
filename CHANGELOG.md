@@ -1,5 +1,9 @@
 # Groot-ag-grid releases
 
+## Version 5.3.0 - 2022-07-01
+
+- feat: use default date format from BsDatepickerConfig
+
 ## Version 5.2.1 - 2022-02-04
 
 - fix: fixed warning in applications about deep import paths in libraries
