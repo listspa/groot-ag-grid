@@ -13,6 +13,7 @@
     "npm_pack_only": "cd dist/groot-ag-grid && npm pack",
     "package": "npm run build_lib && npm run npm_pack_only",
     "release": "npm run build_lib && release-it --disable-metrics && npm run package && node scripts/publish.js",
+    "publish": "node scripts/publish.js",
     "build-demo-app": "ng build demo-app --prod"
   },
   "license": "Apache-2.0",
