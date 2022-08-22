@@ -1,5 +1,9 @@
 # Groot-ag-grid releases
 
+## Version 5.3.1 - 2022-07-01
+
+- fix: when resetting sorting, reflect the change in the grid gui
+
 ## Version 5.3.0 - 2022-07-01
 
 - feat: use default date format from BsDatepickerConfig
