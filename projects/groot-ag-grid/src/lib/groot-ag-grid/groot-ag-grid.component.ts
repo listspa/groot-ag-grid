@@ -495,7 +495,7 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
   }
 
   private setSorting(): boolean {
-    if (!this.disableSorting && this.sorting) {
+    if (!this.disableSorting && this.sorting && this.gridOptions.columnApi) {
       const columnState = this.gridOptions.columnApi.getColumnState();
       let found = false;
       columnState.forEach(col => {
