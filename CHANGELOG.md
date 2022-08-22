@@ -1,6 +1,6 @@
 # Groot-ag-grid releases
 
-## Version 5.3.1 - 2022-07-01
+## Version 5.3.2 - 2022-08-22
 
 - fix: when resetting sorting, reflect the change in the grid gui
 
