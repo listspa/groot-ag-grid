@@ -397,6 +397,7 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
       this.gridOptions.defaultColDef.sortable = !this.disableSorting;
     }
     this.sorting = {sortField: this.defaultSortColumn, sortReversed: this.defaultSortReverseFlag};
+    this.setSorting();
   }
 
   private translateHeaders(): void {
@@ -494,7 +495,7 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
   }
 
   private setSorting(): boolean {
-    if (!this.disableSorting && this.sorting && this.sorting.sortField) {
+    if (!this.disableSorting && this.sorting) {
       const columnState = this.gridOptions.columnApi.getColumnState();
       let found = false;
       columnState.forEach(col => {
