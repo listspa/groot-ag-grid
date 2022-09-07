@@ -1,6 +1,6 @@
 {
   "name": "groot-ag-grid",
-  "version": "5.2.2-2",
+  "version": "5.3.2",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -13,11 +13,13 @@
     "npm_pack_only": "cd dist/groot-ag-grid && npm pack",
     "package": "npm run build_lib && npm run npm_pack_only",
     "release": "npm run build_lib && release-it --disable-metrics && npm run package && node scripts/publish.js",
+    "publish": "node scripts/publish.js",
     "build-demo-app": "ng build demo-app --prod"
   },
   "license": "Apache-2.0",
   "private": false,
   "dependencies": {
+    "@ag-grid-enterprise/all-modules": "~25.2.0",
     "@angular/animations": "~11.1.0",
     "@angular/cdk": "^11.1.0",
     "@angular/common": "~11.1.0",
@@ -27,13 +29,12 @@
     "@angular/platform-browser": "~11.1.0",
     "@angular/platform-browser-dynamic": "~11.1.0",
     "@angular/router": "~11.1.0",
-    "@listgroup/groot": "^3.2.10",
+    "@listgroup/groot": "^3.3.0",
     "@ng-select/ng-select": "^5.1.0",
     "@ngx-translate/core": "^13.0.0",
     "@ngx-translate/http-loader": "^6.0.0",
     "ag-grid-angular": "~25.2.0",
     "ag-grid-community": "~25.2.0",
-    "@ag-grid-enterprise/all-modules": "~25.2.0",
     "bootstrap": "^4.5.3",
     "core-js": "^3.8.3",
     "file-saver": "^2.0.5",

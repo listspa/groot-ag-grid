@@ -20,8 +20,8 @@ need to add it to the `public-api.ts` file as well. Otherwise it will not be ava
 
 Currently, only developers at LIST can create releases.
 
-Create an account on NPM.JS and contact Andrea Bergia <a.bergia@list-group.com> for being added to the listgroup
-organization on NPM.
+Create an account on NPM.JS and contact Paolo Inaudi <p.inaudi@list-group.com> to be added
+to the `listgroup` organization on NPM.
 
 Next, you have to do an `npm login` using your account in the terminal.
 

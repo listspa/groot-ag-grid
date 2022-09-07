@@ -1,6 +1,6 @@
 {
   "name": "@listgroup/groot-ag-grid",
-  "version": "5.2.2-2",
+  "version": "5.3.2",
   "repository": {
     "type": "git",
     "url": "https://github.com/listspa/groot-ag-grid"
@@ -10,7 +10,7 @@
     "@angular/cdk": "^11.1.0",
     "@angular/common": "^11.1.0",
     "@angular/core": "^11.1.0",
-    "@listgroup/groot": "^3.2.10",
+    "@listgroup/groot": "^3.3.0",
     "ag-grid-angular": "~25.2.0",
     "ag-grid-community": "~25.2.0"
   },

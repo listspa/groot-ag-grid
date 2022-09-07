@@ -397,10 +397,7 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
       this.gridOptions.defaultColDef.sortable = !this.disableSorting;
     }
     this.sorting = {sortField: this.defaultSortColumn, sortReversed: this.defaultSortReverseFlag};
-
-    if (this.gridOptions.frameworkComponents != null && this.gridOptions.frameworkComponents.headerTemplateRenderer != null) {
-      this.gridOptions.frameworkComponents.headerTemplateRenderer.sorted = '';
-    }
+    this.setSorting();
   }
 
   private translateHeaders(): void {
@@ -498,7 +495,7 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
   }
 
   private setSorting(): boolean {
-    if (!this.disableSorting && this.sorting && this.sorting.sortField) {
+    if (!this.disableSorting && this.sorting && this.gridOptions.columnApi) {
       const columnState = this.gridOptions.columnApi.getColumnState();
       let found = false;
       columnState.forEach(col => {

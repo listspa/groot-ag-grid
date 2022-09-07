@@ -1,4 +1,4 @@
-{{params.value | date:'dd/MM/yyyy'}}
+{{params.value | date:dateFormat}}
 <span class="text-muted" *ngIf="params.timestamp">
   {{params.value | date:'HH:mm:ss'}}
 </span>
