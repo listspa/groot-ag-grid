@@ -45,6 +45,7 @@
 
 
 <groot-table-pagination
+  #gridPagination
   *ngIf="data && (showPaginationIfEmpty || (data.totalNumRecords > 0 && data.totalNumRecords > data.pageLen))"
   [class.groot-paginator-hidden]="data.totalNumRecords <= 0 || data.totalNumRecords <= data.pageLen"
   [totalItems]="data.totalNumRecords"
