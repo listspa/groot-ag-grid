@@ -8,7 +8,14 @@
     </div>
     <div *ngIf="totalNumRecords !== null && !loading">
       <span class="rows-count-label" translate>common.numRowsFound</span>
-      <span class="rows-count-counter"> {{totalNumRecords | number:'0.0'}}</span>
+      <span class="rows-count-counter" *ngIf="totalNumRecords !== -1"> {{totalNumRecords | number:'0.0'}}</span>
+      <span class="rows-count-counter" *ngIf="totalNumRecords === -1" translate> common.manyRecords</span>
+	  <span class="refresh-icon"
+         *ngIf="totalNumRecords === -1"
+         [title]="'common.refreshCount' | translate"
+         (click)="getTableDataCount()">
+      <i class="fa fa-refresh clickable"></i>
+    </span>
     </div>
     <div *ngIf="loading">
       <span class="rows-count-label" translate>combo.loading</span>

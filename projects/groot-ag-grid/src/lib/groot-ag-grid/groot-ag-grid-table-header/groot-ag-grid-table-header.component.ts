@@ -11,6 +11,7 @@ export class GrootAgGridTableHeaderComponent<T> {
   @Output() quickSearch = new EventEmitter<string>();
   @Output() clearSelection = new EventEmitter<void>();
   @Output() clickedColumnSelector = new EventEmitter<void>();
+  @Output() clickedGetCount = new EventEmitter<void>();
 
   @Input() totalNumRecords: number | null = null;
   @Input() loading = false;
@@ -35,6 +36,10 @@ export class GrootAgGridTableHeaderComponent<T> {
 
   openColumnSelector(): void {
     this.clickedColumnSelector.next();
+  }
+
+  getTableDataCount(): void {
+    this.clickedGetCount.next();
   }
 
   deSelectAll(): void {
