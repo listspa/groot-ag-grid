@@ -28,6 +28,12 @@ groot-ag-grid-table-header, .groot-ag-grid-table-header {
     .rows-count-label {
       font-weight: $font-weight-bold;
     }
+	
+    .refresh-icon {
+      color: $primary;
+	  padding-left: $padding-x;
+	  cursor: pointer;
+    }
   }
 
   .actions {

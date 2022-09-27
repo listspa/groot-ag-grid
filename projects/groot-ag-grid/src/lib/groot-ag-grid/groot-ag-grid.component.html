@@ -45,8 +45,8 @@
 
 
 <groot-table-pagination
-  *ngIf="data && (showPaginationIfEmpty || (data.totalNumRecords > 0 && data.totalNumRecords > data.pageLen))"
-  [class.groot-paginator-hidden]="data.totalNumRecords <= 0 || data.totalNumRecords <= data.pageLen"
+  *ngIf="data && (showPaginationIfEmpty || (data.totalNumRecords > 0 && data.totalNumRecords > data.pageLen) || data.totalNumRecords === -1)"
+  [class.groot-paginator-hidden]="data.totalNumRecords !== -1 && (data.totalNumRecords <= 0 || data.totalNumRecords <= data.pageLen)"
   [totalItems]="data.totalNumRecords"
   [pageSize]="pageSize"
   (pageNumChange)="onPageChanged($event)"
