@@ -14,6 +14,9 @@ import {GrootAgGridCustomizationService} from './groot-ag-grid-customization.ser
 import {GrootAgGridSelection} from './groot-ag-grid-selection.model';
 import {isNoGridDataMessage, NoGridDataMessage} from './no-grid-data.model';
 import {AgGridAngular} from 'ag-grid-angular';
+import {
+  TablePaginationComponent
+} from "@listgroup/groot/lib/groot-base/components/tables/table-pagination/table-pagination.component";
 
 const SPECIAL_TOOL_CELL: ColDef = {
   resizable: false,
@@ -342,6 +345,7 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
   public alignedGridsComponents: AgGridAngular[] = [];
   @ViewChild('accordionButtonTemplate', {static: true}) accordionButtonTemplate: TemplateRef<any>;
   @ViewChild('grid', {static: true}) grid: AgGridAngular;
+  @ViewChild('gridPagination', {static: true}) gridPagination: TablePaginationComponent;
   private _initialized = false;
   public isGridReady = false;
 
