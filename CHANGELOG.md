@@ -1,5 +1,14 @@
 # Groot-ag-grid releases
 
+## Version 5.4.0 - 2022-11-16
+
+- feat: expose groupMultiAutoColumn and suppressAggFuncInHeader grid attributes
+
+## Version 5.3.3 - 2022-10-31
+
+- feat: when totalNumRecords === -1, show a "Multiple results" label instead of the actual count and a refresh button to separately load row count
+- feat: expose gridPagination field to access the underlying TablePaginationComponent
+
 ## Version 5.3.2 - 2022-08-22
 
 - fix: when resetting sorting, reflect the change in the grid gui
