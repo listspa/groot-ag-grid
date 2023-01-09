@@ -1,5 +1,9 @@
 # Groot-ag-grid releases
 
+## Version 5.4.1 - 2023-01-09
+
+- feat: expose groupDefaultExpanded (enterprise feature)
+
 ## Version 5.4.0 - 2022-11-16
 
 - feat: expose groupMultiAutoColumn and suppressAggFuncInHeader grid attributes

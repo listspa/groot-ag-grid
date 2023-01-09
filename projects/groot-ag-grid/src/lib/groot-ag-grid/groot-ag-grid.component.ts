@@ -247,6 +247,19 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
     }
   }
 
+  /**
+   * -1:  expand all row groups
+   * 0:   no groups are expanded (default)
+   * 1:   first row group will be expanded
+   */
+  @Input()
+  set groupDefaultExpanded(value: number) {
+    this.groupExpanded = value;
+    if (this.gridOptions) {
+      this.gridOptions.groupDefaultExpanded = this.groupExpanded;
+    }
+  }
+
   get getRowClass(): (rowNode: RowNode) => any {
     return this._getRowClass;
   }
@@ -280,6 +293,7 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
 
   public data: PaginatedResponse<T> = null;
   private _isRowSelectable: IsRowSelectable = () => true;
+  private groupExpanded = 0;
   public gridOptions: GridOptions = {
     defaultColDef: {
       filter: false,
@@ -327,6 +341,7 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
     applyColumnDefOrder: true,
     treeData: false,
     getDataPath: null,
+    groupDefaultExpanded: this.groupExpanded,
   };
   public noRowsOverlayComponentParams: GrootAgGridNoRowsParams = {loadingError: false, api: null};
   private labelSub: Subscription;
