@@ -301,6 +301,7 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
       resizable: true,
       lockPinned: true,
     },
+    rowDragManaged: true,
     columnDefs: [],
     frameworkComponents: {
       GrootAgGridNoRowsOverlayComponent,

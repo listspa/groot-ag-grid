@@ -1,5 +1,9 @@
 # Groot-ag-grid releases
 
+## Version 5.4.2 - 2023-01-13
+
+- feat: set rowDragManaged to true in gridOptions to allow drag&drop (enterprise feature)
+
 ## Version 5.4.1 - 2023-01-09
 
 - feat: expose groupDefaultExpanded (enterprise feature)

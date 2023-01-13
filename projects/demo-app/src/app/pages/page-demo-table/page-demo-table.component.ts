@@ -145,6 +145,7 @@ export class PageDemoTableComponent implements OnInit {
     ];
     this.treeGroupColDef = {
       headerName: 'Category',
+      rowDrag: true,
       cellRendererParams: {
         suppressCount: true,
       }
