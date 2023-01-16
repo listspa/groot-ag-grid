@@ -1,5 +1,10 @@
 # Groot-ag-grid releases
 
+
+## Version 5.5.0 - 2023-01-16
+
+- feat: expose getRowNodeId grid function to keep expanded nodes on grouping grid (enterprise feature)
+
 ## Version 5.4.2 - 2023-01-13
 
 - feat: set rowDragManaged to true in gridOptions to allow drag&drop (enterprise feature)
@@ -7,7 +12,6 @@
 ## Version 5.4.1 - 2023-01-09
 
 - feat: expose groupDefaultExpanded (enterprise feature)
-
 ## Version 5.4.0 - 2022-11-16
 
 - feat: expose groupMultiAutoColumn and suppressAggFuncInHeader grid attributes

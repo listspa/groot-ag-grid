@@ -73,6 +73,7 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
   @Input() autoGroupColumnDef: ColDef = null;
   @Input() groupMultiAutoColumn = false;
   @Input() suppressAggFuncInHeader = false;
+  @Input() getRowNodeId: any = null;
 
   @Input() set searchResultsData(searchResultsData: PaginatedResponse<T> | NoGridDataMessage | LoadingFailed | null | undefined) {
     if (isNoGridDataMessage(searchResultsData)) {
