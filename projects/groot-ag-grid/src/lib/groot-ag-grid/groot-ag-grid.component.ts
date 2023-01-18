@@ -261,6 +261,22 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
     }
   }
 
+  @Input()
+  set rowDragManaged(value: boolean) {
+    this._rowDragManaged = value;
+    if (this.gridOptions) {
+      this.gridOptions.rowDragManaged = this._rowDragManaged;
+    }
+  }
+
+  @Input()
+  set suppressMoveWhenRowDragging(value: boolean) {
+    this._suppressMoveWhenRowDragging = value;
+    if (this.gridOptions) {
+      this.gridOptions.suppressMoveWhenRowDragging  = this._suppressMoveWhenRowDragging;
+    }
+  }
+
   get getRowClass(): (rowNode: RowNode) => any {
     return this._getRowClass;
   }
@@ -295,6 +311,8 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
   public data: PaginatedResponse<T> = null;
   private _isRowSelectable: IsRowSelectable = () => true;
   private groupExpanded = 0;
+  private _rowDragManaged = false;
+  private _suppressMoveWhenRowDragging = false;
   public gridOptions: GridOptions = {
     defaultColDef: {
       filter: false,
@@ -302,7 +320,6 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
       resizable: true,
       lockPinned: true,
     },
-    rowDragManaged: true,
     columnDefs: [],
     frameworkComponents: {
       GrootAgGridNoRowsOverlayComponent,
@@ -344,6 +361,8 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
     treeData: false,
     getDataPath: null,
     groupDefaultExpanded: this.groupExpanded,
+    rowDragManaged: this._rowDragManaged,
+    suppressMoveWhenRowDragging : this._suppressMoveWhenRowDragging ,
   };
   public noRowsOverlayComponentParams: GrootAgGridNoRowsParams = {loadingError: false, api: null};
   private labelSub: Subscription;
