@@ -218,8 +218,19 @@
   </li>
   <li>pass the function <code>getDataPath</code> - the behavior can be found in the Ag-Grid documentation;</li>
   <li>(optionally) define a <code>autoGroupColumnDef</code> - again, see the AG-Grid documentation.</li>
+  <li>(optionally) pass the function <code>getRowNodeId</code> - this assigns an id to each data row and enables immutable data. See <code>getRowNodeId</code> and <code>immutableData</code> in the Ag-Grid documentation. </li>
 </ul>
 
+<groot-ag-grid-table-header
+  [gridData]="searchResultsDataTree"
+  [totalNumRecords]="searchResultsDataTree ? searchResultsDataTree.totalNumRecords : null"
+  [actions]="tplHeaderActionsTree"
+>
+  <ng-template #tplHeaderActionsTree>
+    <groot-ag-grid-table-action style="margin-right: auto" class="fa fa-refresh contrib-chk-box" (click)="searchTree()" aria-hidden="true">
+    </groot-ag-grid-table-action>
+  </ng-template>
+</groot-ag-grid-table-header>
 <groot-ag-grid
   [modules]="treeModules"
   class="mb-4"
@@ -229,5 +240,6 @@
   (search)="searchTree()"
   [hideTitleBar]="true"
   [autoGroupColumnDef]="treeGroupColDef"
-  [groupDefaultExpanded]="-1"
+  [groupDefaultExpanded]="0"
+  [getRowNodeId]="getDataPath"
 ></groot-ag-grid>
