@@ -1,5 +1,8 @@
 # Groot-ag-grid releases
 
+## Version 5.5.3 - 2023-01-18
+
+- fix: set immutableData=true when getRowNodeId is provided
 
 ## Version 5.5.2 - 2023-01-18
 
