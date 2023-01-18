@@ -1,7 +1,20 @@
 import {Component, ContentChild, EventEmitter, Input, OnDestroy, OnInit, Output, TemplateRef, ViewChild} from '@angular/core';
 import {Subscription} from 'rxjs';
 import {GrootTableTitleRightAreaDirective, isLoadingFailed, LoadingFailed, PaginatedResponse, PaginationOptions, SortPagination} from '@listgroup/groot';
-import {CellClickedEvent, CellMouseDownEvent, ColDef, ColGroupDef, GridApi, GridOptions, IsRowSelectable, RowNode} from 'ag-grid-community';
+import {
+  CellClickedEvent,
+  CellMouseDownEvent,
+  ColDef,
+  ColGroupDef,
+  GridApi,
+  GridOptions,
+  IsRowSelectable,
+  RowDragEndEvent,
+  RowDragEnterEvent,
+  RowDragLeaveEvent,
+  RowDragMoveEvent,
+  RowNode
+} from 'ag-grid-community';
 import {TranslateService} from '@ngx-translate/core';
 import {GrootAgGridNoRowsOverlayComponent, GrootAgGridNoRowsParams} from './groot-ag-grid-no-rows-overlay/groot-ag-grid-no-rows-overlay.component';
 import {GrootAgGridLoadingOverlayComponent} from './groot-ag-grid-loading-overlay/groot-ag-grid-loading-overlay.component';
@@ -74,6 +87,10 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
   @Input() groupMultiAutoColumn = false;
   @Input() suppressAggFuncInHeader = false;
   @Input() getRowNodeId: any = null;
+  @Output() rowDragEnter = new EventEmitter<RowDragEnterEvent>();
+  @Output() rowDragEnd = new EventEmitter<RowDragEndEvent>();
+  @Output() rowDragMove = new EventEmitter<RowDragMoveEvent>();
+  @Output() rowDragLeave = new EventEmitter<RowDragLeaveEvent>();
 
   @Input() set searchResultsData(searchResultsData: PaginatedResponse<T> | NoGridDataMessage | LoadingFailed | null | undefined) {
     if (isNoGridDataMessage(searchResultsData)) {
@@ -362,7 +379,7 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
     getDataPath: null,
     groupDefaultExpanded: this.groupExpanded,
     rowDragManaged: this._rowDragManaged,
-    suppressMoveWhenRowDragging : this._suppressMoveWhenRowDragging ,
+    suppressMoveWhenRowDragging : this._suppressMoveWhenRowDragging
   };
   public noRowsOverlayComponentParams: GrootAgGridNoRowsParams = {loadingError: false, api: null};
   private labelSub: Subscription;
@@ -703,5 +720,21 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
 
       this.cellMiddleClicked.next(event);
     }
+  }
+
+  onRowDragEnter($event: RowDragEnterEvent): void {
+    this.rowDragEnter.emit($event);
+  }
+
+  onRowDragEnd($event: RowDragEndEvent): void {
+    this.rowDragEnd.emit($event);
+  }
+
+  onRowDragMove($event: RowDragMoveEvent): void {
+    this.rowDragMove.emit($event);
+  }
+
+  onRowDragLeave($event: RowDragLeaveEvent): void {
+    this.rowDragLeave.emit($event);
   }
 }

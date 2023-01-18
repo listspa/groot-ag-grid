@@ -1,6 +1,10 @@
 # Groot-ag-grid releases
 
 
+## Version 5.5.2 - 2023-01-18
+
+- feat: expose RowDragEvents (enterprise feature)
+
 ## Version 5.5.1 - 2023-01-18
 
 - feat: expose rowDragManaged and suppressMoveWhenRowDragging gridOptions to personalize behaviour (enterprise feature)

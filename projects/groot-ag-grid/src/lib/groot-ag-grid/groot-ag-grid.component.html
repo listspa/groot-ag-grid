@@ -44,6 +44,10 @@
   [groupMultiAutoColumn]="groupMultiAutoColumn"
   [suppressAggFuncInHeader]="suppressAggFuncInHeader"
   [getRowNodeId]="getRowNodeId"
+  (rowDragEnter)="onRowDragEnter($event)"
+  (rowDragEnd)="onRowDragEnd($event)"
+  (rowDragMove)="onRowDragMove($event)"
+  (rowDragLeave)="onRowDragLeave($event)"
 ></ag-grid-angular>
 
 
