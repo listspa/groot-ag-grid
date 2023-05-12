@@ -1,6 +1,6 @@
 # Groot-ag-grid releases
 
-## Version 5.6.1 - 2023-05-12
+## Version 5.6.2 - 2023-05-12
 
 feat: remove numbersRendererShowUpdate (RIP), keep only numbersRenderer - configurable through cellRendererParams to show delta value
 
