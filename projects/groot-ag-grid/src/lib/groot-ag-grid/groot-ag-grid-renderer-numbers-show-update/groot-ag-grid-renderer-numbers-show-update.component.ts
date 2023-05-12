@@ -34,8 +34,6 @@ export class GrootAgGridRendererNumbersShowUpdateComponent implements ICellRende
     } else if (this.difference > 0) {
       this.classDifference = 'ag-value-change-delta ag-value-change-delta-up';
       this.arrow = '↑';
-    } else {
-      this.classDifference = 'ag-value-change-delta ag-value-change-delta-up';
     }
     this.oldValue = params.value;
     setTimeout(() => {

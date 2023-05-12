@@ -1,8 +1,12 @@
 # Groot-ag-grid releases
 
-## Version 5.6.0 - 2023-01-18
+## Version 5.6.1 - 2023-05-12
 
-- feat: add new cellRenderer to show value difference on data update 
+- fix: do not highlight value when data are not modified in GrootAgGridRendererNumbersShowUpdateComponent
+
+## Version 5.6.0 - 2023-05-12
+
+- feat: add new cellRenderer to show value difference on data update
 
 ## Version 5.5.3 - 2023-01-18
 
