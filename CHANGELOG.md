@@ -2,6 +2,10 @@
 
 ## Version 5.6.1 - 2023-05-12
 
+feat: remove numbersRendererShowUpdate (RIP), keep only numbersRenderer - configurable through cellRendererParams to show delta value
+
+## Version 5.6.1 - 2023-05-12
+
 - fix: do not highlight value when data are not modified in GrootAgGridRendererNumbersShowUpdateComponent
 
 ## Version 5.6.0 - 2023-05-12

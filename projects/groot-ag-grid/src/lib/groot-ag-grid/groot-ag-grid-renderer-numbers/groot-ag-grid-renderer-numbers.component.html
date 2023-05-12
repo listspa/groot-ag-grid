@@ -1,1 +1,2 @@
-{{params.value | number: params.format: params.locale}}
+<span *ngIf="difference" [class]="classDifference">{{arrow}}{{difference}}</span>
+<span [class]="classValue">{{params.value | number: params.format: params.locale}}</span>

@@ -34,7 +34,13 @@ interface CategoryData {
   styleUrls: ['./page-demo-table.component.scss']
 })
 export class PageDemoTableComponent implements OnInit {
-  @ViewChild('table', {static: false}) table: GrootAgGridComponent<any>;
+  @ViewChild('table1', {static: false}) table1: GrootAgGridComponent<any>;
+  @ViewChild('table2', {static: false}) table2: GrootAgGridComponent<any>;
+  @ViewChild('table3', {static: false}) table3: GrootAgGridComponent<any>;
+  @ViewChild('table4', {static: false}) table4: GrootAgGridComponent<any>;
+  @ViewChild('alignedGrid1', {static: false}) alignedGrid1: GrootAgGridComponent<any>;
+  @ViewChild('alignedGrid2', {static: false}) alignedGrid2: GrootAgGridComponent<any>;
+  @ViewChild('gridHeader', {static: false}) gridHeader: GrootAgGridComponent<any>;
   availableColumns: ColDef[];
   columns: ColDef[];
   columnsGroup: ColGroupDef[];
@@ -77,7 +83,14 @@ export class PageDemoTableComponent implements OnInit {
       {
         colId: 'age',
         field: 'age',
-        cellRenderer: GrootAgGridRenderer.numbersRendererShowUpdate,
+        cellRenderer: GrootAgGridRenderer.numbers,
+        cellClass: 'ag-cell-right'
+      },
+      {
+        colId: 'age showing delta on update',
+        field: 'age',
+        cellRenderer: GrootAgGridRenderer.numbers,
+        cellRendererParams: {showDelta: true},
         cellClass: 'ag-cell-right'
       },
       {
@@ -244,7 +257,13 @@ export class PageDemoTableComponent implements OnInit {
 
   changeAge(row: any): void {
     row.age = row.age + (Math.round(Math.random() * 100) * (Math.random() < 0.5 ? -1 : 1));
-    this.table.gridOptions.api.refreshCells();
+    this.table1.gridOptions.api.refreshCells();
+    this.table2.gridOptions.api.refreshCells();
+    this.table3.gridOptions.api.refreshCells();
+    this.table4.gridOptions.api.refreshCells();
+    this.alignedGrid1.gridOptions.api.refreshCells();
+    this.alignedGrid2.gridOptions.api.refreshCells();
+    this.gridHeader.gridOptions.api.refreshCells();
     this.gridSelection.gridOptions.api.refreshCells();
   }
 }
