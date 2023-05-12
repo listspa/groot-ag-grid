@@ -6,7 +6,9 @@ import {GrootAgGridSelection} from '../../../../../groot-ag-grid/src/lib/groot-a
 import {GrootAgGridComponent} from '../../../../../groot-ag-grid/src/lib/groot-ag-grid/groot-ag-grid.component';
 import {NoGridDataMessage} from '../../../../../groot-ag-grid/src/lib/groot-ag-grid/no-grid-data.model';
 import {ColGroupDef} from 'ag-grid-community/dist/lib/entities/colDef';
-import {GrootAgGridColumnSelectorModalComponent} from '../../../../../groot-ag-grid/src/lib/groot-ag-grid/groot-ag-grid-column-selector-modal/groot-ag-grid-column-selector-modal.component';
+import {
+  GrootAgGridColumnSelectorModalComponent
+} from '../../../../../groot-ag-grid/src/lib/groot-ag-grid/groot-ag-grid-column-selector-modal/groot-ag-grid-column-selector-modal.component';
 import {Subject} from 'rxjs';
 import {BsModalService} from 'ngx-bootstrap/modal';
 import {RowGroupingModule} from '@ag-grid-enterprise/all-modules';
@@ -32,6 +34,7 @@ interface CategoryData {
   styleUrls: ['./page-demo-table.component.scss']
 })
 export class PageDemoTableComponent implements OnInit {
+  @ViewChild('table', {static: false}) table: GrootAgGridComponent<any>;
   availableColumns: ColDef[];
   columns: ColDef[];
   columnsGroup: ColGroupDef[];
@@ -56,7 +59,7 @@ export class PageDemoTableComponent implements OnInit {
     } else {
       return [data.macroCategory];
     }
-  };
+  }
 
   constructor(private bsModalService: BsModalService) {
   }
@@ -74,7 +77,7 @@ export class PageDemoTableComponent implements OnInit {
       {
         colId: 'age',
         field: 'age',
-        cellRenderer: GrootAgGridRenderer.numbers,
+        cellRenderer: GrootAgGridRenderer.numbersRendererShowUpdate,
         cellClass: 'ag-cell-right'
       },
       {
@@ -237,5 +240,11 @@ export class PageDemoTableComponent implements OnInit {
         {macroCategory: 'Liquid product', category: 'Treasury bills', subCategory: 'Treasury bills', count: 23},
       ]
     };
+  }
+
+  changeAge(row: any): void {
+    row.age = row.age + (Math.round(Math.random() * 100) * (Math.random() < 0.5 ? -1 : 1));
+    this.table.gridOptions.api.refreshCells();
+    this.gridSelection.gridOptions.api.refreshCells();
   }
 }

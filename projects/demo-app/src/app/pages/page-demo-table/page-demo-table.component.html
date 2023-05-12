@@ -3,6 +3,7 @@
 <p>This is how a default, simple grid looks.</p>
 
 <groot-ag-grid
+  #table
   class="mb-4"
   [columnDefs]="columns"
   [searchResultsData]="searchResultsData"
@@ -11,8 +12,8 @@
   [defaultSortReverseFlag]="true"
 ></groot-ag-grid>
 
-<ng-template #cellTemplate>
-  <groot-button class="btn-sm btn-outline-primary" label="test"></groot-button>
+<ng-template #cellTemplate  let-row="row">
+  <groot-button class="btn-sm btn-outline-primary" label="test" (click)="changeAge(row)"></groot-button>
 </ng-template>
 
 <p> This table shows various data types in our grid:</p>

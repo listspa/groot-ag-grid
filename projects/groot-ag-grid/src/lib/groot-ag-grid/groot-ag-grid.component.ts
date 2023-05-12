@@ -29,7 +29,10 @@ import {isNoGridDataMessage, NoGridDataMessage} from './no-grid-data.model';
 import {AgGridAngular} from 'ag-grid-angular';
 import {
   TablePaginationComponent
-} from "@listgroup/groot/lib/groot-base/components/tables/table-pagination/table-pagination.component";
+} from '@listgroup/groot/lib/groot-base/components/tables/table-pagination/table-pagination.component';
+import {
+  GrootAgGridRendererNumbersShowUpdateComponent
+} from './groot-ag-grid-renderer-numbers-show-update/groot-ag-grid-renderer-numbers-show-update.component';
 
 const SPECIAL_TOOL_CELL: ColDef = {
   resizable: false,
@@ -344,6 +347,7 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
       booleansRenderer: GrootAgGridRendererBooleansComponent,
       datesRenderer: GrootAgGridRendererDatesComponent,
       numbersRenderer: GrootAgGridRendererNumbersComponent,
+      numbersRendererShowUpdate: GrootAgGridRendererNumbersShowUpdateComponent,
       templateRenderer: GrootAgGridRendererTemplateComponent,
       headerTemplateRenderer: GrootAgGridHeaderTemplateComponent,
 

@@ -1,5 +1,9 @@
 # Groot-ag-grid releases
 
+## Version 5.6.0 - 2023-01-18
+
+- feat: add new cellRenderer to show value difference on data update 
+
 ## Version 5.5.3 - 2023-01-18
 
 - fix: set immutableData=true when getRowNodeId is provided
@@ -23,6 +27,7 @@
 ## Version 5.4.1 - 2023-01-09
 
 - feat: expose groupDefaultExpanded (enterprise feature)
+
 ## Version 5.4.0 - 2022-11-16
 
 - feat: expose groupMultiAutoColumn and suppressAggFuncInHeader grid attributes
