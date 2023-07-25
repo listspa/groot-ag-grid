@@ -36,17 +36,16 @@ export const translateModuleForChild: ModuleWithProviders<TranslateModule> = Tra
 export const agGridModule: ModuleWithProviders<AgGridModule> = AgGridModule.withComponents(GROOT_AG_GRID_COMPONENTS);
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    DragDropModule,
-    translateModuleForChild,
-    GrootModule,
-    agGridModule,
-  ],
-  declarations: GROOT_AG_GRID_COMPONENTS,
-  exports: GROOT_AG_GRID_COMPONENTS,
-  entryComponents: []
+    imports: [
+        CommonModule,
+        FormsModule,
+        DragDropModule,
+        translateModuleForChild,
+        GrootModule,
+        agGridModule,
+    ],
+    declarations: GROOT_AG_GRID_COMPONENTS,
+    exports: GROOT_AG_GRID_COMPONENTS
 })
 export class GrootAgGridModule {
 }

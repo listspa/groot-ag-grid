@@ -30,18 +30,6 @@
             "tsConfig": "projects/groot-ag-grid/tsconfig.spec.json",
             "karmaConfig": "projects/groot-ag-grid/karma.conf.js"
           }
-        },
-        "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
-          "options": {
-            "tsConfig": [
-              "projects/groot-ag-grid/tsconfig.lib.json",
-              "projects/groot-ag-grid/tsconfig.spec.json"
-            ],
-            "exclude": [
-              "**/node_modules/**"
-            ]
-          }
         }
       }
     },
@@ -63,7 +51,6 @@
               "file-saver"
             ],
             "baseHref": "/demo-app/",
-            "deployUrl": "/demo-app/",
             "outputPath": "dist/demo-app",
             "index": "projects/demo-app/src/index.html",
             "main": "projects/demo-app/src/main.ts",
@@ -135,18 +122,6 @@
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
             "browserTarget": "demo-app:build"
-          }
-        },
-        "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
-          "options": {
-            "tsConfig": [
-              "projects/demo-app/tsconfig.app.json",
-              "projects/demo-app/tsconfig.spec.json"
-            ],
-            "exclude": [
-              "**/node_modules/**"
-            ]
           }
         }
       }
