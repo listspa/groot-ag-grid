@@ -7,8 +7,8 @@ $table-checkbox-size: 15px;
 
 $ag-suppress-legacy-var-import: true;
 
-@import "~ag-grid-community/src/styles/ag-grid";
-@import "~ag-grid-community/src/styles/ag-theme-balham/sass/ag-theme-balham-mixin";
+@import "ag-grid-community/src/styles/ag-grid";
+@import "ag-grid-community/src/styles/ag-theme-balham/sass/ag-theme-balham-mixin";
 
 .ag-theme-balham {
   @include ag-theme-balham((balham-active-color: $primary,

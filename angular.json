@@ -51,6 +51,11 @@
               "file-saver"
             ],
             "baseHref": "/demo-app/",
+            "stylePreprocessorOptions": {
+              "includePaths": [
+                "./node_modules"
+              ]
+            },
             "outputPath": "dist/demo-app",
             "index": "projects/demo-app/src/index.html",
             "main": "projects/demo-app/src/main.ts",
