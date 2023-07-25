@@ -22,7 +22,7 @@ import {
   RowDragMoveEvent,
   RowNode
 } from 'ag-grid-community';
-import {TranslateService} from '@ngx-translate/core';
+import { TranslateService } from '@ngx-translate/core';
 import {GrootAgGridNoRowsOverlayComponent, GrootAgGridNoRowsParams} from './groot-ag-grid-no-rows-overlay/groot-ag-grid-no-rows-overlay.component';
 import {GrootAgGridLoadingOverlayComponent} from './groot-ag-grid-loading-overlay/groot-ag-grid-loading-overlay.component';
 import {GrootAgGridRendererBooleansComponent} from './groot-ag-grid-renderer-booleans/groot-ag-grid-renderer-booleans.component';
@@ -378,7 +378,7 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
       ...this.grootAgGridCustomizationService.frameworkComponents,
       ...this.grootAgGridCustomizationService.overlays,
     },
-    isFullWidthCell: rowNode => rowNode.data && rowNode.data.$isAccordionRow,
+    isFullWidthCell: rowNode => rowNode.data?.$isAccordionRow,
     fullWidthCellRenderer: 'templateRenderer',
     fullWidthCellRendererParams: {
       ngTemplate: null,
@@ -390,11 +390,11 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
           return result;
         }
       }
-      return rowNode.data && rowNode.data.$isAccordionRow ? this._accordionHeight : this.rowHeight;
+      return rowNode.data?.$isAccordionRow ? this._accordionHeight : this.rowHeight;
     },
     rowClassRules: {
-      'accordion-row': rowNode => rowNode.data && rowNode.data.$isAccordionRow,
-      'accordion-expanded': rowNode => rowNode.data && rowNode.data.$showingAccordion,
+      'accordion-row': rowNode => rowNode.data?.$isAccordionRow,
+      'accordion-expanded': rowNode => rowNode.data?.$showingAccordion,
     },
     suppressCellSelection: true,
     enableCellTextSelection: true,
@@ -481,7 +481,7 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
   }
 
   private translateHeaders(): void {
-    if (!this.gridOptions.columnDefs || !this.gridOptions.columnDefs.length) {
+    if (!this.gridOptions.columnDefs?.length) {
       return;
     }
 
@@ -680,21 +680,20 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
 
     if (selectedRows) {
       if (row.$showingAccordion) {
-        // tslint:disable-next-line:prefer-for-of
-        for (let i = 0; i < selectedRows.length; i++) {
-          if (selectedRows[i].rowIndex <= index) {
-            this.gridOptions.api.selectIndex(selectedRows[i].rowIndex, true, false);
+
+        for(let selectedRow of selectedRows){
+          if (selectedRow.rowIndex <= index) {
+            this.gridOptions.api.selectIndex(selectedRow.rowIndex, true, false);
           } else {
-            this.gridOptions.api.selectIndex(selectedRows[i].rowIndex + 1, true, false);
+            this.gridOptions.api.selectIndex(selectedRow.rowIndex + 1, true, false);
           }
         }
       } else {
-        // tslint:disable-next-line:prefer-for-of
-        for (let i = 0; i < selectedRows.length; i++) {
-          if (selectedRows[i].rowIndex <= index) {
-            this.gridOptions.api.selectIndex(selectedRows[i].rowIndex, true, false);
+        for(let selectedRow of selectedRows){
+          if (selectedRow.rowIndex <= index) {
+            this.gridOptions.api.selectIndex(selectedRow.rowIndex, true, false);
           } else {
-            this.gridOptions.api.selectIndex(selectedRows[i].rowIndex - 1, true, false);
+            this.gridOptions.api.selectIndex(selectedRow.rowIndex - 1, true, false);
           }
         }
       }
