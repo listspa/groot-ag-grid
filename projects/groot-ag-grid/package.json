@@ -7,10 +7,10 @@
   },
   "license": "Apache-2.0",
   "peerDependencies": {
-    "@angular/cdk": "^14.2.7",
-    "@angular/common": "^14.3.0",
-    "@angular/core": "^14.3.0",
-    "@listgroup/groot": "file:~\\npm\\listgroup-groot-14.tgz",
+    "@angular/cdk": "^15.2.9",
+    "@angular/common": "^15.2.9",
+    "@angular/core": "^15.2.9",
+    "@listgroup/groot": "file:~\\npm\\listgroup-groot-15.tgz",
     "ag-grid-angular": "~25.2.0",
     "ag-grid-community": "~25.2.0"
   },
