@@ -6,5 +6,5 @@ export interface NoGridDataMessage {
 }
 
 export function isNoGridDataMessage<T>(t: PaginatedResponse<T> | NoGridDataMessage | LoadingFailed): t is NoGridDataMessage {
-  return t && t.hasOwnProperty('message') && t.hasOwnProperty('style');
+  return t?.hasOwnProperty('message') && t?.hasOwnProperty('style');
 }
