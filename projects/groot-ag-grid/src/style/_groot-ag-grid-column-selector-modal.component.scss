@@ -1,3 +1,4 @@
+@use "sass:math";
 groot-ag-grid-columns-selector-modal, .groot-ag-grid-columns-selector-modal {
   .help-text {
     $line-height-ht: 1rem;
@@ -45,8 +46,8 @@ groot-ag-grid-columns-selector-modal, .groot-ag-grid-columns-selector-modal {
       display: block;
       border-left: 1px solid $gray-darwin-border;
       height: 32rem;
-      margin-left: $separator-width / 2;
-      margin-right: $separator-width / 2;
+      margin-left: math.div($separator-width,2);
+      margin-right: math.div($separator-width,2);
     }
   }
 
