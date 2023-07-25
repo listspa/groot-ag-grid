@@ -10,7 +10,8 @@
     "@angular/cdk": "^15.2.9",
     "@angular/common": "^15.2.9",
     "@angular/core": "^15.2.9",
-    "@listgroup/groot": "file:~\\npm\\listgroup-groot-15.tgz",
+    "@angular/forms": "^15.2.9",
+    "@listgroup/groot": "file:~\\npm\\listgroup-groot-15t.tgz",
     "ag-grid-angular": "~25.2.0",
     "ag-grid-community": "~25.2.0"
   },
