@@ -11,18 +11,17 @@ $ag-suppress-legacy-var-import: true;
 @import "~ag-grid-community/src/styles/ag-theme-balham/sass/ag-theme-balham-mixin";
 
 .ag-theme-balham {
-  @include ag-theme-balham((
-    balham-active-color: $primary,
-    odd-row-background-color: $white,
-    font-family: $font-family-sans-serif,
-    font-size: $font-size-base,
-    border-color: $table-border-color,
-    header-background-color: $table-header-background-color,
-    header-foreground-color: $table-header-foreground-color,
-    secondary-foreground-color: $table-header-icon-color,
-    selected-row-background-color: $lighter-primary,
-    header-column-separator-color: $table-header-column-separator-color,
-  ));
+  @include ag-theme-balham((balham-active-color: $primary,
+      odd-row-background-color: $white,
+      font-family: $font-family-sans-serif,
+      font-size: $font-size-base,
+      border-color: $table-border-color,
+      header-background-color: $table-header-background-color,
+      header-foreground-color: $table-header-foreground-color,
+      secondary-foreground-color: $table-header-icon-color,
+      selected-row-background-color: $lighter-primary,
+      header-column-separator-color: $table-header-column-separator-color,
+    ));
 }
 
 .ag-grid-rows-clickable .ag-row {
@@ -62,6 +61,8 @@ $ag-suppress-legacy-var-import: true;
 }
 
 groot-ag-grid {
+  display: block;
+
   .groot-header-checkbox-cell.ag-header-cell {
     padding-left: 7px;
   }
@@ -88,7 +89,9 @@ groot-ag-grid {
       box-shadow: none;
     }
 
-    &::after, &.ag-checked::after, &.ag-indeterminate::after {
+    &::after,
+    &.ag-checked::after,
+    &.ag-indeterminate::after {
       content: "";
       background: transparent;
     }
@@ -117,7 +120,7 @@ groot-ag-grid {
       &::after {
         content: "";
         background: 50%/60% 60% no-repeat;
-        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8' viewBox='0 0 8 8'%3e%3cpath fill='%23FFFFFF' d='M6.564.75l-3.59 3.612-1.538-1.55L0 4.26l2.974 2.99L8 2.193z'/%3e%3c/svg%3e");;
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8' viewBox='0 0 8 8'%3e%3cpath fill='%23FFFFFF' d='M6.564.75l-3.59 3.612-1.538-1.55L0 4.26l2.974 2.99L8 2.193z'/%3e%3c/svg%3e");
         position: absolute;
         left: 0;
         top: 0;
@@ -152,8 +155,4 @@ groot-ag-grid {
 
 .groot-loading-indicator-spinner.no-left-margin {
   left: auto;
-}
-
-groot-ag-grid {
-  display: block;
 }
