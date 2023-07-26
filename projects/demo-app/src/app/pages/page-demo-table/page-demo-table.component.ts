@@ -1,18 +1,14 @@
-import {Component, OnInit, TemplateRef, ViewChild} from '@angular/core';
-import {ColDef} from 'ag-grid-community';
-import {GrootAgGridRenderer} from '../../../../../groot-ag-grid/src/lib/groot-ag-grid/groot-ag-grid-customization.consts';
-import {LoadingFailed, PaginatedResponse, PaginationOptions} from '@listgroup/groot';
-import {GrootAgGridSelection} from '../../../../../groot-ag-grid/src/lib/groot-ag-grid/groot-ag-grid-selection.model';
-import {GrootAgGridComponent} from '../../../../../groot-ag-grid/src/lib/groot-ag-grid/groot-ag-grid.component';
-import {NoGridDataMessage} from '../../../../../groot-ag-grid/src/lib/groot-ag-grid/no-grid-data.model';
-import {ColGroupDef} from 'ag-grid-community/dist/lib/entities/colDef';
-import {
-  GrootAgGridColumnSelectorModalComponent
-} from '../../../../../groot-ag-grid/src/lib/groot-ag-grid/groot-ag-grid-column-selector-modal/groot-ag-grid-column-selector-modal.component';
-import {Subject} from 'rxjs';
-import {BsModalService} from 'ngx-bootstrap/modal';
-import {RowGroupingModule} from '@ag-grid-enterprise/row-grouping';
-import {EnterpriseCoreModule} from '@ag-grid-enterprise/core';
+import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { ColDef, ColGroupDef, Module } from 'ag-grid-community/main';
+import { GrootAgGridRenderer } from '../../../../../groot-ag-grid/src/lib/groot-ag-grid/groot-ag-grid-customization.consts';
+import { LoadingFailed, PaginatedResponse, PaginationOptions } from '@listgroup/groot';
+import { GrootAgGridSelection } from '../../../../../groot-ag-grid/src/lib/groot-ag-grid/groot-ag-grid-selection.model';
+import { GrootAgGridComponent } from '../../../../../groot-ag-grid/src/lib/groot-ag-grid/groot-ag-grid.component';
+import { NoGridDataMessage } from '../../../../../groot-ag-grid/src/lib/groot-ag-grid/no-grid-data.model';
+import { GrootAgGridColumnSelectorModalComponent } from '../../../../../groot-ag-grid/src/lib/groot-ag-grid/groot-ag-grid-column-selector-modal/groot-ag-grid-column-selector-modal.component';
+import { Subject } from 'rxjs';
+import { BsModalService } from 'ngx-bootstrap/modal';
+import { RowGroupingModule } from '@ag-grid-enterprise/row-grouping';
 
 interface User {
   id: string;
@@ -45,15 +41,15 @@ export class PageDemoTableComponent implements OnInit {
   columns: ColDef[];
   columnsGroup: ColGroupDef[];
   searchResultsData: PaginatedResponse<User>;
-  @ViewChild('cellTemplate', {static: true}) cellTemplate: TemplateRef<any>;
+  @ViewChild('cellTemplate', { static: true }) cellTemplate: TemplateRef<any>;
   selectionMode: 'single' | 'multi' | 'multi-click' = 'multi';
-  @ViewChild('gridSelection', {static: true}) gridSelection: GrootAgGridComponent<User>;
-  loadingFailedData: LoadingFailed = {loadingFailed: true};
+  @ViewChild('gridSelection', { static: true }) gridSelection: GrootAgGridComponent<User>;
+  loadingFailedData: LoadingFailed = { loadingFailed: true };
   emptyData: PaginatedResponse<User>;
-  alertData: NoGridDataMessage = {message: 'A generic warning', style: 'warning'};
+  alertData: NoGridDataMessage = { message: 'A generic warning', style: 'warning' };
   selection: GrootAgGridSelection<User>;
 
-  treeModules = [EnterpriseCoreModule, RowGroupingModule];
+  treeModules: Array<Module> = [RowGroupingModule] as unknown as Array<Module>;
   searchResultsDataTree: PaginatedResponse<CategoryData>;
   columnsTree: ColDef[];
   treeGroupColDef: ColDef;
@@ -107,7 +103,7 @@ export class PageDemoTableComponent implements OnInit {
       {
         colId: 'buttons',
         cellRenderer: GrootAgGridRenderer.template,
-        cellRendererParams: {ngTemplate: this.cellTemplate}
+        cellRendererParams: { ngTemplate: this.cellTemplate }
       }
     ];
     this.columns = [...this.availableColumns];
@@ -148,7 +144,7 @@ export class PageDemoTableComponent implements OnInit {
         {
           colId: 'buttons',
           cellRenderer: GrootAgGridRenderer.template,
-          cellRendererParams: {ngTemplate: this.cellTemplate},
+          cellRendererParams: { ngTemplate: this.cellTemplate },
           columnGroupShow: 'open'
         }
       ]
@@ -157,7 +153,7 @@ export class PageDemoTableComponent implements OnInit {
 
     this.columnsTree = [
       // First column is the auto group
-      {colId: 'count', field: 'count', cellRenderer: GrootAgGridRenderer.numbers, cellClass: 'ag-cell-right'},
+      { colId: 'count', field: 'count', cellRenderer: GrootAgGridRenderer.numbers, cellClass: 'ag-cell-right' },
     ];
     this.treeGroupColDef = {
       headerName: 'Category',
@@ -174,10 +170,10 @@ export class PageDemoTableComponent implements OnInit {
       pageLen: event.pageLen,
       totalNumRecords: 4,
       records: [
-        {id: 'U001', name: 'Andrea Bergia', age: 34, birthDate: new Date('1985-12-04'), grownUp: true},
-        {id: 'U002', name: 'John Peterson', age: 44, birthDate: new Date('1975-01-03'), grownUp: true},
-        {id: 'U003', name: 'Donald Trump', age: 99, birthDate: new Date('1921-06-05'), grownUp: false},
-        {id: 'U004', name: 'Baby Boy', age: 4, birthDate: new Date('2016-07-02'), grownUp: false},
+        { id: 'U001', name: 'Andrea Bergia', age: 34, birthDate: new Date('1985-12-04'), grownUp: true },
+        { id: 'U002', name: 'John Peterson', age: 44, birthDate: new Date('1975-01-03'), grownUp: true },
+        { id: 'U003', name: 'Donald Trump', age: 99, birthDate: new Date('1921-06-05'), grownUp: false },
+        { id: 'U004', name: 'Baby Boy', age: 4, birthDate: new Date('2016-07-02'), grownUp: false },
       ]
     };
 
@@ -205,11 +201,11 @@ export class PageDemoTableComponent implements OnInit {
   }
 
   searchLoadingFailed(): void {
-    this.loadingFailedData = {...this.loadingFailedData};
+    this.loadingFailedData = { ...this.loadingFailedData };
   }
 
   searchAlertData(): void {
-    this.alertData = {...this.alertData};
+    this.alertData = { ...this.alertData };
   }
 
   showColumnSelector(): void {
@@ -236,7 +232,7 @@ export class PageDemoTableComponent implements OnInit {
   }
 
   searchEmptyData(): void {
-    this.emptyData = {pageNum: 0, pageLen: 10, records: [], totalNumRecords: 0};
+    this.emptyData = { pageNum: 0, pageLen: 10, records: [], totalNumRecords: 0 };
   }
 
   searchTree(): void {
@@ -245,12 +241,12 @@ export class PageDemoTableComponent implements OnInit {
       pageLen: 10,
       totalNumRecords: 8,
       records: [
-        {macroCategory: 'Liquid product', count: 47},
-        {macroCategory: 'Liquid product', category: 'Cash', count: 24},
-        {macroCategory: 'Liquid product', category: 'Cash', subCategory: 'Cash', count: 10},
-        {macroCategory: 'Liquid product', category: 'Cash', subCategory: 'Traveller\'s cheque', count: 14},
-        {macroCategory: 'Liquid product', category: 'Treasury bills', count: 23},
-        {macroCategory: 'Liquid product', category: 'Treasury bills', subCategory: 'Treasury bills', count: 23},
+        { macroCategory: 'Liquid product', count: 47 },
+        { macroCategory: 'Liquid product', category: 'Cash', count: 24 },
+        { macroCategory: 'Liquid product', category: 'Cash', subCategory: 'Cash', count: 10 },
+        { macroCategory: 'Liquid product', category: 'Cash', subCategory: 'Traveller\'s cheque', count: 14 },
+        { macroCategory: 'Liquid product', category: 'Treasury bills', count: 23 },
+        { macroCategory: 'Liquid product', category: 'Treasury bills', subCategory: 'Treasury bills', count: 23 },
       ]
     };
   }

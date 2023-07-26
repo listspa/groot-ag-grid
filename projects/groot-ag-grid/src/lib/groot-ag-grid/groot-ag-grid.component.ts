@@ -10,6 +10,7 @@ import {
   GridApi,
   GridOptions,
   IsRowSelectable,
+  Module,
   RowClassParams,
   RowDragEndEvent,
   RowDragEnterEvent,
@@ -17,8 +18,8 @@ import {
   RowDragMoveEvent,
   RowHeightParams,
   RowNode,
-  RowStyle
-} from 'ag-grid-community';
+  RowStyle,
+} from 'ag-grid-community/main';
 import { TranslateService } from '@ngx-translate/core';
 import { GrootAgGridNoRowsOverlayComponent, GrootAgGridNoRowsParams } from './groot-ag-grid-no-rows-overlay/groot-ag-grid-no-rows-overlay.component';
 import { GrootAgGridLoadingOverlayComponent } from './groot-ag-grid-loading-overlay/groot-ag-grid-loading-overlay.component';
@@ -86,11 +87,12 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
   @Input() rowMultiSelectWithClick = false;
   @Input() titleLabel = 'common.searchResults';
   @Input() suppressRowTransform = false;
-  @Input() modules: Array<any> = null;
+  @Input() modules: Array<Module> = null;
   @Input() autoGroupColumnDef: ColDef = null;
   @Input() groupMultiAutoColumn = false;
   @Input() suppressAggFuncInHeader = false;
   @Input() getRowNodeId: any = null;
+  @Input() treeData: boolean | undefined;
   @Output() rowDragEnter = new EventEmitter<RowDragEnterEvent>();
   @Output() rowDragEnd = new EventEmitter<RowDragEndEvent>();
   @Output() rowDragMove = new EventEmitter<RowDragMoveEvent>();
