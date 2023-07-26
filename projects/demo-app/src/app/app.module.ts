@@ -70,9 +70,7 @@ export function HttpLoaderFactory(http: HttpClient) {
 
     // Ag-grid
     GrootAgGridModule,
-    AgGridModule.withComponents([
-      // Other components to be registered
-    ]),
+    AgGridModule,
 
     AppRoutingModule,
     ButtonsModule

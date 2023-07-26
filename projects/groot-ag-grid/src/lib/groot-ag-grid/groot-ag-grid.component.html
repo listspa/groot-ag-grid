@@ -30,7 +30,7 @@
   (dragStopped)="saveColumnOrder()"
   (cellClicked)="cellClicked.emit($event)"
   (cellMouseDown)="cellMouseDown($event)"
-  [rowSelection]="(checkboxSelection || rowMultiSelectWithClick) ? 'multiple' : (singleRowSelection ? 'single' : false)"
+  [rowSelection]="(checkboxSelection || rowMultiSelectWithClick) ? 'multiple' : (singleRowSelection ? 'single' : undefined)"
   [rowMultiSelectWithClick]="checkboxSelection || rowMultiSelectWithClick"
   [suppressRowClickSelection]="checkboxSelection"
   [suppressRowTransform]="suppressRowTransform"
