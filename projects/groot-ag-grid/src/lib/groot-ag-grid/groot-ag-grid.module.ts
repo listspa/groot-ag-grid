@@ -1,4 +1,4 @@
-import { ModuleWithProviders, NgModule } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { GrootModule } from '@listgroup/groot';
 import { GrootAgGridRendererTemplateComponent } from './groot-ag-grid-renderer-template/groot-ag-grid-renderer-template.component';
 import { CommonModule } from '@angular/common';
