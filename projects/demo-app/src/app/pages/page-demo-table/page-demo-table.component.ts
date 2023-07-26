@@ -12,7 +12,7 @@ import {
 import {Subject} from 'rxjs';
 import {BsModalService} from 'ngx-bootstrap/modal';
 import {RowGroupingModule} from '@ag-grid-enterprise/all-modules';
-import {EnterpriseCoreModule} from '@ag-grid-enterprise/core/dist/cjs/agGridEnterpriseModule';
+import {EnterpriseCoreModule} from '@ag-grid-enterprise/core';
 import {MultiSortPaginationOptions} from '../../../../../groot-ag-grid/src/lib/groot-ag-grid/groot-ag-grid-pagination.model';
 
 interface User {

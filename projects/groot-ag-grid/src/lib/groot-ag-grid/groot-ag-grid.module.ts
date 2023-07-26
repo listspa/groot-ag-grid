@@ -31,7 +31,6 @@ export const GROOT_AG_GRID_COMPONENTS = [
   GrootAgGridTableHeaderComponent,
 ];
 
-// Needed to solve an AOT compilation error with Ivy. See https://github.com/ng-packagr/ng-packagr/issues/778
 export const agGridModule: ModuleWithProviders<AgGridModule> = AgGridModule.withComponents(GROOT_AG_GRID_COMPONENTS);
 
 @NgModule({
