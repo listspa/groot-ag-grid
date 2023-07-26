@@ -12,7 +12,6 @@ import {
 import {Subject} from 'rxjs';
 import {BsModalService} from 'ngx-bootstrap/modal';
 import {RowGroupingModule} from '@ag-grid-enterprise/row-grouping';
-import {EnterpriseCoreModule} from '@ag-grid-enterprise/core';
 import {MultiSortPaginationOptions} from '../../../../../groot-ag-grid/src/lib/groot-ag-grid/groot-ag-grid-pagination.model';
 
 interface User {
@@ -49,15 +48,15 @@ export class PageDemoTableComponent implements OnInit {
   customHeaderColumns: ColDef[];
   columnsGroup: ColGroupDef[];
   searchResultsData: PaginatedResponse<User>;
-  @ViewChild('cellTemplate', {static: true}) cellTemplate: TemplateRef<any>;
+  @ViewChild('cellTemplate', { static: true }) cellTemplate: TemplateRef<any>;
   selectionMode: 'single' | 'multi' | 'multi-click' = 'multi';
-  @ViewChild('gridSelection', {static: true}) gridSelection: GrootAgGridComponent<User>;
-  loadingFailedData: LoadingFailed = {loadingFailed: true};
+  @ViewChild('gridSelection', { static: true }) gridSelection: GrootAgGridComponent<User>;
+  loadingFailedData: LoadingFailed = { loadingFailed: true };
   emptyData: PaginatedResponse<User>;
-  alertData: NoGridDataMessage = {message: 'A generic warning', style: 'warning'};
+  alertData: NoGridDataMessage = { message: 'A generic warning', style: 'warning' };
   selection: GrootAgGridSelection<User>;
 
-  treeModules = [EnterpriseCoreModule, RowGroupingModule];
+  treeModules: Array<Module> = [RowGroupingModule] as unknown as Array<Module>;
   searchResultsDataTree: PaginatedResponse<CategoryData>;
   columnsTree: ColDef[];
   treeGroupColDef: ColDef;
@@ -168,7 +167,7 @@ export class PageDemoTableComponent implements OnInit {
         {
           colId: 'buttons',
           cellRenderer: GrootAgGridRenderer.template,
-          cellRendererParams: {ngTemplate: this.cellTemplate},
+          cellRendererParams: { ngTemplate: this.cellTemplate },
           columnGroupShow: 'open'
         },
       ]
@@ -177,7 +176,7 @@ export class PageDemoTableComponent implements OnInit {
 
     this.columnsTree = [
       // First column is the auto group
-      {colId: 'count', field: 'count', cellRenderer: GrootAgGridRenderer.numbers, cellClass: 'ag-cell-right'},
+      { colId: 'count', field: 'count', cellRenderer: GrootAgGridRenderer.numbers, cellClass: 'ag-cell-right' },
     ];
     this.treeGroupColDef = {
       headerName: 'Category',
@@ -228,11 +227,11 @@ export class PageDemoTableComponent implements OnInit {
   }
 
   searchLoadingFailed(): void {
-    this.loadingFailedData = {...this.loadingFailedData};
+    this.loadingFailedData = { ...this.loadingFailedData };
   }
 
   searchAlertData(): void {
-    this.alertData = {...this.alertData};
+    this.alertData = { ...this.alertData };
   }
 
   showColumnSelector(): void {
@@ -259,7 +258,7 @@ export class PageDemoTableComponent implements OnInit {
   }
 
   searchEmptyData(): void {
-    this.emptyData = {pageNum: 0, pageLen: 10, records: [], totalNumRecords: 0};
+    this.emptyData = { pageNum: 0, pageLen: 10, records: [], totalNumRecords: 0 };
   }
 
   searchTree(): void {
@@ -268,12 +267,12 @@ export class PageDemoTableComponent implements OnInit {
       pageLen: 10,
       totalNumRecords: 8,
       records: [
-        {macroCategory: 'Liquid product', count: 47},
-        {macroCategory: 'Liquid product', category: 'Cash', count: 24},
-        {macroCategory: 'Liquid product', category: 'Cash', subCategory: 'Cash', count: 10},
-        {macroCategory: 'Liquid product', category: 'Cash', subCategory: 'Traveller\'s cheque', count: 14},
-        {macroCategory: 'Liquid product', category: 'Treasury bills', count: 23},
-        {macroCategory: 'Liquid product', category: 'Treasury bills', subCategory: 'Treasury bills', count: 23},
+        { macroCategory: 'Liquid product', count: 47 },
+        { macroCategory: 'Liquid product', category: 'Cash', count: 24 },
+        { macroCategory: 'Liquid product', category: 'Cash', subCategory: 'Cash', count: 10 },
+        { macroCategory: 'Liquid product', category: 'Cash', subCategory: 'Traveller\'s cheque', count: 14 },
+        { macroCategory: 'Liquid product', category: 'Treasury bills', count: 23 },
+        { macroCategory: 'Liquid product', category: 'Treasury bills', subCategory: 'Treasury bills', count: 23 },
       ]
     };
   }
