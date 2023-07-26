@@ -11,7 +11,7 @@ import {
 } from '../../../../../groot-ag-grid/src/lib/groot-ag-grid/groot-ag-grid-column-selector-modal/groot-ag-grid-column-selector-modal.component';
 import {Subject} from 'rxjs';
 import {BsModalService} from 'ngx-bootstrap/modal';
-import {RowGroupingModule} from '@ag-grid-enterprise/all-modules';
+import {RowGroupingModule} from '@ag-grid-enterprise/row-grouping';
 import {EnterpriseCoreModule} from '@ag-grid-enterprise/core';
 import {MultiSortPaginationOptions} from '../../../../../groot-ag-grid/src/lib/groot-ag-grid/groot-ag-grid-pagination.model';
 

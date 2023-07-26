@@ -31,8 +31,6 @@ export const GROOT_AG_GRID_COMPONENTS = [
   GrootAgGridTableHeaderComponent,
 ];
 
-export const agGridModule: ModuleWithProviders<AgGridModule> = AgGridModule.withComponents(GROOT_AG_GRID_COMPONENTS);
-
 @NgModule({
   imports: [
     CommonModule,
@@ -40,7 +38,7 @@ export const agGridModule: ModuleWithProviders<AgGridModule> = AgGridModule.with
     DragDropModule,
     TranslateModule.forChild(),
     GrootModule,
-    agGridModule,
+    AgGridModule,
   ],
   declarations: GROOT_AG_GRID_COMPONENTS,
   exports: GROOT_AG_GRID_COMPONENTS

@@ -9,18 +9,22 @@ import {
   SortPagination
 } from '@listgroup/groot';
 import {
+  BodyScrollEvent,
   CellClickedEvent,
   CellMouseDownEvent,
   ColDef,
   ColGroupDef,
   GridApi,
-  GridOptions, GridReadyEvent,
+  GridOptions,
   IsRowSelectable,
+  RowClassParams,
   RowDragEndEvent,
   RowDragEnterEvent,
   RowDragLeaveEvent,
   RowDragMoveEvent,
-  RowNode
+  RowHeightParams,
+  RowNode,
+  RowStyle
 } from 'ag-grid-community';
 import { TranslateService } from '@ngx-translate/core';
 import {GrootAgGridNoRowsOverlayComponent, GrootAgGridNoRowsParams} from './groot-ag-grid-no-rows-overlay/groot-ag-grid-no-rows-overlay.component';
@@ -33,7 +37,7 @@ import {GrootAgGridHeaderTemplateComponent} from './groot-ag-grid-header-templat
 import {GrootAgGridCustomizationService} from './groot-ag-grid-customization.service';
 import {GrootAgGridSelection} from './groot-ag-grid-selection.model';
 import {isNoGridDataMessage, NoGridDataMessage} from './no-grid-data.model';
-import {AgFilterComponent, AgGridAngular} from 'ag-grid-angular';
+import {AgGridAngular} from 'ag-grid-angular';
 import {
   TablePaginationComponent
 } from '@listgroup/groot/lib/groot-base/components/tables/table-pagination/table-pagination.component';
@@ -90,10 +94,10 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
   @Input() showRefreshIcon = false;
   @Input() lastRefreshTimestamp: Date | string = null;
   @Input() rowHeight = 28;
-  @Input() getRowHeight: ((rowNode: RowNode) => number | null) = null;
+  @Input() getRowHeight: ((rowNode: RowHeightParams) => number | null) = null;
   @Input() keepServerSorting: boolean = null;
   @Input() rowClassRules?: { [cssClassName: string]: (((params: any) => boolean) | string) } | null = null;
-  @ContentChild(GrootTableTitleRightAreaDirective, {read: TemplateRef}) tableTitleRightArea: TemplateRef<any> | null = null;
+  @ContentChild(GrootTableTitleRightAreaDirective, { read: TemplateRef }) tableTitleRightArea: TemplateRef<any> | null = null;
   @Input() showPaginationIfEmpty = this.grootAgGridCustomizationService.showPaginationIfEmptyDefault;
   @Input() singleRowSelection = false;
   @Input() rowMultiSelectWithClick = false;
@@ -110,27 +114,22 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
   @Output() rowDragLeave = new EventEmitter<RowDragLeaveEvent>();
 
   @Input() set searchResultsData(searchResultsData: PaginatedResponse<T> | NoGridDataMessage | LoadingFailed | null | undefined) {
+    this.noRowsOverlayComponentParams.loadingError = false;
+    this.rowsDisplayed = [];
+    this.noRowsOverlayComponentParams.message = null;
+    this.noRowsOverlayComponentParams.style = null;
+
     if (isNoGridDataMessage(searchResultsData)) {
-      this.noRowsOverlayComponentParams.loadingError = false;
       this.noRowsOverlayComponentParams.message = searchResultsData.message;
       this.noRowsOverlayComponentParams.style = searchResultsData.style;
       this.data = null;
-      this.rowsDisplayed = [];
     } else if (isLoadingFailed(searchResultsData)) {
       this.noRowsOverlayComponentParams.loadingError = true;
-      this.noRowsOverlayComponentParams.message = null;
-      this.noRowsOverlayComponentParams.style = null;
       this.data = null;
-      this.rowsDisplayed = [];
     } else {
-      this.noRowsOverlayComponentParams.loadingError = false;
-      this.noRowsOverlayComponentParams.message = null;
-      this.noRowsOverlayComponentParams.style = null;
       this.data = searchResultsData;
       if (this.data) {
         this.rowsDisplayed = this.data.records;
-      } else {
-        this.rowsDisplayed = [];
       }
     }
 
@@ -221,7 +220,7 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
       colDefs.unshift(accordionCell);
     }
 
-    if (this.additionalButtonsTemplate_ && this.additionalButtonsTemplate_.length > 0) {
+    if (this.additionalButtonsTemplate_?.length > 0) {
       for (const template of this.additionalButtonsTemplate_) {
         const actionButtonCell: ColDef = {
           ...SPECIAL_TOOL_CELL,
@@ -267,17 +266,17 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
     if (this._savedColumnState && this.gridOptions.columnApi) {
       const parsedState = JSON.parse(this._savedColumnState);
       if (parsedState) {
-        this.gridOptions.columnApi.setColumnState(parsedState);
+        this.gridOptions.columnApi.applyColumnState(parsedState);
       }
     }
   }
 
-  get getRowStyle(): (rowNode: RowNode) => any {
+  get getRowStyle(): (rowNode: RowClassParams) => RowStyle {
     return this._getRowStyle;
   }
 
   @Input()
-  set getRowStyle(value: (rowNode: RowNode) => any) {
+  set getRowStyle(value: (rowNode: RowClassParams) => RowStyle) {
     this._getRowStyle = value;
     if (this.gridOptions) {
       this.gridOptions.getRowStyle = this.getRowStyle;
@@ -313,12 +312,12 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
     }
   }
 
-  get getRowClass(): (rowNode: RowNode) => any {
+  get getRowClass(): (rowNode: RowClassParams) => string | string[] {
     return this._getRowClass;
   }
 
   @Input()
-  set getRowClass(value: (rowNode: RowNode) => any) {
+  set getRowClass(value: (rowNode: RowClassParams) => string | string[]) {
     this._getRowClass = value;
     if (this.gridOptions) {
       this.gridOptions.getRowClass = this._getRowClass;
@@ -383,14 +382,14 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
     fullWidthCellRendererParams: {
       ngTemplate: null,
     },
-    getRowHeight: (rowNode: RowNode) => {
+    getRowHeight: (rowHeightParams: RowHeightParams): number => {
       if (this.getRowHeight) {
-        const result = this.getRowHeight(rowNode);
+        const result = this.getRowHeight(rowHeightParams);
         if (result !== null && result !== undefined) {
           return result;
         }
       }
-      return rowNode.data?.$isAccordionRow ? this._accordionHeight : this.rowHeight;
+      return rowHeightParams.data?.$isAccordionRow ? this._accordionHeight : this.rowHeight;
     },
     rowClassRules: {
       'accordion-row': rowNode => rowNode.data?.$isAccordionRow,
@@ -408,7 +407,7 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
     rowDragManaged: this._rowDragManaged,
     suppressMoveWhenRowDragging: this._suppressMoveWhenRowDragging,
   };
-  public noRowsOverlayComponentParams: GrootAgGridNoRowsParams = {loadingError: false, api: null};
+  public noRowsOverlayComponentParams: GrootAgGridNoRowsParams = { loadingError: false, api: null, columnApi: undefined, context: undefined };
   private labelSub: Subscription;
   private _currentPageNum = 0;
   private sorting: SortPagination[] | null;
@@ -422,12 +421,12 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
   private columnDefs_: (ColDef | ColGroupDef)[] = [];
   private rowsDisplayed: T[] = [];
   private _accordionHeight = 60;
-  private _getRowStyle: ((rowNode: RowNode) => any) = null;
-  private _getRowClass: ((rowNode: RowNode) => any) = null;
+  private _getRowStyle: ((rowNode: RowClassParams) => RowStyle) = null;
+  private _getRowClass: ((rowNode: RowClassParams) => string | string[]) = null;
   public alignedGridsComponents: AgGridAngular[] = [];
-  @ViewChild('accordionButtonTemplate', {static: true}) accordionButtonTemplate: TemplateRef<any>;
-  @ViewChild('grid', {static: true}) grid: AgGridAngular;
-  @ViewChild('gridPagination', {static: true}) gridPagination: TablePaginationComponent;
+  @ViewChild('accordionButtonTemplate', { static: true }) accordionButtonTemplate: TemplateRef<any>;
+  @ViewChild('grid', { static: true }) grid: AgGridAngular;
+  @ViewChild('gridPagination', { static: true }) gridPagination: TablePaginationComponent;
   private _initialized = false;
   public isGridReady = false;
   private columnComparator = null;
@@ -451,7 +450,7 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
   }
 
   constructor(private translate: TranslateService,
-              private grootAgGridCustomizationService: GrootAgGridCustomizationService) {
+    private grootAgGridCustomizationService: GrootAgGridCustomizationService) {
   }
 
   ngOnInit(): void {
@@ -513,13 +512,13 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
           if (this.gridOptions.api) {
             // Update labels in the grid
             this.gridOptions.api.setColumnDefs(this.gridOptions.columnDefs);
-            this.gridOptions.columnApi.applyColumnState({state: columnState});
+            this.gridOptions.columnApi.applyColumnState({ state: columnState });
           }
         });
     } else {
       if (this.gridOptions.api) {
         this.gridOptions.api.setColumnDefs(this.gridOptions.columnDefs);
-        this.gridOptions.columnApi.applyColumnState({state: columnState});
+        this.gridOptions.columnApi.applyColumnState({ state: columnState });
       }
     }
   }
@@ -679,29 +678,23 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
     }
 
     if (selectedRows) {
+      let showAccordionValue = -1;
       if (row.$showingAccordion) {
+        showAccordionValue = +1;
+      }
 
-        for(let selectedRow of selectedRows){
-          if (selectedRow.rowIndex <= index) {
-            this.gridOptions.api.selectIndex(selectedRow.rowIndex, true, false);
-          } else {
-            this.gridOptions.api.selectIndex(selectedRow.rowIndex + 1, true, false);
-          }
-        }
-      } else {
-        for(let selectedRow of selectedRows){
-          if (selectedRow.rowIndex <= index) {
-            this.gridOptions.api.selectIndex(selectedRow.rowIndex, true, false);
-          } else {
-            this.gridOptions.api.selectIndex(selectedRow.rowIndex - 1, true, false);
-          }
+      for (let selectedRow of selectedRows) {
+        if (selectedRow.rowIndex <= index) {
+          this.gridOptions.api.selectIndex(selectedRow.rowIndex, true, false);
+        } else {
+          this.gridOptions.api.selectIndex(selectedRow.rowIndex + showAccordionValue, true, false);
         }
       }
     }
 
   }
 
-  onScroll($event: Event): void {
+  onScroll($event: BodyScrollEvent): void {
     this.bodyScroll.emit($event);
   }
 
@@ -710,7 +703,7 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
       const rows = this.gridOptions.api.getSelectedRows();
       const indexes = this.gridOptions.api.getSelectedNodes().map(n => n.rowIndex);
 
-      this.selectionChanged.next({rows, indexes});
+      this.selectionChanged.next({ rows, indexes });
     }
   }
 
@@ -733,8 +726,8 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
 
     const ev = event.event as MouseEvent;
     if (ev.button === 1) {      // Middle button click
-      event.event.preventDefault();
-      event.event.stopImmediatePropagation();
+      ev.preventDefault();
+      ev.stopImmediatePropagation();
 
       this.cellMiddleClicked.next(event);
     }
