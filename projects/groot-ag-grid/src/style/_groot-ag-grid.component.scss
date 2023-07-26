@@ -1,3 +1,4 @@
+@use "ag-grid-community/styles" as ag;
 $table-header-background-color: $light-primary !default;
 $table-header-foreground-color: color-yiq($table-header-background-color) !default;
 $table-accordion-bg: $gray-300 !default;
@@ -7,22 +8,18 @@ $table-checkbox-size: 15px;
 
 $ag-suppress-legacy-var-import: true;
 
-@import "ag-grid-community/src/styles/ag-grid";
-@import "ag-grid-community/src/styles/ag-theme-balham/sass/ag-theme-balham-mixin";
-
-.ag-theme-balham {
-  @include ag-theme-balham((balham-active-color: $primary,
-      odd-row-background-color: $white,
-      font-family: $font-family-sans-serif,
-      font-size: $font-size-base,
-      border-color: $table-border-color,
-      header-background-color: $table-header-background-color,
-      header-foreground-color: $table-header-foreground-color,
-      secondary-foreground-color: $table-header-icon-color,
-      selected-row-background-color: $lighter-primary,
-      header-column-separator-color: $table-header-column-separator-color,
-    ));
-}
+@include ag.grid-styles((theme: balham,
+    balham-active-color: $primary,
+    odd-row-background-color: $white,
+    font-family: $font-family-sans-serif,
+    font-size: $font-size-base,
+    border-color: $table-border-color,
+    header-background-color: $table-header-background-color,
+    header-foreground-color: $table-header-foreground-color,
+    secondary-foreground-color: $table-header-icon-color,
+    selected-row-background-color: $lighter-primary,
+    header-column-separator-color: $table-header-column-separator-color,
+  ));
 
 .ag-grid-rows-clickable .ag-row {
   cursor: pointer;
