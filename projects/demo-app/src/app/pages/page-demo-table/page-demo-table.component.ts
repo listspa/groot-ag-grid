@@ -1,5 +1,5 @@
 import {Component, OnInit, TemplateRef, ViewChild} from '@angular/core';
-import {ColDef} from 'ag-grid-community';
+import {ColDef, GetDataPath, GetRowIdFunc, Module} from 'ag-grid-community';
 import {GrootAgGridRenderer} from '../../../../../groot-ag-grid/src/lib/groot-ag-grid/groot-ag-grid-customization.consts';
 import {LoadingFailed, PaginatedResponse} from '@listgroup/groot';
 import {GrootAgGridSelection} from '../../../../../groot-ag-grid/src/lib/groot-ag-grid/groot-ag-grid-selection.model';
@@ -60,13 +60,23 @@ export class PageDemoTableComponent implements OnInit {
   searchResultsDataTree: PaginatedResponse<CategoryData>;
   columnsTree: ColDef[];
   treeGroupColDef: ColDef;
-  getDataPath = data => {
+  getDataPath: GetDataPath<any> = data => {
     if (data.subCategory) {
       return [data.macroCategory, data.category, data.subCategory];
     } else if (data.category) {
       return [data.macroCategory, data.category];
     } else {
       return [data.macroCategory];
+    }
+  };
+  getRowId: GetRowIdFunc<any> = data => {
+    const { subCategory, macroCategory, category } = data.data;
+    if (subCategory) {
+      return macroCategory + category + subCategory;
+    } else if (category) {
+      return macroCategory + category;
+    } else {
+      return macroCategory;
     }
   }
 

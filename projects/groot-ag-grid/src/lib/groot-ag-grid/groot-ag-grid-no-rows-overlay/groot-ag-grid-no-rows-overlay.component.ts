@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
 import {INoRowsOverlayAngularComp} from 'ag-grid-angular';
-import {INoRowsOverlayParams} from 'ag-grid-community';
+import {INoRowsOverlayParams} from 'ag-grid-community/main';
 
 export interface GrootAgGridNoRowsParams extends INoRowsOverlayParams {
   loadingError: boolean;

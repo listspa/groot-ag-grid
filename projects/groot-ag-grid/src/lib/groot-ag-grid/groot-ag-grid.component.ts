@@ -14,6 +14,8 @@ import {
   CellMouseDownEvent,
   ColDef,
   ColGroupDef,
+  GetDataPath,
+  GetRowIdFunc,
   GridApi,
   GridOptions,
   IsRowSelectable,
@@ -56,8 +58,6 @@ const SPECIAL_TOOL_CELL: ColDef = {
   maxWidth: 30,
   width: 30,
 };
-
-export declare type GetDataPath = (data: any) => string[];
 
 @Component({
   selector: 'groot-ag-grid',
@@ -108,8 +108,7 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
   @Input() autoGroupColumnDef: ColDef = null;
   @Input() groupMultiAutoColumn = false;
   @Input() suppressAggFuncInHeader = false;
-  @Input() getRowNodeId: any = null;
-  @Input() treeData: boolean | undefined;
+  @Input() getRowId: GetRowIdFunc<any> | undefined;
   @Output() rowDragEnter = new EventEmitter<RowDragEnterEvent>();
   @Output() rowDragEnd = new EventEmitter<RowDragEndEvent>();
   @Output() rowDragMove = new EventEmitter<RowDragMoveEvent>();
@@ -335,13 +334,13 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
   }
 
   @Input()
-  set getDataPath(fun: GetDataPath) {
+  set getDataPath(fun: GetDataPath<any>) {
     if (fun) {
       this.gridOptions.treeData = true;
       this.gridOptions.getDataPath = fun;
     } else {
       this.gridOptions.treeData = false;
-      this.gridOptions.getDataPath = null;
+      this.gridOptions.getDataPath = undefined;
     }
   }
 
@@ -366,7 +365,7 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
       lockPinned: true,
     },
     columnDefs: [],
-    frameworkComponents: {
+    components: {
       GrootAgGridNoRowsOverlayComponent,
       GrootAgGridLoadingOverlayComponent,
       booleansRenderer: GrootAgGridRendererBooleansComponent,
@@ -379,7 +378,7 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
       ...this.grootAgGridCustomizationService.frameworkComponents,
       ...this.grootAgGridCustomizationService.overlays,
     },
-    isFullWidthCell: rowNode => rowNode.data?.$isAccordionRow,
+    isFullWidthRow: params => params.rowNode?.data?.$isAccordionRow,
     fullWidthCellRenderer: 'templateRenderer',
     fullWidthCellRendererParams: {
       ngTemplate: null,
@@ -397,14 +396,13 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
       'accordion-row': rowNode => rowNode.data?.$isAccordionRow,
       'accordion-expanded': rowNode => rowNode.data?.$showingAccordion,
     },
-    suppressCellSelection: true,
+    suppressCellFocus: true,
     enableCellTextSelection: true,
     suppressScrollOnNewData: true,
     isRowSelectable: this._isRowSelectable,
     rowMultiSelectWithClick: false,
-    applyColumnDefOrder: true,
     treeData: false,
-    getDataPath: null,
+    getDataPath: undefined,
     groupDefaultExpanded: this.groupExpanded,
     rowDragManaged: this._rowDragManaged,
     suppressMoveWhenRowDragging: this._suppressMoveWhenRowDragging,
@@ -552,9 +550,7 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    if (this.labelSub) {
-      this.labelSub.unsubscribe();
-    }
+    this.labelSub?.unsubscribe();
   }
 
   onPageChanged(pageNum: number): void {
@@ -634,9 +630,8 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
       this.resetDefaultSorting();
     }
 
-    if (this.gridOptions.api) {
-      this.gridOptions.api.showLoadingOverlay();
-    }
+    this.gridOptions.api?.showLoadingOverlay();
+
     this.search.emit(this.getCurrentPagination());
   }
 
@@ -675,22 +670,24 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
       this.rowsDisplayed.splice(index + 1, 1);
     }
 
-    if (this.gridOptions.api) {
-      this.gridOptions.api.setRowData(this.rowsDisplayed);
-    }
+    this.gridOptions.api?.setRowData(this.rowsDisplayed);
 
-    if (selectedRows) {
+    if (selectedRows?.length) {
       let showAccordionValue = -1;
       if (row.$showingAccordion) {
         showAccordionValue = +1;
       }
 
       for (let selectedRow of selectedRows) {
-        if (selectedRow.rowIndex <= index) {
-          this.gridOptions.api.selectIndex(selectedRow.rowIndex, true, false);
-        } else {
-          this.gridOptions.api.selectIndex(selectedRow.rowIndex + showAccordionValue, true, false);
+        /*
+        retrieve node in this way (using getRowNode instead of using directlyselectedRow) because
+        after setNewRowData the nodes are not bind anymore to new data, in fact here this.gridOptions.api.getSelectedNodes() will return always empty array
+        */
+        let node = this.gridOptions.api?.getRowNode(`${selectedRow.rowIndex}`);
+        if (selectedRow.rowIndex > index) {
+          node = this.gridOptions.api?.getRowNode(`${selectedRow.rowIndex + showAccordionValue}`);
         }
+        node.setSelected(true, false, false);
       }
     }
 
