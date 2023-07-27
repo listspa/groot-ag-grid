@@ -1,10 +1,9 @@
-@use "sass:math";
 groot-ag-grid-table-header .actions,
 .groot-ag-grid-table-header .actions,
 .actions.link-as-button-container {
   groot-ag-grid-table-action + groot-ag-grid-table-action {
-    margin-left: math.div($spacing-between-actions,2);
-    padding-left: math.div($spacing-between-actions,2);
+    margin-left: $spacing-between-actions * 0.5;
+    padding-left: $spacing-between-actions * 0.5;
     border-left: $action-separator-width solid $action-separator-color;
   }
 }
