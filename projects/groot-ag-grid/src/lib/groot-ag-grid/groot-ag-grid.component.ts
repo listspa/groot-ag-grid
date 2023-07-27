@@ -18,6 +18,7 @@ import {
   GetRowIdFunc,
   GridApi,
   GridOptions,
+  IRowNode,
   IsRowSelectable,
   Module,
   RowClassParams,
@@ -25,10 +26,11 @@ import {
   RowDragEnterEvent,
   RowDragLeaveEvent,
   RowDragMoveEvent,
+  RowGroupingDisplayType,
   RowHeightParams,
   RowNode,
   RowStyle,
-} from 'ag-grid-community/main';
+} from 'ag-grid-community';
 import { TranslateService } from '@ngx-translate/core';
 import {GrootAgGridNoRowsOverlayComponent, GrootAgGridNoRowsParams} from './groot-ag-grid-no-rows-overlay/groot-ag-grid-no-rows-overlay.component';
 import {GrootAgGridLoadingOverlayComponent} from './groot-ag-grid-loading-overlay/groot-ag-grid-loading-overlay.component';
@@ -107,6 +109,7 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
   @Input() modules: Array<Module> = null;
   @Input() autoGroupColumnDef: ColDef = null;
   @Input() groupMultiAutoColumn = false;
+  @Input() groupDisplayType: RowGroupingDisplayType | undefined = this.groupMultiAutoColumn ? 'multipleColumns' : 'singleColumn';
   @Input() suppressAggFuncInHeader = false;
   @Input() getRowId: GetRowIdFunc<any> | undefined;
   @Output() rowDragEnter = new EventEmitter<RowDragEnterEvent>();
@@ -652,7 +655,7 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
   toggleAccordion(row, index): void {
     row.$showingAccordion = !row.$showingAccordion;
 
-    const selectedRows: RowNode[] = this.gridOptions.api.getSelectedNodes();
+    const selectedRows: IRowNode[] = this.gridOptions.api.getSelectedNodes();
 
     if (row.$showingAccordion) {
       const accordionRow = {
@@ -680,7 +683,7 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
 
       for (let selectedRow of selectedRows) {
         /*
-        retrieve node in this way (using getRowNode instead of using directlyselectedRow) because
+        retrieve node in this way (using getRowNode instead of using directly selectedRow) because
         after setNewRowData the nodes are not bind anymore to new data, in fact here this.gridOptions.api.getSelectedNodes() will return always empty array
         */
         let node = this.gridOptions.api?.getRowNode(`${selectedRow.rowIndex}`);
