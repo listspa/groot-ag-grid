@@ -1,5 +1,5 @@
 import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
-import { ColDef, ColGroupDef, GetDataPath, GetRowIdFunc, Module } from 'ag-grid-community/main';
+import { ColDef, ColGroupDef, GetDataPath, GetRowIdFunc, Module } from 'ag-grid-community';
 import { GrootAgGridRenderer } from '../../../../../groot-ag-grid/src/lib/groot-ag-grid/groot-ag-grid-customization.consts';
 import { LoadingFailed, PaginatedResponse, PaginationOptions } from '@listgroup/groot';
 import { GrootAgGridSelection } from '../../../../../groot-ag-grid/src/lib/groot-ag-grid/groot-ag-grid-selection.model';

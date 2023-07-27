@@ -1,5 +1,5 @@
 import {Component, TemplateRef} from '@angular/core';
-import {ICellRendererParams} from 'ag-grid-community/main';
+import {ICellRendererParams} from 'ag-grid-community';
 import {ICellRendererAngularComp} from 'ag-grid-angular';
 
 /**
