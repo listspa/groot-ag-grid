@@ -671,7 +671,7 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
         if (selectedRow.rowIndex > index) {
           node = this.gridOptions.api?.getRowNode(`${selectedRow.rowIndex + showAccordionValue}`);
         }
-        node.setSelected(true, false, false);
+        node.setSelected(true, false);
       }
     }
 
