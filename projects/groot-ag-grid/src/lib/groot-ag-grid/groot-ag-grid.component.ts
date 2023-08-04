@@ -30,6 +30,7 @@ import {AgGridAngular} from 'ag-grid-angular';
 import {
   TablePaginationComponent
 } from '@listgroup/groot/lib/groot-base/components/tables/table-pagination/table-pagination.component';
+import {MultiSortPaginationOptions} from "./groot-ag-grid-pagination.model";
 
 const SPECIAL_TOOL_CELL: ColDef = {
   resizable: false,
@@ -49,7 +50,7 @@ export declare type GetDataPath = (data: any) => string[];
   templateUrl: './groot-ag-grid.component.html',
 })
 export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
-  @Output() search = new EventEmitter<PaginationOptions>();
+  @Output() search = new EventEmitter<MultiSortPaginationOptions>();
   @Output() cellClicked = new EventEmitter<CellClickedEvent>();
   @Output() cellMiddleClicked = new EventEmitter<CellClickedEvent>();
   @Output() columnsStatusChanged = new EventEmitter<string>();
@@ -384,7 +385,7 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
   public noRowsOverlayComponentParams: GrootAgGridNoRowsParams = {loadingError: false, api: null};
   private labelSub: Subscription;
   private _currentPageNum = 0;
-  private sorting: SortPagination;
+  private sorting: SortPagination[];
   private _savedColumnState: string | null = null;
   private accordionTemplate_: TemplateRef<any>;
   private actionButtonTemplate_: TemplateRef<any>;
@@ -455,7 +456,7 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
     if (this.gridOptions.defaultColDef) {
       this.gridOptions.defaultColDef.sortable = !this.disableSorting;
     }
-    this.sorting = {sortField: this.defaultSortColumn, sortReversed: this.defaultSortReverseFlag};
+    this.sorting = [{sortField: this.defaultSortColumn, sortReversed: this.defaultSortReverseFlag}];
     this.setSorting();
   }
 
@@ -558,8 +559,9 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
       const columnState = this.gridOptions.columnApi.getColumnState();
       let found = false;
       columnState.forEach(col => {
-        if (col.colId === this.sorting.sortField) {
-          col.sort = this.sorting.sortReversed ? 'desc' : 'asc';
+        let matchedSorting = this.sorting.filter(s => s.sortField == col.colId);
+        if (matchedSorting.length != 0) {
+          matchedSorting.forEach(s => col.sort = s.sortReversed ? 'desc' : 'asc');
           found = true;
         } else {
           col.sort = null;
@@ -574,20 +576,17 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
   }
 
   onSortChanged(): void {
-    this.sorting = null;
-    this.gridOptions.columnApi.getColumnState().forEach(col => {
-      if (col.sort && col.colId && !this.sorting) {
-        this.sorting = {
-          sortField: col.colId,
-          sortReversed: col.sort === 'desc',
-        };
-      }
-    });
+    this.sorting = this.gridOptions.columnApi.getColumnState()
+      .filter(col => col.sort)
+      .sort((a, b) => a.sortIndex - b.sortIndex)
+      .map(col => ({
+        sortField: col.colId,
+        sortReversed: col.sort === 'desc'
+      }));
 
-    // NOTE: In previous versions we emitted the default field. We might have to restore this behavior.
-    // if (!this.sorting) {
-    //   this.resetDefaultSorting();
-    // }
+    if (this.sorting.length == 0) {
+      this.resetDefaultSorting();
+    }
 
     this.reloadTable(false);
   }
@@ -620,10 +619,10 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
     this.search.emit(this.getCurrentPagination());
   }
 
-  getCurrentPagination(): PaginationOptions {
+  getCurrentPagination(): MultiSortPaginationOptions {
     return {
-      sortField: this.sorting && this.sorting.sortField,
-      sortReversed: this.sorting && this.sorting.sortReversed,
+      sort: this.sorting,
+      ...this.sorting[0],
       pageNum: this._currentPageNum,
       pageLen: this.pageSize
     };

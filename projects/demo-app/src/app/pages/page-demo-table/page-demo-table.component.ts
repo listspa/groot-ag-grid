@@ -13,6 +13,9 @@ import {Subject} from 'rxjs';
 import {BsModalService} from 'ngx-bootstrap/modal';
 import {RowGroupingModule} from '@ag-grid-enterprise/all-modules';
 import {EnterpriseCoreModule} from '@ag-grid-enterprise/core/dist/cjs/agGridEnterpriseModule';
+import {
+  MultipleSortPagination, MultiSortPaginationOptions
+} from "../../../../../groot-ag-grid/src/lib/groot-ag-grid/groot-ag-grid-pagination.model";
 
 interface User {
   id: string;
@@ -168,7 +171,7 @@ export class PageDemoTableComponent implements OnInit {
     };
   }
 
-  search(event: PaginationOptions): void {
+  search(event: MultiSortPaginationOptions): void {
     this.searchResultsData = {
       pageNum: event.pageNum,
       pageLen: event.pageLen,
@@ -184,19 +187,22 @@ export class PageDemoTableComponent implements OnInit {
     this.applySort(event);
   }
 
-  private applySort(event: PaginationOptions): void {
+  private applySort(event: MultiSortPaginationOptions): void {
     // Apply sort
-    if (event.sortField) {
-      this.searchResultsData.records.sort((r1, r2) => {
-        if (r1[event.sortField] < r2[event.sortField]) {
-          return event.sortReversed ? +1 : -1;
-        } else if (r1[event.sortField] > r2[event.sortField]) {
-          return event.sortReversed ? -1 : +1;
-        } else {
-          return 0;
-        }
-      });
+    if (!event.sort) {
+      return;
     }
+    this.searchResultsData.records.sort((r1, r2) => {
+      for (const s of event.sort) {
+        if (r1[s.sortField] < r2[s.sortField]) {
+          return s.sortReversed ? +1 : -1;
+        } else if (r1[s.sortField] > r2[s.sortField]) {
+          return s.sortReversed ? -1 : +1;
+        }
+      }
+      // if all fields in sort are equal, records are equal
+      return 0;
+    });
   }
 
   setSelection(event: GrootAgGridSelection<User>): void {
