@@ -7,8 +7,8 @@
   </span>
 
   <span class="ag-sort-indicator-icon ag-sort-order"
-        [class.ag-hidden]="params.column.getSortIndex() > 0">
-    {{params.column.getSortIndex()}}
+        [class.ag-hidden]="sortIndex == 0">
+    {{sortIndex}}
   </span>
   <span class="ag-header-icon ag-sort-ascending-icon"
         [class.ag-hidden]="sorted !== 'asc'">
