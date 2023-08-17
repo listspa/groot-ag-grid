@@ -6,6 +6,10 @@
     ></ng-container>
   </span>
 
+  <span class="ag-sort-indicator-icon ag-sort-order"
+        [class.ag-hidden]="!moreThanOneColSorting">
+    {{params.column.getSortIndex()}}
+  </span>
   <span class="ag-header-icon ag-sort-ascending-icon"
         [class.ag-hidden]="sorted !== 'asc'">
     <span class="ag-icon ag-icon-asc"></span>

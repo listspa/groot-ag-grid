@@ -18,6 +18,7 @@ export class GrootAgGridHeaderTemplateComponent implements IHeaderAngularComp {
   params: IHeaderParams;
   template: TemplateRef<any>;
   sorted: 'asc' | 'desc' | '';
+  moreThanOneColSorting = false;
 
   agInit(params: IHeaderParams): void {
     this.template = params['ngTemplate'];
@@ -41,6 +42,8 @@ export class GrootAgGridHeaderTemplateComponent implements IHeaderAngularComp {
     } else {
       this.sorted = '';
     }
+    this.moreThanOneColSorting = this.params.columnApi.getColumnState()
+      .filter(c => c.sort).length > 1;
   }
 
   @HostListener('click', ['$event'])
