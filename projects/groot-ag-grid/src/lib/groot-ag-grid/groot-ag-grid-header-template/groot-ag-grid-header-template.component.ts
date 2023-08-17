@@ -44,23 +44,23 @@ export class GrootAgGridHeaderTemplateComponent implements IHeaderAngularComp {
   }
 
   @HostListener('click', [])
-  toggleSort(): void {
+  toggleSort($event: MouseEvent): void {
     switch (this.sorted) {
       case 'asc':
-        this.changeSort('desc');
+        this.changeSort('desc', $event);
         break;
 
       case 'desc':
-        this.changeSort('');
+        this.changeSort('', $event);
         break;
 
       case '':
-        this.changeSort('asc');
+        this.changeSort('asc', $event);
         break;
     }
   }
 
-  private changeSort(order): void {
-    this.params.setSort(order, false);
+  private changeSort(order: string, $event: MouseEvent): void {
+    this.params.setSort(order, $event.shiftKey);
   }
 }
