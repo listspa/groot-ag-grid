@@ -7,7 +7,7 @@
   </span>
 
   <span class="ag-sort-indicator-icon ag-sort-order"
-        [class.ag-hidden]="!moreThanOneColSorting">
+        [class.ag-hidden]="params.column.getSortIndex() > 0">
     {{params.column.getSortIndex()}}
   </span>
   <span class="ag-header-icon ag-sort-ascending-icon"
