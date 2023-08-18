@@ -1,6 +1,6 @@
 @use "ag-grid-community/styles" as ag;
 $table-header-background-color: $light-primary !default;
-$table-header-foreground-color: color-yiq($table-header-background-color) !default;
+$table-header-foreground-color: color-contrast($table-header-background-color) !default;
 $table-accordion-bg: $gray-300 !default;
 $table-header-icon-color: $gray-800 !default;
 $table-header-font-size: 0.925em !default;
