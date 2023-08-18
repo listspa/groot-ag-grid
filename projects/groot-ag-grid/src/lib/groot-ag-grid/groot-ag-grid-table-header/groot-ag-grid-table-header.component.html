@@ -36,7 +36,7 @@
       <span class="rows-count-label" translate>common.numRowsSelected</span>
       <span *ngIf="selection && selection.rows"
             class="rows-count-counter"> {{selection.rows.length | number:'0.0'}}</span>
-      <span *ngIf="showClearSelection" class="link-as-button ml-3" translate (click)="deSelectAll()">common.clearSelection</span>
+      <span *ngIf="showClearSelection" class="link-as-button ms-3" translate (click)="deSelectAll()">common.clearSelection</span>
     </div>
 
     <div class="flex-grow-1"></div>
