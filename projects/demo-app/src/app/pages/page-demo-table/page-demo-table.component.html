@@ -73,10 +73,6 @@
   (search)="search($event)"
   [accordionHeight]="30"
   [accordionTemplate]="accordionTemplate"
-  [checkboxSelection]="selectionMode === 'multi'"
-  [headerCheckboxSelection]="selectionMode === 'multi'"
-  [singleRowSelection]="selectionMode === 'single'"
-  [rowMultiSelectWithClick]="selectionMode === 'multi-click'"
 >
   <ng-template #accordionTemplate let-row>
     <p>Here you can show more details about the row. For instance, here we show {{row.name}}.</p>
