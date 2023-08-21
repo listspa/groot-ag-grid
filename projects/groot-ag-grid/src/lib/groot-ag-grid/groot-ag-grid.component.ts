@@ -100,7 +100,7 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
   @Input() getRowHeight: ((rowNode: RowHeightParams) => number | null) = null;
   @Input() keepServerSorting: boolean = null;
   @Input() rowClassRules?: { [cssClassName: string]: (((params: any) => boolean) | string) } | null = null;
-  @ContentChild(GrootTableTitleRightAreaDirective, { read: TemplateRef }) tableTitleRightArea: TemplateRef<any> | null = null;
+  @ContentChild(GrootTableTitleRightAreaDirective, {read: TemplateRef}) tableTitleRightArea: TemplateRef<any> | null = null;
   @Input() showPaginationIfEmpty = this.grootAgGridCustomizationService.showPaginationIfEmptyDefault;
   @Input() singleRowSelection = false;
   @Input() rowMultiSelectWithClick = false;
@@ -410,7 +410,7 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
     rowDragManaged: this._rowDragManaged,
     suppressMoveWhenRowDragging: this._suppressMoveWhenRowDragging,
   };
-  public noRowsOverlayComponentParams: GrootAgGridNoRowsParams = { loadingError: false, api: null, columnApi: undefined, context: undefined };
+  public noRowsOverlayComponentParams: GrootAgGridNoRowsParams = {loadingError: false, api: null, columnApi: undefined, context: undefined};
   private labelSub: Subscription;
   private _currentPageNum = 0;
   private sorting: SortPagination[] | null;
@@ -427,9 +427,9 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
   private _getRowStyle: ((rowNode: RowClassParams) => RowStyle) = null;
   private _getRowClass: ((rowNode: RowClassParams) => string | string[]) = null;
   public alignedGridsComponents: AgGridAngular[] = [];
-  @ViewChild('accordionButtonTemplate', { static: true }) accordionButtonTemplate: TemplateRef<any>;
-  @ViewChild('grid', { static: true }) grid: AgGridAngular;
-  @ViewChild('gridPagination', { static: true }) gridPagination: TablePaginationComponent;
+  @ViewChild('accordionButtonTemplate', {static: true}) accordionButtonTemplate: TemplateRef<any>;
+  @ViewChild('grid', {static: true}) grid: AgGridAngular;
+  @ViewChild('gridPagination', {static: true}) gridPagination: TablePaginationComponent;
   private _initialized = false;
   public isGridReady = false;
   private columnComparator = null;
@@ -453,7 +453,7 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
   }
 
   constructor(private translate: TranslateService,
-    private grootAgGridCustomizationService: GrootAgGridCustomizationService) {
+              private grootAgGridCustomizationService: GrootAgGridCustomizationService) {
   }
 
   ngOnInit(): void {
@@ -515,13 +515,13 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
           if (this.gridOptions.api) {
             // Update labels in the grid
             this.gridOptions.api.setColumnDefs(this.gridOptions.columnDefs);
-            this.gridOptions.columnApi.applyColumnState({ state: columnState });
+            this.gridOptions.columnApi.applyColumnState({state: columnState});
           }
         });
     } else {
       if (this.gridOptions.api) {
         this.gridOptions.api.setColumnDefs(this.gridOptions.columnDefs);
-        this.gridOptions.columnApi.applyColumnState({ state: columnState });
+        this.gridOptions.columnApi.applyColumnState({state: columnState});
       }
     }
   }
@@ -681,14 +681,17 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
         showAccordionValue = +1;
       }
 
-      for (let selectedRow of selectedRows) {
+      for (const selectedRow of selectedRows) {
         /*
-        retrieve node in this way (using getRowNode instead of using directly selectedRow) because
-        after setNewRowData the nodes are not bind anymore to new data, in fact here this.gridOptions.api.getSelectedNodes() will return always empty array
+         retrieve node in this way (using getDisplayedRowAtIndex instead of using directly selectedRow) because
+         after setNewRowData the nodes are not bind anymore to new data,
+         in fact here this.gridOptions.api.getSelectedNodes() will return always an empty array
         */
-        let node = this.gridOptions.api?.getRowNode(`${selectedRow.rowIndex}`);
+        let node: IRowNode;
         if (selectedRow.rowIndex > index) {
-          node = this.gridOptions.api?.getRowNode(`${selectedRow.rowIndex + showAccordionValue}`);
+          node = this.gridOptions.api?.getDisplayedRowAtIndex(selectedRow.rowIndex + showAccordionValue);
+        } else {
+          node = this.gridOptions.api?.getDisplayedRowAtIndex(selectedRow.rowIndex);
         }
         node.setSelected(true, false);
       }
@@ -705,7 +708,7 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
       const rows = this.gridOptions.api.getSelectedRows();
       const indexes = this.gridOptions.api.getSelectedNodes().map(n => n.rowIndex);
 
-      this.selectionChanged.next({ rows, indexes });
+      this.selectionChanged.next({rows, indexes});
     }
   }
 
