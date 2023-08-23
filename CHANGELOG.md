@@ -1,5 +1,16 @@
 # Groot-ag-grid releases
 
+## Version 6.0.0 - in progress
+
+  BREAKING CHANGES:
+  - Angular 15
+  - ag-grid 30.0.x
+  - Bootstrap 5
+
+  Breaking changes on input parameters:
+  - getRowHeight now accepts param of type RowHeghtParams instead of RowNode
+  - getRowNodeId is deprecated, use getRowId instead (see ag-grid documentation)
+
 ## Version 5.6.2 - 2023-05-12
 
 feat: remove numbersRendererShowUpdate (RIP), keep only numbersRenderer - configurable through cellRendererParams to show delta value
@@ -212,13 +223,13 @@ feat: remove numbersRendererShowUpdate (RIP), keep only numbersRenderer - config
 ## Version 0.2.2 - 2020-04-09
 
 - fix: changing columns after the table was loaded should not remove the action
-  buttons or the checkboxes 
+  buttons or the checkboxes
 
 ## Version 0.2.1 - 2020-04-02
 
 - added in the template-renderer the row as template argument
 - fix: fixed an NPE when column definitions are updated but the grid hasn't
-  loaded yet 
+  loaded yet
 
 ## Version 0.2.0 - 2020-04-02
 
