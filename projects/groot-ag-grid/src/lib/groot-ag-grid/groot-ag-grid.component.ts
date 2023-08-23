@@ -111,24 +111,25 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
   @Output() rowDragLeave = new EventEmitter<RowDragLeaveEvent>();
 
   @Input() set searchResultsData(searchResultsData: PaginatedResponse<T> | NoGridDataMessage | LoadingFailed | null | undefined) {
-    this.noRowsOverlayComponentParams.loadingError = false;
-    this.rowsDisplayed = [];
-    this.noRowsOverlayComponentParams.message = null;
-    this.noRowsOverlayComponentParams.style = null;
-
     if (isNoGridDataMessage(searchResultsData)) {
-      this.noRowsOverlayComponentParams.message = searchResultsData.message;
-      this.noRowsOverlayComponentParams.style = searchResultsData.style;
-      this.data = null;
-    } else if (isLoadingFailed(searchResultsData)) {
-      this.noRowsOverlayComponentParams.loadingError = true;
-      this.data = null;
-    } else {
-      this.data = searchResultsData;
-      if (this.data) {
-        this.rowsDisplayed = this.data.records;
+      this.noRowsOverlayComponentParams.loadingError = false;
+        this.noRowsOverlayComponentParams.message = searchResultsData.message;
+        this.noRowsOverlayComponentParams.style = searchResultsData.style;
+        this.data = null;
+        this.rowsDisplayed = [];
+      } else if (isLoadingFailed(searchResultsData)) {
+        this.noRowsOverlayComponentParams.loadingError = true;
+        this.noRowsOverlayComponentParams.message = null;
+        this.noRowsOverlayComponentParams.style = null;
+        this.data = null;
+        this.rowsDisplayed = [];
+      } else {
+        this.noRowsOverlayComponentParams.loadingError = false;
+        this.noRowsOverlayComponentParams.message = null;
+        this.noRowsOverlayComponentParams.style = null;
+        this.data = searchResultsData;
+        this.rowsDisplayed = this.data?.records || [];
       }
-    }
 
     if (this.gridOptions.api) {
       this.gridOptions.api.hideOverlay();
