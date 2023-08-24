@@ -74,6 +74,11 @@ $ag-suppress-legacy-var-import: true;
   .ag-cell-height-100 {
     height: 100%;
   }
+
+  .ag-cell-wrapper .ag-cell-value ul {
+    margin-top: 0;
+    margin-bottom: 0;
+  }
 }
 
 .groot-paginator-hidden {
