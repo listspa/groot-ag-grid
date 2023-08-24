@@ -1,0 +1,16 @@
+<groot-ag-grid
+  class="mt-4 mb-4"
+  #gridSelection
+  [columnDefs]="columns"
+  [searchResultsData]="searchResultsData"
+  [getRowHeight]="getRowHeight"
+  (search)="search($event)"
+></groot-ag-grid>
+
+<ng-template #listData>
+  <ul>
+    <li>U001</li>
+    <li>U002</li>
+    <li>U003</li>
+  </ul>
+</ng-template>

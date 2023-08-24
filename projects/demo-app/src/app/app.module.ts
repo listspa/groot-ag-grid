@@ -31,6 +31,7 @@ import {AgGridModule} from 'ag-grid-angular';
 import {ButtonsModule} from 'ngx-bootstrap/buttons';
 import {PageHomepageComponent} from './pages/page-homepage/page-homepage.component';
 import {PageCustomComponentsComponent} from './pages/page-custom-components/page-custom-components.component';
+import { PageDemoStyleComponent } from './pages/page-demo-style/page-demo-style.component';
 
 // Required as a separate function for AOT compilation
 export function HttpLoaderFactory(http: HttpClient) {
@@ -42,7 +43,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     AppComponent,
     PageDemoTableComponent,
     PageHomepageComponent,
-    PageCustomComponentsComponent
+    PageCustomComponentsComponent,
+    PageDemoStyleComponent
   ],
   imports: [
     BrowserModule,
