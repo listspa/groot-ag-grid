@@ -11,7 +11,7 @@
     "@angular/common": "^15.2.9",
     "@angular/core": "^15.2.9",
     "@angular/forms": "^15.2.9",
-    "@listgroup/groot": "4.0.0-alpha.2",
+    "@listgroup/groot": "^4.0.0-alpha",
     "ag-grid-angular": "~30.0.5",
     "ag-grid-community": "~30.0.5"
   },
