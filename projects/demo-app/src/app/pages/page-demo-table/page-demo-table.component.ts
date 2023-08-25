@@ -44,8 +44,10 @@ export class PageDemoTableComponent implements OnInit {
   @ViewChild('alignedGrid1', {static: false}) alignedGrid1: GrootAgGridComponent<any>;
   @ViewChild('alignedGrid2', {static: false}) alignedGrid2: GrootAgGridComponent<any>;
   @ViewChild('gridHeader', {static: false}) gridHeader: GrootAgGridComponent<any>;
+  @ViewChild('columnHeaderTemplate', {static: true}) columnHeaderTemplate: TemplateRef<any>;
   availableColumns: ColDef[];
   columns: ColDef[];
+  customHeaderColumns: ColDef[];
   columnsGroup: ColGroupDef[];
   searchResultsData: PaginatedResponse<User>;
   @ViewChild('cellTemplate', {static: true}) cellTemplate: TemplateRef<any>;
@@ -114,6 +116,11 @@ export class PageDemoTableComponent implements OnInit {
       }
     ];
     this.columns = [...this.availableColumns];
+    this.customHeaderColumns = [...this.availableColumns.map(c => ({
+      ...c,
+      headerComponent: 'headerTemplateRenderer',
+      headerComponentParams: { ngTemplate: this.columnHeaderTemplate}
+    }))];
 
     this.columnsGroup = [{
       headerName: 'Group 1',

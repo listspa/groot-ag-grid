@@ -2,23 +2,23 @@
   <span class="ag-header-cell-text"
         role="columnheader">
     <ng-container
-      *ngTemplateOutlet="template; context: {$implicit: params.column, col: params.column.getColDef()}"
+      *ngTemplateOutlet="params.ngTemplate; context: {$implicit: params.column, col: params.column.getColDef()}"
     ></ng-container>
   </span>
 
-  <span class="ag-sort-indicator-icon ag-sort-order"
-        [class.ag-hidden]="sorted === '' || params.column.getSortIndex() === 0">
-    {{params.column.getSortIndex()}}
+  <span class="ag-sort-indicator-icon ag-header-label-icon ag-sort-order"
+        [ngClass]="{'ag-hidden': !this.params.columnApi['moreThanOneColumnSorted'] || sorted === ''}">
+    {{params.column.getSortIndex() + 1}}
   </span>
-  <span class="ag-header-icon ag-sort-ascending-icon"
+  <span class="ag-header-icon ag-header-label-icon ag-sort-ascending-icon"
         [class.ag-hidden]="sorted !== 'asc'">
     <span class="ag-icon ag-icon-asc"></span>
   </span>
-  <span class="ag-header-icon ag-sort-descending-icon"
+  <span class="ag-header-icon ag-header-label-icon ag-sort-descending-icon"
         [class.ag-hidden]="sorted !== 'desc'">
     <span class="ag-icon ag-icon-desc"></span>
   </span>
-  <span class="ag-header-icon ag-sort-none-icon"
+  <span class="ag-header-icon ag-header-label-icon ag-sort-none-icon"
         [class.ag-hidden]="sorted !== '' || !params.column.getColDef().unSortIcon">
     <span class="ag-icon ag-icon-none"></span>
   </span>

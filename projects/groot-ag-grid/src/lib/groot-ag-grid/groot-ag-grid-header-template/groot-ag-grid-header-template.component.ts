@@ -2,10 +2,15 @@ import {Component, HostListener, TemplateRef} from '@angular/core';
 import {IHeaderParams} from 'ag-grid-community';
 import {IHeaderAngularComp} from 'ag-grid-angular';
 
+interface GrootAgGridHeaderParams extends IHeaderParams {
+    ngTemplate: TemplateRef<any>
+}
+
 /**
  * Component to render a generic template inside a table header.
  */
 @Component({
+  selector: 'app-custom-header',
   templateUrl: './groot-ag-grid-header-template.component.html',
   styles: [`
     :host {
@@ -15,20 +20,16 @@ import {IHeaderAngularComp} from 'ag-grid-angular';
   `]
 })
 export class GrootAgGridHeaderTemplateComponent implements IHeaderAngularComp {
-  params: IHeaderParams;
-  template: TemplateRef<any>;
+  params: GrootAgGridHeaderParams;
   sorted: 'asc' | 'desc' | '';
-  sortIndex: number;
 
-  agInit(params: IHeaderParams): void {
-    this.template = params['ngTemplate'];
+  agInit(params: GrootAgGridHeaderParams): void {
     this.params = params;
     this.params.column.addEventListener('sortChanged', () => this.onSortChanged());
     this.onSortChanged();
   }
 
-  refresh(params: IHeaderParams): boolean {
-    this.template = params['ngTemplate'];
+  refresh(params: GrootAgGridHeaderParams): boolean {
     this.params = params;
     this.onSortChanged();
     return true;
@@ -42,27 +43,12 @@ export class GrootAgGridHeaderTemplateComponent implements IHeaderAngularComp {
     } else {
       this.sorted = '';
     }
-    this.sortIndex = this.params.column.getSortIndex() || 0;
+    this.params.columnApi['moreThanOneColumnSorted'] = this.params.columnApi.getColumnState().filter(c => c.sort).length > 1;
+    console.log(`${this.params.column.getId()}: [${this.sorted}], moreThanOneColumnSorted: ${this.params.columnApi['moreThanOneColumnSorted']}`);
   }
 
   @HostListener('click', ['$event'])
   toggleSort($event: MouseEvent): void {
-    switch (this.sorted) {
-      case 'asc':
-        this.changeSort('desc', $event);
-        break;
-
-      case 'desc':
-        this.changeSort('', $event);
-        break;
-
-      case '':
-        this.changeSort('asc', $event);
-        break;
-    }
-  }
-
-  private changeSort(order: string, $event: MouseEvent): void {
-    this.params.setSort(order, $event.shiftKey);
+    this.params.progressSort($event.shiftKey);
   }
 }

@@ -206,6 +206,51 @@
   [hideTitleBar]="true"
 ></groot-ag-grid>
 
+<h2>Column header template</h2>
+
+<p>Column headers can be customized by setting headerComponent and headerComponentParams.ngTemplate in the relative ColDef, and define a template
+
+<pre><code>
+&lt;ng-template #columnHeaderTemplate let-col="col"&gt;
+  {{ "{{" }}col.headerName}}
+  &lt;i class="fa fa-italic"&gt;&lt;/i&gt;
+&lt;/ng-template&gt;
+</code></pre>
+
+<pre><code>
+
+  @ViewChild('columnHeaderTemplate', {{ "{" }}static: true}) columnHeaderTemplate: TemplateRef&lt;any&gt;;
+
+  ...
+
+  columns: ColDef[] = [{{ "{" }}
+    colId: 'name',
+    field: 'name',
+      headerComponent: 'headerTemplateRenderer',
+      headerComponentParams: {{ "{" }} ngTemplate: this.columnHeaderTemplate}
+    },
+    ...
+  ]
+</code></pre>
+
+
+
+<groot-ag-grid
+  #gridHeader
+  class="mb-4"
+  [columnDefs]="customHeaderColumns"
+  [searchResultsData]="searchResultsData"
+  (search)="search($event)"
+  [defaultSortColumn]="'id'"
+  [defaultSortReverseFlag]="true"
+  [hideTitleBar]="true"
+></groot-ag-grid>
+
+<ng-template #columnHeaderTemplate let-col="col">
+  <i class="fa fa-star"></i>
+  {{col.headerName}}
+</ng-template>
+
 <h2>Tree (Requires Ag-Grid Enterprise)</h2>
 
 <p>Take a look at the source code for this page on GitLab and the
