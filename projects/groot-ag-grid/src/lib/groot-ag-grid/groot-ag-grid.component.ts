@@ -59,8 +59,15 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
   @Output() agGridReady = new EventEmitter<GridApi>();
 
   @Input() disableSorting = false;
+  /**
+   * @deprecated please use defaultSort which supports multiple column sorting
+   */
   @Input() defaultSortColumn: string;
+  /**
+   * @deprecated please use defaultSort which supports multiple column sorting
+   */
   @Input() defaultSortReverseFlag = false;
+  @Input() defaultSort: SortPagination[];
   @Input() pageSize = 15;
   @Input() labelPrefix = '';
   @Input() gridHeightCss: string | null = null;
@@ -456,7 +463,7 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
     if (this.gridOptions.defaultColDef) {
       this.gridOptions.defaultColDef.sortable = !this.disableSorting;
     }
-    this.sorting = [{sortField: this.defaultSortColumn, sortReversed: this.defaultSortReverseFlag}];
+    this.sorting = this.defaultSort ?? [{sortField: this.defaultSortColumn, sortReversed: this.defaultSortReverseFlag}];
     this.setSorting();
   }
 
@@ -556,21 +563,19 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
 
   private setSorting(): boolean {
     if (!this.disableSorting && this.sorting && this.gridOptions.columnApi) {
-      const columnState = this.gridOptions.columnApi.getColumnState();
-      let found = false;
-      columnState.forEach(col => {
-        let matchedSorting = this.sorting.filter(s => s.sortField == col.colId);
-        if (matchedSorting.length != 0) {
-          matchedSorting.forEach(s => col.sort = s.sortReversed ? 'desc' : 'asc');
-          found = true;
-        } else {
-          col.sort = null;
-        }
+      const columns = this.gridOptions.columnApi.getAllColumns();
+      const sortingState = this.sorting
+        .filter(s => columns.some(col => s.sortField === col.getColId()))
+        .map((s, i) => ({
+          colId: s.sortField,
+          sort: s.sortReversed ? 'desc' : 'asc',
+          sortIndex: i
+        }));
+      this.gridOptions.columnApi.applyColumnState( {
+        state: sortingState,
+        defaultState: { sort: null },
       });
-      this.gridOptions.columnApi.applyColumnState({
-        state: columnState,
-      });
-      return found;
+      return sortingState.length > 0;
     }
     return false;
   }
@@ -584,7 +589,7 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
         sortReversed: col.sort === 'desc'
       }));
 
-    if (this.sorting.length == 0) {
+    if (this.sorting.length === 0) {
       this.resetDefaultSorting();
     }
 

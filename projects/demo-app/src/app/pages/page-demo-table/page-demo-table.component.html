@@ -8,8 +8,7 @@
   [columnDefs]="columns"
   [searchResultsData]="searchResultsData"
   (search)="search($event)"
-  [defaultSortColumn]="'id'"
-  [defaultSortReverseFlag]="true"
+  [defaultSort]="[{sortField: 'id', sortReversed: true}]"
 ></groot-ag-grid>
 
 <ng-template #cellTemplate  let-row="row">
@@ -201,8 +200,7 @@
   [columnDefs]="columns"
   [searchResultsData]="searchResultsData"
   (search)="search($event)"
-  [defaultSortColumn]="'id'"
-  [defaultSortReverseFlag]="true"
+  [defaultSort]="[{sortField: 'id', sortReversed: true}]"
   [hideTitleBar]="true"
 ></groot-ag-grid>
 
@@ -241,8 +239,7 @@
   [columnDefs]="customHeaderColumns"
   [searchResultsData]="searchResultsData"
   (search)="search($event)"
-  [defaultSortColumn]="'id'"
-  [defaultSortReverseFlag]="true"
+  [defaultSort]="[{sortField: 'grownUp', sortReversed: false}, {sortField: 'age', sortReversed: true}]"
   [hideTitleBar]="true"
 ></groot-ag-grid>
 
