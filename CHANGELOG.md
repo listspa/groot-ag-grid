@@ -1,5 +1,10 @@
 # Groot-ag-grid releases
 
+
+## Version 5.7.0 - 2023-08-30
+
+feat: support sorting on multiple columns using shift key
+
 ## Version 5.6.2 - 2023-05-12
 
 feat: remove numbersRendererShowUpdate (RIP), keep only numbersRenderer - configurable through cellRendererParams to show delta value
