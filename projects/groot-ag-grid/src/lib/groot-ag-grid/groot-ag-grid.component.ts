@@ -392,7 +392,7 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
   public noRowsOverlayComponentParams: GrootAgGridNoRowsParams = {loadingError: false, api: null};
   private labelSub: Subscription;
   private _currentPageNum = 0;
-  private sorting: SortPagination[];
+  private sorting: SortPagination[] | null;
   private _savedColumnState: string | null = null;
   private accordionTemplate_: TemplateRef<any>;
   private actionButtonTemplate_: TemplateRef<any>;
@@ -463,7 +463,8 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
     if (this.gridOptions.defaultColDef) {
       this.gridOptions.defaultColDef.sortable = !this.disableSorting;
     }
-    this.sorting = this.defaultSort ?? [{sortField: this.defaultSortColumn, sortReversed: this.defaultSortReverseFlag}];
+    this.sorting = this.defaultSort ?? (
+      this.defaultSortColumn ? [{sortField: this.defaultSortColumn, sortReversed: this.defaultSortReverseFlag}] : null);
     this.setSorting();
   }
 
@@ -627,7 +628,7 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
   getCurrentPagination(): MultiSortPaginationOptions {
     return {
       sort: this.sorting,
-      ...this.sorting[0],
+      ...(this.sorting?.length > 0 ? this.sorting[0] : {sortField: null, sortReversed: false}),
       pageNum: this._currentPageNum,
       pageLen: this.pageSize
     };
