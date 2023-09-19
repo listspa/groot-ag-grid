@@ -4,7 +4,7 @@
          *ngIf="showColumnSelector"
          [title]="'common.selectColumns' | translate"
          (click)="openColumnSelector()">
-      <i class="fa fa-gears clickable"></i>
+      <i class="fa-solid fa-gears clickable"></i>
     </div>
     <div *ngIf="totalNumRecords !== null && !loading">
       <span class="rows-count-label" translate>common.numRowsFound</span>
@@ -14,7 +14,7 @@
          *ngIf="totalNumRecords === -1"
          [title]="'common.refreshCount' | translate"
          (click)="getTableDataCount()">
-      <i class="fa fa-refresh clickable"></i>
+      <i class="fa-solid fa-rotate clickable"></i>
     </span>
     </div>
     <div *ngIf="loading">
