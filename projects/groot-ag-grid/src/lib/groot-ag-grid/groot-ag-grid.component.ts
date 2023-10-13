@@ -82,7 +82,7 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
   @Input() lastRefreshTimestamp: Date | string = null;
   @Input() rowHeight = 28;
   @Input() getRowHeight: ((rowNode: RowNode) => number | null) = null;
-  @Input() keepServerSorting = true;
+  @Input() keepServerSorting: boolean = null;
   @Input() rowClassRules?: { [cssClassName: string]: (((params: any) => boolean) | string) } | null = null;
   @ContentChild(GrootTableTitleRightAreaDirective, {read: TemplateRef}) tableTitleRightArea: TemplateRef<any> | null = null;
   @Input() showPaginationIfEmpty = this.grootAgGridCustomizationService.showPaginationIfEmptyDefault;
@@ -439,9 +439,7 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
       this.gridOptions.domLayout = 'autoHeight';
     }
 
-    if (this.keepServerSorting) {
-      this.gridOptions.defaultColDef.comparator = this.keepServerSort;
-    }
+    this.setKeepServerSorting();
 
     if (this.rowClassRules) {
       this.gridOptions.rowClassRules = {
@@ -453,10 +451,6 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
     this.resetDefaultSorting();
     this.translateHeaders();
     this._initialized = true;
-  }
-
-  private keepServerSort(valueA: any, valueB: any, nodeA: RowNode, nodeB: RowNode, isInverted: boolean): number {
-    return 0;
   }
 
   private resetDefaultSorting(): void {
@@ -563,6 +557,7 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
   }
 
   private setSorting(): boolean {
+    this.setKeepServerSorting();
     if (!this.disableSorting && this.sorting && this.gridOptions.columnApi) {
       const columns = this.gridOptions.columnApi.getAllColumns();
       const sortingState = this.sorting
@@ -741,5 +736,16 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
 
   onRowDragLeave($event: RowDragLeaveEvent): void {
     this.rowDragLeave.emit($event);
+  }
+
+  private setKeepServerSorting(): void {
+    if ((this.keepServerSorting === null
+          && (this.data && ((this.showPaginationIfEmpty || (this.data.totalNumRecords > 0 && this.data.totalNumRecords > this.data.pageLen))
+              || this.data.totalNumRecords === -1)))
+        || this.keepServerSorting) {
+      this.gridOptions.defaultColDef.comparator = () => 0;
+    } else {
+      this.gridOptions.defaultColDef.comparator = null;
+    }
   }
 }

@@ -1,7 +1,7 @@
 import {Component, OnInit, TemplateRef, ViewChild} from '@angular/core';
 import {ColDef} from 'ag-grid-community';
 import {GrootAgGridRenderer} from '../../../../../groot-ag-grid/src/lib/groot-ag-grid/groot-ag-grid-customization.consts';
-import {LoadingFailed, PaginatedResponse, PaginationOptions} from '@listgroup/groot';
+import {LoadingFailed, PaginatedResponse} from '@listgroup/groot';
 import {GrootAgGridSelection} from '../../../../../groot-ag-grid/src/lib/groot-ag-grid/groot-ag-grid-selection.model';
 import {GrootAgGridComponent} from '../../../../../groot-ag-grid/src/lib/groot-ag-grid/groot-ag-grid.component';
 import {NoGridDataMessage} from '../../../../../groot-ag-grid/src/lib/groot-ag-grid/no-grid-data.model';
@@ -13,9 +13,7 @@ import {Subject} from 'rxjs';
 import {BsModalService} from 'ngx-bootstrap/modal';
 import {RowGroupingModule} from '@ag-grid-enterprise/all-modules';
 import {EnterpriseCoreModule} from '@ag-grid-enterprise/core/dist/cjs/agGridEnterpriseModule';
-import {
-  MultipleSortPagination, MultiSortPaginationOptions
-} from "../../../../../groot-ag-grid/src/lib/groot-ag-grid/groot-ag-grid-pagination.model";
+import {MultiSortPaginationOptions} from '../../../../../groot-ag-grid/src/lib/groot-ag-grid/groot-ag-grid-pagination.model';
 
 interface User {
   id: string;
@@ -80,28 +78,33 @@ export class PageDemoTableComponent implements OnInit {
       {
         colId: 'id',
         field: 'id',
-      },
+        sortable: true
+  },
       {
         colId: 'name',
         field: 'name',
+        sortable: true
       },
       {
         colId: 'age',
         field: 'age',
         cellRenderer: GrootAgGridRenderer.numbers,
-        cellClass: 'ag-cell-right'
+        cellClass: 'ag-cell-right',
+        sortable: true
       },
       {
         colId: 'age showing delta on update',
         field: 'age',
         cellRenderer: GrootAgGridRenderer.numbers,
         cellRendererParams: {showDelta: true},
-        cellClass: 'ag-cell-right'
+        cellClass: 'ag-cell-right',
+        sortable: true
       },
       {
         colId: 'birthDate',
         field: 'birthDate',
         cellRenderer: GrootAgGridRenderer.dates,
+        sortable: true
       },
       {
         colId: 'grownUp',
