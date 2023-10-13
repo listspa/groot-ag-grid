@@ -1,6 +1,10 @@
 # Groot-ag-grid releases
 
 
+## Version 5.7.3 - 2023-10-13
+
+fix: correct default behaviour of keepServerSorting param
+
 ## Version 5.7.2 - 2023-10-13
 
 feat: change default behaviour of keepServerSorting param 
