@@ -557,8 +557,8 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
   }
 
   private setSorting(): boolean {
-    this.setDefaultColComparator();
     if (!this.disableSorting && this.sorting && this.gridOptions.columnApi) {
+      this.setDefaultColComparator();
       const columns = this.gridOptions.columnApi.getAllColumns();
       const sortingState = this.sorting
         .filter(s => columns.some(col => s.sortField === col.getColId()))
@@ -589,7 +589,7 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
       this.resetDefaultSorting();
     }
 
-    if (this.isSortedServerSide()) {
+    if (!this.data || this.isSortedServerSide()) {
       this.reloadTable(false);
     }
   }
