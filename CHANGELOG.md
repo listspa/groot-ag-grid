@@ -1,6 +1,15 @@
 # Groot-ag-grid releases
 
 
+## Version 5.7.2 - 2023-10-13
+
+feat: change default behaviour of keepServerSorting param 
+
+Possible values:
+* default (not set as an html attribute): sort the data in ag-grid if the rows are less than the page length, sort server-side otherwise
+* true: always keep server-side sorting. This will disable all sorting ag-grid functionalities, unless you'll set a _ColDef.comparator_ for each column that you want to sort
+* false: sort on groot-ag-grid. Note that with this config the grid will sort the data before receiving it fom the server, causing to refresh the grid twice
+
 ## Version 5.7.0 - 2023-08-30
 
 feat: support sorting on multiple columns using shift key
