@@ -439,7 +439,7 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
       this.gridOptions.domLayout = 'autoHeight';
     }
 
-    this.setKeepServerSorting();
+    this.setDefaultColComparator();
 
     if (this.rowClassRules) {
       this.gridOptions.rowClassRules = {
@@ -557,7 +557,7 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
   }
 
   private setSorting(): boolean {
-    this.setKeepServerSorting();
+    this.setDefaultColComparator();
     if (!this.disableSorting && this.sorting && this.gridOptions.columnApi) {
       const columns = this.gridOptions.columnApi.getAllColumns();
       const sortingState = this.sorting
@@ -589,7 +589,9 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
       this.resetDefaultSorting();
     }
 
-    this.reloadTable(false);
+    if (this.isSortedServerSide()) {
+      this.reloadTable(false);
+    }
   }
 
   firstDataRendered(): void {
@@ -738,14 +740,20 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
     this.rowDragLeave.emit($event);
   }
 
-  private setKeepServerSorting(): void {
-    if ((this.keepServerSorting === null
-          && (this.data && ((this.showPaginationIfEmpty || (this.data.totalNumRecords > 0 && this.data.totalNumRecords > this.data.pageLen))
-              || this.data.totalNumRecords === -1)))
-        || this.keepServerSorting) {
+  private setDefaultColComparator(): void {
+    if (this.isSortedServerSide()) {
       this.gridOptions.defaultColDef.comparator = () => 0;
     } else {
       this.gridOptions.defaultColDef.comparator = null;
     }
+  }
+
+  isPaginated(): boolean {
+    return this.data && (this.showPaginationIfEmpty || (this.data.totalNumRecords > 0 && this.data.totalNumRecords > this.data.pageLen)
+      || this.data.totalNumRecords === -1);
+  }
+
+  private isSortedServerSide(): boolean {
+    return (this.keepServerSorting === null && this.isPaginated()) || this.keepServerSorting;
   }
 }
