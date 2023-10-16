@@ -129,6 +129,8 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
       this.gridOptions.api.hideOverlay();
       this.gridOptions.api.setRowData(this.rowsDisplayed);
     }
+
+    this.setDefaultColComparator();
   }
 
   /**
@@ -558,7 +560,6 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
 
   private setSorting(): boolean {
     if (!this.disableSorting && this.sorting && this.gridOptions.columnApi) {
-      this.setDefaultColComparator();
       const columns = this.gridOptions.columnApi.getAllColumns();
       const sortingState = this.sorting
         .filter(s => columns.some(col => s.sortField === col.getColId()))
