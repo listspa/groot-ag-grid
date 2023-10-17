@@ -1,6 +1,12 @@
 import {Component, ContentChild, EventEmitter, Input, OnDestroy, OnInit, Output, TemplateRef, ViewChild} from '@angular/core';
 import {Subscription} from 'rxjs';
-import {GrootTableTitleRightAreaDirective, isLoadingFailed, LoadingFailed, PaginatedResponse, PaginationOptions, SortPagination} from '@listgroup/groot';
+import {
+  GrootTableTitleRightAreaDirective,
+  isLoadingFailed,
+  LoadingFailed,
+  PaginatedResponse,
+  SortPagination
+} from '@listgroup/groot';
 import {
   CellClickedEvent,
   CellMouseDownEvent,
@@ -30,7 +36,7 @@ import {AgGridAngular} from 'ag-grid-angular';
 import {
   TablePaginationComponent
 } from '@listgroup/groot/lib/groot-base/components/tables/table-pagination/table-pagination.component';
-import {MultiSortPaginationOptions} from "./groot-ag-grid-pagination.model";
+import {MultiSortPaginationOptions} from './groot-ag-grid-pagination.model';
 
 const SPECIAL_TOOL_CELL: ColDef = {
   resizable: false,
@@ -441,8 +447,6 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
       this.gridOptions.domLayout = 'autoHeight';
     }
 
-    this.setDefaultColComparator();
-
     if (this.rowClassRules) {
       this.gridOptions.rowClassRules = {
         ...this.gridOptions.rowClassRules,
@@ -742,10 +746,17 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
   }
 
   private setDefaultColComparator(): void {
+    let comparator = null;
     if (this.isSortedServerSide()) {
-      this.gridOptions.defaultColDef.comparator = () => 0;
-    } else {
-      this.gridOptions.defaultColDef.comparator = null;
+      comparator = () => 0;
+    }
+    this.columnDefs_.forEach(
+      (column, index) => {
+        this.columnDefs_[index] = {...column, comparator};
+      }
+    );
+    if (this.gridOptions.api) {
+      this.gridOptions.api.setColumnDefs(this.columnDefs_);
     }
   }
 
