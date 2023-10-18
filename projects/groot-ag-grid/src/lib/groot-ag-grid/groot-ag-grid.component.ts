@@ -408,7 +408,7 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
   private additionalButtonsTemplate_: TemplateRef<any>[];
   private checkboxSelection_ = false;
   private headerCheckboxSelection_: boolean | ((params: any) => boolean);
-  private columnDefs_: (ColDef | ColGroupDef)[];
+  private columnDefs_: (ColDef | ColGroupDef)[] = [];
   private rowsDisplayed: T[] = [];
   private _accordionHeight = 60;
   private _getRowStyle: ((rowNode: RowNode) => any) = null;
