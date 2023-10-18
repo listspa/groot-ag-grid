@@ -1,6 +1,7 @@
 import {Component, ContentChild, EventEmitter, Input, OnDestroy, OnInit, Output, TemplateRef, ViewChild} from '@angular/core';
 import {Subscription} from 'rxjs';
 import {
+  deepCopy,
   GrootTableTitleRightAreaDirective,
   isLoadingFailed,
   LoadingFailed,
@@ -419,6 +420,7 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
   @ViewChild('gridPagination', {static: true}) gridPagination: TablePaginationComponent;
   private _initialized = false;
   public isGridReady = false;
+  private columnComparator = null;
 
   @Input() set accordionHeight(value: number) {
     this._accordionHeight = value;
@@ -746,17 +748,23 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
   }
 
   private setDefaultColComparator(): void {
+    const previousColumnComparator = deepCopy(this.columnComparator);
+    this.columnComparator = null;
     let comparator = null;
     if (this.isSortedServerSide()) {
+      this.columnComparator = 0;
       comparator = () => 0;
     }
-    this.columnDefs_.forEach(
-      (column, index) => {
-        this.columnDefs_[index] = {...column, comparator};
+    if (this.columnComparator !== previousColumnComparator) {
+      this.columnDefs_.forEach(
+        (column, index) => {
+          this.columnDefs_[index] = {...column, comparator};
+        }
+      );
+      if (this.gridOptions.api) {
+        this.gridOptions.api.setColumnDefs(this.columnDefs_);
+        this.handleSpecialColumns();
       }
-    );
-    if (this.gridOptions.api) {
-      this.gridOptions.api.setColumnDefs(this.columnDefs_);
     }
   }
 
