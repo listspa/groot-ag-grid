@@ -1,6 +1,10 @@
 # Groot-ag-grid releases
 
 
+## Version 5.7.4 - 2023-10-18
+
+fix: initialize columnDefs_ variable
+
 ## Version 5.7.3 - 2023-10-13
 
 fix: correct default behaviour of keepServerSorting param
