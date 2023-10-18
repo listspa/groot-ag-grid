@@ -760,7 +760,7 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
     }
   }
 
-  isPaginated(): boolean {
+  private isPaginated(): boolean {
     return this.data && (this.showPaginationIfEmpty || (this.data.totalNumRecords > 0 && this.data.totalNumRecords > this.data.pageLen)
       || this.data.totalNumRecords === -1);
   }
