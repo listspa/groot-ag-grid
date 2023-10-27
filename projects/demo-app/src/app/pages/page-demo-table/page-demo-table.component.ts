@@ -21,6 +21,7 @@ interface User {
   age: number;
   birthDate: Date;
   grownUp: boolean;
+  lastUpdateTimestamp?: Date;
 }
 
 interface CategoryData {
@@ -116,7 +117,13 @@ export class PageDemoTableComponent implements OnInit {
         colId: 'buttons',
         cellRenderer: GrootAgGridRenderer.template,
         cellRendererParams: {ngTemplate: this.cellTemplate}
-      }
+      },
+      {
+        colId: 'lastUpdateTimestamp',
+        field: 'lastUpdateTimestamp',
+        cellRenderer: GrootAgGridRenderer.dates,
+        cellRendererParams: {timestamp: true, showMilliseconds: true}
+      },
     ];
     this.columns = [...this.availableColumns];
     this.customHeaderColumns = [...this.availableColumns.map(c => ({
@@ -163,7 +170,7 @@ export class PageDemoTableComponent implements OnInit {
           cellRenderer: GrootAgGridRenderer.template,
           cellRendererParams: {ngTemplate: this.cellTemplate},
           columnGroupShow: 'open'
-        }
+        },
       ]
     }
     ];
@@ -187,10 +194,10 @@ export class PageDemoTableComponent implements OnInit {
       pageLen: event.pageLen,
       totalNumRecords: 4,
       records: [
-        {id: 'U001', name: 'Andrea Bergia', age: 34, birthDate: new Date('1985-12-04'), grownUp: true},
-        {id: 'U002', name: 'John Peterson', age: 44, birthDate: new Date('1975-01-03'), grownUp: true},
-        {id: 'U003', name: 'Donald Trump', age: 99, birthDate: new Date('1921-06-05'), grownUp: false},
-        {id: 'U004', name: 'Baby Boy', age: 4, birthDate: new Date('2016-07-02'), grownUp: false},
+        {id: 'U001', name: 'Andrea Bergia', age: 34, birthDate: new Date('1985-12-04'), grownUp: true, lastUpdateTimestamp: new Date()},
+        {id: 'U002', name: 'John Peterson', age: 44, birthDate: new Date('1975-01-03'), grownUp: true, lastUpdateTimestamp: new Date()},
+        {id: 'U003', name: 'Donald Trump', age: 99, birthDate: new Date('1921-06-05'), grownUp: false, lastUpdateTimestamp: new Date()},
+        {id: 'U004', name: 'Baby Boy', age: 4, birthDate: new Date('2016-07-02'), grownUp: false, lastUpdateTimestamp: new Date()},
       ]
     };
 

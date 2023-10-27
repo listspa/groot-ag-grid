@@ -1,4 +1,7 @@
 {{params.value | date:dateFormat}}
 <span class="text-muted" *ngIf="params.timestamp">
-  {{params.value | date:'HH:mm:ss'}}
+  {{params.value |  date:'HH:mm:ss'}}
+  <span class="small" *ngIf="params.showMilliseconds">
+    {{params.value |  date:'.SSS'}}
+  </span>
 </span>
