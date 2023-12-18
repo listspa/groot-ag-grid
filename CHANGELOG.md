@@ -1,5 +1,12 @@
 # Groot-ag-grid releases
 
+## Version 5.7.5 - 2023-12-18
+
+feat: add new  parameters to `GrootAgGridRenderer.dates` to customize how dates are displayed in the grid:
+
+* `timeFormat`: default to `'HH:mm:ss'`, can take any format understood by angular date pipe
+* `showMilliseconds`: if true, milliseconds are shown. Defaults to false
+* `millisecondsFormat`: default to `'.SSS'`, can take any format understood by angular date pipe. Used only if `showMilliseconds` is true
 
 ## Version 5.7.4 - 2023-10-18
 
