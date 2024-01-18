@@ -14,7 +14,7 @@ import {
   ColDef,
   ColGroupDef,
   GridApi,
-  GridOptions,
+  GridOptions, GridReadyEvent,
   IsRowSelectable,
   RowDragEndEvent,
   RowDragEnterEvent,
@@ -42,6 +42,8 @@ import {MultiSortPaginationOptions} from './groot-ag-grid-pagination.model';
 const SPECIAL_TOOL_CELL: ColDef = {
   resizable: false,
   pinned: true,
+  lockPinned: true,
+  lockPosition: true,
   sortable: false,
   suppressMenu: true,
   suppressMovable: true,
@@ -308,7 +310,7 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
   set suppressMoveWhenRowDragging(value: boolean) {
     this._suppressMoveWhenRowDragging = value;
     if (this.gridOptions) {
-      this.gridOptions.suppressMoveWhenRowDragging  = this._suppressMoveWhenRowDragging;
+      this.gridOptions.suppressMoveWhenRowDragging = this._suppressMoveWhenRowDragging;
     }
   }
 
@@ -343,8 +345,21 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
     }
   }
 
+  @Input()
+  set lockPinned(lockPinned: boolean) {
+    this._lockPinned = lockPinned;
+  }
+
+  setLockPinned(params): void {
+    if (!this._lockPinned) {
+      const colDefs = params.columnApi.getAllColumns().map((col) => col.getColDef());
+      params.columnApi.setColumnDefs(colDefs.forEach(col => col.lockPinned = false));
+    }
+  }
+
   public data: PaginatedResponse<T> = null;
   private _isRowSelectable: IsRowSelectable = () => true;
+  private _lockPinned = true;
   private groupExpanded = 0;
   private _rowDragManaged = false;
   private _suppressMoveWhenRowDragging = false;
@@ -397,7 +412,11 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
     getDataPath: null,
     groupDefaultExpanded: this.groupExpanded,
     rowDragManaged: this._rowDragManaged,
-    suppressMoveWhenRowDragging : this._suppressMoveWhenRowDragging
+    suppressMoveWhenRowDragging: this._suppressMoveWhenRowDragging,
+
+    onGridReady(event: GridReadyEvent): void {
+      this.setLockPinned(event);
+    }
   };
   public noRowsOverlayComponentParams: GrootAgGridNoRowsParams = {loadingError: false, api: null};
   private labelSub: Subscription;
@@ -575,9 +594,9 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
           sort: s.sortReversed ? 'desc' : 'asc',
           sortIndex: i
         }));
-      this.gridOptions.columnApi.applyColumnState( {
+      this.gridOptions.columnApi.applyColumnState({
         state: sortingState,
-        defaultState: { sort: null },
+        defaultState: {sort: null},
       });
       return sortingState.length > 0;
     }
