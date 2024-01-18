@@ -348,13 +348,8 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
   @Input()
   set lockPinned(lockPinned: boolean) {
     this._lockPinned = lockPinned;
-  }
-
-  setLockPinned(params): void {
-    if (!this._lockPinned) {
-      const colDefs = params.columnApi.getAllColumns().map((col) => col.getColDef());
-      params.columnApi.setColumnDefs(colDefs.forEach(col => col.lockPinned = false));
-    }
+    this.gridOptions.defaultColDef.lockPinned = this._lockPinned;
+    this.handleSpecialColumns();
   }
 
   public data: PaginatedResponse<T> = null;
@@ -413,10 +408,6 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
     groupDefaultExpanded: this.groupExpanded,
     rowDragManaged: this._rowDragManaged,
     suppressMoveWhenRowDragging: this._suppressMoveWhenRowDragging,
-
-    onGridReady(event: GridReadyEvent): void {
-      this.setLockPinned(event);
-    }
   };
   public noRowsOverlayComponentParams: GrootAgGridNoRowsParams = {loadingError: false, api: null};
   private labelSub: Subscription;
