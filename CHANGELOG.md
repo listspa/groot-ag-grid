@@ -1,41 +1,46 @@
 # Groot-ag-grid releases
 
+## Version 5.7.7 - 2024-01-16
+
+- feat: add new parameter 'lockPinned' to make columns pinnable via UI
+- fix: remove frameworkComponents Input (reverts v5.7.6)
+
+## Version 5.7.6 - 2024-01-16
+
+- feat: add frameworkComponents in groot-ag-grid component to allow the definition of custom filters on columns
+
 ## Version 5.7.5 - 2023-12-18
 
-feat: add new  parameters to `GrootAgGridRenderer.dates` to customize how dates are displayed in the grid:
+- feat: add new  parameters to `GrootAgGridRenderer.dates` to customize how dates are displayed in the grid:
 
-* `timeFormat`: default to `'HH:mm:ss'`, can take any format understood by angular date pipe
-* `showMilliseconds`: if true, milliseconds are shown. Defaults to false
-* `millisecondsFormat`: default to `'.SSS'`, can take any format understood by angular date pipe. Used only if `showMilliseconds` is true
-
-## Version 5.7.5 - 2024-01-16
-
-feat: add frameworkComponents in groot-ag-grid component to allow the definition of custom filters on columns
+  - `timeFormat`: default to `'HH:mm:ss'`, can take any format understood by angular date pipe
+  - `showMilliseconds`: if true, milliseconds are shown. Defaults to false
+  - `millisecondsFormat`: default to `'.SSS'`, can take any format understood by angular date pipe. Used only if `showMilliseconds` is true
 
 ## Version 5.7.4 - 2023-10-18
 
-fix: initialize columnDefs_ variable
+- fix: initialize columnDefs_ variable
 
 ## Version 5.7.3 - 2023-10-13
 
-fix: correct default behaviour of keepServerSorting param
+- fix: correct default behaviour of keepServerSorting param
 
 ## Version 5.7.2 - 2023-10-13
 
-feat: change default behaviour of keepServerSorting param 
+- feat: change default behaviour of keepServerSorting param 
 
-Possible values:
-* default (not set as an html attribute): sort the data in ag-grid if the rows are less than the page length, sort server-side otherwise
-* true: always keep server-side sorting. This will disable all sorting ag-grid functionalities, unless you'll set a _ColDef.comparator_ for each column that you want to sort
-* false: sort on groot-ag-grid. Note that with this config the grid will sort the data before receiving it fom the server, causing to refresh the grid twice
+  Possible values:
+  - default (not set as an html attribute): sort the data in ag-grid if the rows are less than the page length, sort server-side otherwise
+  - true: always keep server-side sorting. This will disable all sorting ag-grid functionalities, unless you'll set a _ColDef.comparator_ for each column that you want to sort
+  - false: sort on groot-ag-grid. Note that with this config the grid will sort the data before receiving it fom the server, causing to refresh the grid twice
 
 ## Version 5.7.0 - 2023-08-30
 
-feat: support sorting on multiple columns using shift key
+- feat: support sorting on multiple columns using shift key
 
 ## Version 5.6.2 - 2023-05-12
 
-feat: remove numbersRendererShowUpdate (RIP), keep only numbersRenderer - configurable through cellRendererParams to show delta value
+- feat: remove numbersRendererShowUpdate (RIP), keep only numbersRenderer - configurable through cellRendererParams to show delta value
 
 ## Version 5.6.1 - 2023-05-12
 
