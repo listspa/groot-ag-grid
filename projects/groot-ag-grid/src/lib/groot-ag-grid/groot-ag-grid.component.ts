@@ -104,7 +104,6 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
   @Input() groupMultiAutoColumn = false;
   @Input() suppressAggFuncInHeader = false;
   @Input() getRowNodeId: any = null;
-  @Input() frameworkComponents: any = null;
   @Output() rowDragEnter = new EventEmitter<RowDragEnterEvent>();
   @Output() rowDragEnd = new EventEmitter<RowDragEndEvent>();
   @Output() rowDragMove = new EventEmitter<RowDragMoveEvent>();
