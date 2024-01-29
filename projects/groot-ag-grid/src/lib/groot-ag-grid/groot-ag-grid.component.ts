@@ -104,6 +104,7 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
   @Input() groupMultiAutoColumn = false;
   @Input() suppressAggFuncInHeader = false;
   @Input() getRowNodeId: any = null;
+  @Input() disableAutosize = false;
   @Output() rowDragEnter = new EventEmitter<RowDragEnterEvent>();
   @Output() rowDragEnd = new EventEmitter<RowDragEndEvent>();
   @Output() rowDragMove = new EventEmitter<RowDragMoveEvent>();
@@ -682,8 +683,11 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
   }
 
   autoSizeColumns(): void {
-    this.gridOptions.columnApi.autoSizeAllColumns();
+    if (!this.disableAutosize){
+      this.gridOptions.columnApi.autoSizeAllColumns();
+    }
   }
+
 
   reloadTable(resetPageNumber = false, resetSortField = false): void {
     if (!this._initialized) {
