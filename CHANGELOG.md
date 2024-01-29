@@ -4,7 +4,7 @@
 
   BREAKING CHANGES:
   - Angular 15
-  - ag-grid 30.0.x
+  - ag-grid 30.2.x
   - Bootstrap 5
 
   Breaking changes on input parameters:
