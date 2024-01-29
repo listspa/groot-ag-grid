@@ -14,6 +14,7 @@ import {
   CellMouseDownEvent,
   ColDef,
   ColGroupDef,
+  ColumnState,
   GetDataPath,
   GetRowIdFunc,
   GridApi,
@@ -578,7 +579,7 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
   private setSorting(): boolean {
     if (!this.disableSorting && this.sorting && this.gridOptions.columnApi) {
       const columns = this.gridOptions.columnApi.getAllColumns();
-      const sortingState = this.sorting
+      const sortingState: Array<ColumnState> = this.sorting
         .filter(s => columns.some(col => s.sortField === col.getColId()))
         .map((s, i) => ({
           colId: s.sortField,
