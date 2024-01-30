@@ -4,12 +4,14 @@
 
   BREAKING CHANGES:
   - Angular 15
-  - ag-grid 30.2.x
+  - Ag-Grid 30.2.x
   - Bootstrap 5
+  - Groot 4.x
+  - NodeJs >= 16.x
 
   Breaking changes on input parameters:
-  - getRowHeight now accepts param of type RowHeghtParams instead of RowNode
-  - getRowNodeId is deprecated, use getRowId instead (see ag-grid documentation)
+  - getRowHeight now accepts param of type RowHeightParams instead of RowNode
+  - getRowNodeId is deprecated, use getRowId instead (see https://www.ag-grid.com/changelog/?fixVersion=27.1.0)
 
 ## Version 5.7.7 - 2024-01-16
 
