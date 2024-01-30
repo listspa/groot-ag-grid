@@ -121,6 +121,7 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
   @Input() getRowNodeId: any = null;
   @Input() disableAutosize = false;
   @Input() defaultClass = 'ag-theme-balham ag-grid-rows-clickable';
+  @Input() disablePagination = false;
 
   @Output() rowDragEnter = new EventEmitter<RowDragEnterEvent>();
   @Output() rowDragEnd = new EventEmitter<RowDragEndEvent>();
@@ -726,15 +727,11 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
   }
 
   resetRowHeights(): void {
-    if (this.gridOptions.api) {
-      this.gridOptions.api.resetRowHeights();
-    }
+    this.gridOptions.api?.resetRowHeights();
   }
 
   clearSelection(): void {
-    if (this.gridOptions.api) {
-      this.gridOptions.api.deselectAll();
-    }
+    this.gridOptions.api?.deselectAll();
   }
 
   cellMouseDown(event: CellMouseDownEvent): void {
