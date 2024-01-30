@@ -19,7 +19,7 @@
   #grid
   style="width: 100%;"
   [style.height]="gridHeightCss"
-  class="ag-theme-balham ag-grid-rows-clickable"
+  [class]="defaultClass"
   [gridOptions]="gridOptions"
   (sortChanged)="onSortChanged()"
   (gridReady)="gridReady()"

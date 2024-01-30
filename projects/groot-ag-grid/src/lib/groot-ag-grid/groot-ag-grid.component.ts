@@ -120,6 +120,8 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
    */
   @Input() getRowNodeId: any = null;
   @Input() disableAutosize = false;
+  @Input() defaultClass = 'ag-theme-balham ag-grid-rows-clickable';
+
   @Output() rowDragEnter = new EventEmitter<RowDragEnterEvent>();
   @Output() rowDragEnd = new EventEmitter<RowDragEndEvent>();
   @Output() rowDragMove = new EventEmitter<RowDragMoveEvent>();
