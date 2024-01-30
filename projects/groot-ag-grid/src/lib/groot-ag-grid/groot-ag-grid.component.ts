@@ -14,7 +14,7 @@ import {
   ColDef,
   ColGroupDef,
   GridApi,
-  GridOptions, GridReadyEvent,
+  GridOptions,
   IsRowSelectable,
   RowDragEndEvent,
   RowDragEnterEvent,
@@ -33,7 +33,7 @@ import {GrootAgGridHeaderTemplateComponent} from './groot-ag-grid-header-templat
 import {GrootAgGridCustomizationService} from './groot-ag-grid-customization.service';
 import {GrootAgGridSelection} from './groot-ag-grid-selection.model';
 import {isNoGridDataMessage, NoGridDataMessage} from './no-grid-data.model';
-import {AgFilterComponent, AgGridAngular} from 'ag-grid-angular';
+import {AgGridAngular} from 'ag-grid-angular';
 import {
   TablePaginationComponent
 } from '@listgroup/groot/lib/groot-base/components/tables/table-pagination/table-pagination.component';
