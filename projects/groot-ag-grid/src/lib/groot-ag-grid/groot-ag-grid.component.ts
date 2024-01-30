@@ -76,7 +76,6 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
    * @deprecated please use defaultSort which supports multiple column sorting
    */
   @Input() defaultSortReverseFlag = false;
-  @Input() defaultSort: SortPagination[];
   @Input() pageSize = 15;
   @Input() labelPrefix = '';
   @Input() gridHeightCss: string | null = null;
@@ -147,6 +146,11 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
    */
   @Input() set columnDefs(columnDefs: (ColDef | ColGroupDef)[]) {
     this.columnDefs_ = columnDefs;
+    this.handleSpecialColumns();
+  }
+
+  @Input() set defaultSort(defaultSort: SortPagination[]) {
+    this._defaultSort = defaultSort;
     this.handleSpecialColumns();
   }
 
@@ -250,11 +254,37 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
       colDefs.unshift(actionButtonCell);
     }
 
+    // handle sort order of default column
+    let colId: string;
+    if ((this._defaultSort && this._defaultSort.length === 1)) {
+      colId = this._defaultSort[0].sortField;
+    } else if (this.defaultSortColumn && this.defaultSortReverseFlag) {
+      colId = this.defaultSortColumn;
+    }
+    if (colId) {
+      this.setSortingOrderInDefaultColId(colDefs, colId);
+    }
+
     this.gridOptions.columnDefs = colDefs;
 
     if (this.gridOptions.api) {
       this.translateHeaders();
       this.gridOptions.api.redrawRows();
+    }
+  }
+
+  setSortingOrderInDefaultColId(colDefs: (ColDef | ColGroupDef)[], colId: string): void {
+    for (const colDef of colDefs) {
+      if ((colDef as ColDef).colId === colId) {
+        // If colDef is a ColDef, check if its colId matches and apply sortingOrder, if not already set
+        if (!(colDef as ColDef).sortingOrder) {
+          (colDef as ColDef).sortingOrder = ['asc', 'desc'];
+        }
+        return;
+      } else if ((colDef as ColGroupDef).children) {
+        // If colDef is a ColGroupDef, recursively search its children
+        this.setSortingOrderInDefaultColId((colDef as ColGroupDef).children, colId);
+      }
     }
   }
 
@@ -351,6 +381,7 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
     this.handleSpecialColumns();
   }
 
+  private _defaultSort: SortPagination[];
   public data: PaginatedResponse<T> = null;
   private _isRowSelectable: IsRowSelectable = () => true;
   private _lockPinned = true;
@@ -475,7 +506,7 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
     if (this.gridOptions.defaultColDef) {
       this.gridOptions.defaultColDef.sortable = !this.disableSorting;
     }
-    this.sorting = this.defaultSort ?? (
+    this.sorting = this._defaultSort ?? (
       this.defaultSortColumn ? [{sortField: this.defaultSortColumn, sortReversed: this.defaultSortReverseFlag}] : null);
     this.setSorting();
   }
