@@ -1,5 +1,10 @@
 # Groot-ag-grid releases
 
+## Version 5.7.8 - 2024-02-28
+
+- feat: set sortingOrder for defaultSort column, if not already defined
+- fix: always set column comparator to avoid ordering in ag-grid when data are ordered server side
+
 ## Version 5.7.7 - 2024-01-16
 
 - feat: add new parameter 'lockPinned' to make columns pinnable via UI
