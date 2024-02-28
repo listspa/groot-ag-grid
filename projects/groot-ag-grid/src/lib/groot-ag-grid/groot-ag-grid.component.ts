@@ -1,7 +1,6 @@
 import {Component, ContentChild, EventEmitter, Input, OnDestroy, OnInit, Output, TemplateRef, ViewChild} from '@angular/core';
 import {Subscription} from 'rxjs';
 import {
-  deepCopy,
   GrootTableTitleRightAreaDirective,
   isLoadingFailed,
   LoadingFailed,
@@ -789,23 +788,20 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
   }
 
   private setDefaultColComparator(): void {
-    const previousColumnComparator = deepCopy(this.columnComparator);
     this.columnComparator = null;
     let comparator = null;
     if (this.isSortedServerSide()) {
       this.columnComparator = 0;
       comparator = () => 0;
     }
-    if (this.columnComparator !== previousColumnComparator) {
-      this.columnDefs_.forEach(
-        (column, index) => {
-          this.columnDefs_[index] = {...column, comparator};
-        }
-      );
-      if (this.gridOptions.api) {
-        this.gridOptions.api.setColumnDefs(this.columnDefs_);
-        this.handleSpecialColumns();
+    this.columnDefs_.forEach(
+      (column, index) => {
+        this.columnDefs_[index] = {...column, comparator};
       }
+    );
+    if (this.gridOptions.api) {
+      this.gridOptions.api.setColumnDefs(this.columnDefs_);
+      this.handleSpecialColumns();
     }
   }
 
