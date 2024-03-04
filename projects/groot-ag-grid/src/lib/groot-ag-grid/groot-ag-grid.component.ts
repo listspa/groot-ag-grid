@@ -460,7 +460,6 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
   @ViewChild('gridPagination', {static: true}) gridPagination: TablePaginationComponent;
   private _initialized = false;
   public isGridReady = false;
-  private columnComparator = null;
 
   @Input() set accordionHeight(value: number) {
     this._accordionHeight = value;
@@ -788,10 +787,8 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
   }
 
   private setDefaultColComparator(): void {
-    this.columnComparator = null;
     let comparator = null;
     if (this.isSortedServerSide()) {
-      this.columnComparator = 0;
       comparator = () => 0;
     }
     this.columnDefs_.forEach(
