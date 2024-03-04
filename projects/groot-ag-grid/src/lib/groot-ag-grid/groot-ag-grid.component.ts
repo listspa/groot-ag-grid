@@ -1,7 +1,6 @@
 import {Component, ContentChild, EventEmitter, Input, OnDestroy, OnInit, Output, TemplateRef, ViewChild} from '@angular/core';
 import {Subscription} from 'rxjs';
 import {
-  deepCopy,
   GrootTableTitleRightAreaDirective,
   isLoadingFailed,
   LoadingFailed,
@@ -32,7 +31,7 @@ import {
   RowNode,
   RowStyle,
 } from 'ag-grid-community';
-import { TranslateService } from '@ngx-translate/core';
+import {TranslateService} from '@ngx-translate/core';
 import {GrootAgGridNoRowsOverlayComponent, GrootAgGridNoRowsParams} from './groot-ag-grid-no-rows-overlay/groot-ag-grid-no-rows-overlay.component';
 import {GrootAgGridLoadingOverlayComponent} from './groot-ag-grid-loading-overlay/groot-ag-grid-loading-overlay.component';
 import {GrootAgGridRendererBooleansComponent} from './groot-ag-grid-renderer-booleans/groot-ag-grid-renderer-booleans.component';
@@ -84,7 +83,6 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
    * @deprecated please use defaultSort which supports multiple column sorting
    */
   @Input() defaultSortReverseFlag = false;
-  @Input() defaultSort: SortPagination[];
   @Input() pageSize = 15;
   @Input() labelPrefix = '';
   @Input() gridHeightCss: string | null = null;
@@ -131,23 +129,23 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
   @Input() set searchResultsData(searchResultsData: PaginatedResponse<T> | NoGridDataMessage | LoadingFailed | null | undefined) {
     if (isNoGridDataMessage(searchResultsData)) {
       this.noRowsOverlayComponentParams.loadingError = false;
-        this.noRowsOverlayComponentParams.message = searchResultsData.message;
-        this.noRowsOverlayComponentParams.style = searchResultsData.style;
-        this.data = null;
-        this.rowsDisplayed = [];
-      } else if (isLoadingFailed(searchResultsData)) {
-        this.noRowsOverlayComponentParams.loadingError = true;
-        this.noRowsOverlayComponentParams.message = null;
-        this.noRowsOverlayComponentParams.style = null;
-        this.data = null;
-        this.rowsDisplayed = [];
-      } else {
-        this.noRowsOverlayComponentParams.loadingError = false;
-        this.noRowsOverlayComponentParams.message = null;
-        this.noRowsOverlayComponentParams.style = null;
-        this.data = searchResultsData;
-        this.rowsDisplayed = this.data?.records || [];
-      }
+      this.noRowsOverlayComponentParams.message = searchResultsData.message;
+      this.noRowsOverlayComponentParams.style = searchResultsData.style;
+      this.data = null;
+      this.rowsDisplayed = [];
+    } else if (isLoadingFailed(searchResultsData)) {
+      this.noRowsOverlayComponentParams.loadingError = true;
+      this.noRowsOverlayComponentParams.message = null;
+      this.noRowsOverlayComponentParams.style = null;
+      this.data = null;
+      this.rowsDisplayed = [];
+    } else {
+      this.noRowsOverlayComponentParams.loadingError = false;
+      this.noRowsOverlayComponentParams.message = null;
+      this.noRowsOverlayComponentParams.style = null;
+      this.data = searchResultsData;
+      this.rowsDisplayed = this.data?.records || [];
+    }
 
     if (this.gridOptions.api) {
       this.gridOptions.api.hideOverlay();
@@ -162,6 +160,11 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
    */
   @Input() set columnDefs(columnDefs: (ColDef | ColGroupDef)[]) {
     this.columnDefs_ = columnDefs;
+    this.handleSpecialColumns();
+  }
+
+  @Input() set defaultSort(defaultSort: SortPagination[]) {
+    this._defaultSort = defaultSort;
     this.handleSpecialColumns();
   }
 
@@ -265,11 +268,37 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
       colDefs.unshift(actionButtonCell);
     }
 
+    // handle sort order of default column
+    let colId: string;
+    if ((this._defaultSort && this._defaultSort.length === 1)) {
+      colId = this._defaultSort[0].sortField;
+    } else if (this.defaultSortColumn && this.defaultSortReverseFlag) {
+      colId = this.defaultSortColumn;
+    }
+    if (colId) {
+      this.setSortingOrderInDefaultColId(colDefs, colId);
+    }
+
     this.gridOptions.columnDefs = colDefs;
 
     if (this.gridOptions.api) {
       this.translateHeaders();
       this.gridOptions.api.redrawRows();
+    }
+  }
+
+  setSortingOrderInDefaultColId(colDefs: (ColDef | ColGroupDef)[], colId: string): void {
+    for (const colDef of colDefs) {
+      if ((colDef as ColDef).colId === colId) {
+        // If colDef is a ColDef, check if its colId matches and apply sortingOrder, if not already set
+        if (!(colDef as ColDef).sortingOrder) {
+          (colDef as ColDef).sortingOrder = ['asc', 'desc'];
+        }
+        return;
+      } else if ((colDef as ColGroupDef).children) {
+        // If colDef is a ColGroupDef, recursively search its children
+        this.setSortingOrderInDefaultColId((colDef as ColGroupDef).children, colId);
+      }
     }
   }
 
@@ -366,6 +395,7 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
     this.handleSpecialColumns();
   }
 
+  private _defaultSort: SortPagination[];
   public data: PaginatedResponse<T> = null;
   private _isRowSelectable: IsRowSelectable = () => true;
   private _lockPinned = true;
@@ -444,7 +474,6 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
   @ViewChild('gridPagination', {static: true}) gridPagination: TablePaginationComponent;
   private _initialized = false;
   public isGridReady = false;
-  private columnComparator = null;
 
   @Input() set accordionHeight(value: number) {
     this._accordionHeight = value;
@@ -489,7 +518,7 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
     if (this.gridOptions.defaultColDef) {
       this.gridOptions.defaultColDef.sortable = !this.disableSorting;
     }
-    this.sorting = this.defaultSort ?? (
+    this.sorting = this._defaultSort ?? (
       this.defaultSortColumn ? [{sortField: this.defaultSortColumn, sortReversed: this.defaultSortReverseFlag}] : null);
     this.setSorting();
   }
@@ -765,23 +794,18 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
   }
 
   private setDefaultColComparator(): void {
-    const previousColumnComparator = deepCopy(this.columnComparator);
-    this.columnComparator = null;
     let comparator = null;
     if (this.isSortedServerSide()) {
-      this.columnComparator = 0;
       comparator = () => 0;
     }
-    if (this.columnComparator !== previousColumnComparator) {
-      this.columnDefs_.forEach(
-        (column, index) => {
-          this.columnDefs_[index] = {...column, comparator};
-        }
-      );
-      if (this.gridOptions.api) {
-        this.gridOptions.api.setColumnDefs(this.columnDefs_);
-        this.handleSpecialColumns();
+    this.columnDefs_.forEach(
+      (column, index) => {
+        this.columnDefs_[index] = {...column, comparator};
       }
+    );
+    if (this.gridOptions.api) {
+      this.gridOptions.api.setColumnDefs(this.columnDefs_);
+      this.handleSpecialColumns();
     }
   }
 
