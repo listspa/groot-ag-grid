@@ -14,6 +14,8 @@ import {
   ColGroupDef,
   GridApi,
   GridOptions,
+  IDatasource,
+  IGetRowsParams,
   IsRowSelectable,
   RowDragEndEvent,
   RowDragEnterEvent,
@@ -107,6 +109,7 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
   @Output() rowDragMove = new EventEmitter<RowDragMoveEvent>();
   @Output() rowDragLeave = new EventEmitter<RowDragLeaveEvent>();
 
+  private successCallback: (rowsThisBlock: any[], lastRow?: number) => void;
   @Input() set searchResultsData(searchResultsData: PaginatedResponse<T> | NoGridDataMessage | LoadingFailed | null | undefined) {
     if (isNoGridDataMessage(searchResultsData)) {
       this.noRowsOverlayComponentParams.loadingError = false;
@@ -134,11 +137,36 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
 
     if (this.gridOptions.api) {
       this.gridOptions.api.hideOverlay();
-      this.gridOptions.api.setRowData(this.rowsDisplayed);
+      if (this.gridOptions.rowModelType === 'infinite') {
+        this.successCallback(this.rowsDisplayed, (this._currentPageNum * this.pageSize) + this.rowsDisplayed.length);
+      } else {
+        this.gridOptions.api.setRowData(this.rowsDisplayed);
+      }
     }
 
     this.setDefaultColComparator();
   }
+
+  @Input() set infiniteScroll(infiniteScroll: boolean) {
+    this.gridOptions.rowModelType = infiniteScroll ? 'infinite' : this.gridOptions.rowModelType;
+    if (infiniteScroll) {
+      this.gridOptions.cacheBlockSize = this.pageSize;
+      const grid = this;
+      this.gridOptions.datasource = new class implements IDatasource {
+        rowCount?: number;
+
+        getRows(params: IGetRowsParams): void {
+          grid.successCallback = params.successCallback;
+          grid.onPageChanged(params.startRow / grid.pageSize);
+        }
+
+        destroy?(): void {
+          throw new Error('Method not implemented.');
+        }
+      }();
+    }
+  }
+
 
   /**
    * Note: the columns must have set colId to the name of the database column.
