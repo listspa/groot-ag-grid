@@ -110,6 +110,8 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
   @Output() rowDragLeave = new EventEmitter<RowDragLeaveEvent>();
 
   private successCallback: (rowsThisBlock: any[], lastRow?: number) => void;
+  private endRow: number;
+  private _infiniteScroll: boolean = false;
   @Input() set searchResultsData(searchResultsData: PaginatedResponse<T> | NoGridDataMessage | LoadingFailed | null | undefined) {
     if (isNoGridDataMessage(searchResultsData)) {
       this.noRowsOverlayComponentParams.loadingError = false;
@@ -138,7 +140,13 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
     if (this.gridOptions.api) {
       this.gridOptions.api.hideOverlay();
       if (this.gridOptions.rowModelType === 'infinite') {
-        this.successCallback(this.rowsDisplayed, (this._currentPageNum * this.pageSize) + this.rowsDisplayed.length);
+        if (this.successCallback) { // avoid first invocation, when successCallback is not set already
+          let lastRow = -1;
+          if (this.data.totalNumRecords <= this.endRow) {
+            lastRow = (this._currentPageNum * this.pageSize) + this.rowsDisplayed.length;
+          }
+          this.successCallback(this.rowsDisplayed, lastRow);
+        }
       } else {
         this.gridOptions.api.setRowData(this.rowsDisplayed);
       }
@@ -147,21 +155,23 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
     this.setDefaultColComparator();
   }
 
+  get infiniteScroll(): boolean {
+    return this._infiniteScroll;
+  }
+
   @Input() set infiniteScroll(infiniteScroll: boolean) {
+    this._infiniteScroll = infiniteScroll;
     this.gridOptions.rowModelType = infiniteScroll ? 'infinite' : this.gridOptions.rowModelType;
     if (infiniteScroll) {
       this.gridOptions.cacheBlockSize = this.pageSize;
       const grid = this;
       this.gridOptions.datasource = new class implements IDatasource {
-        rowCount?: number;
+        rowCount: undefined;
 
         getRows(params: IGetRowsParams): void {
+          grid.endRow = params.endRow;
           grid.successCallback = params.successCallback;
           grid.onPageChanged(params.startRow / grid.pageSize);
-        }
-
-        destroy?(): void {
-          throw new Error('Method not implemented.');
         }
       }();
     }
