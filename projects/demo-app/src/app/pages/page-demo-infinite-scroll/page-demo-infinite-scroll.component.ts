@@ -31,6 +31,7 @@ export class PageDemoInfiniteScrollComponent implements OnInit {
   availableColumns: ColDef[];
   columns: ColDef[];
   searchResultsData: PaginatedResponse<User>;
+  emptyData: PaginatedResponse<User>;
 
   constructor(private bsModalService: BsModalService) {
   }
@@ -117,6 +118,10 @@ export class PageDemoInfiniteScrollComponent implements OnInit {
     };
 
     this.applySort(event);
+  }
+
+  searchEmptyData(event: MultiSortPaginationOptions): void {
+    this.emptyData = {pageNum: 0, pageLen: 10, records: [], totalNumRecords: 0};
   }
 
   private applySort(event: MultiSortPaginationOptions): void {

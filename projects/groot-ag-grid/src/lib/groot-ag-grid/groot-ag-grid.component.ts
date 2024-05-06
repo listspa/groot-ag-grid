@@ -110,8 +110,8 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
   @Output() rowDragLeave = new EventEmitter<RowDragLeaveEvent>();
 
   private successCallback: (rowsThisBlock: any[], lastRow?: number) => void;
-  private endRow: number;
   private _infiniteScroll: boolean = false;
+
   @Input() set searchResultsData(searchResultsData: PaginatedResponse<T> | NoGridDataMessage | LoadingFailed | null | undefined) {
     if (isNoGridDataMessage(searchResultsData)) {
       this.noRowsOverlayComponentParams.loadingError = false;
@@ -141,11 +141,11 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
       this.gridOptions.api.hideOverlay();
       if (this.gridOptions.rowModelType === 'infinite') {
         if (this.successCallback) { // avoid first invocation, when successCallback is not set already
-          let lastRow = -1;
-          if (this.data.totalNumRecords <= this.endRow) {
-            lastRow = (this._currentPageNum * this.pageSize) + this.rowsDisplayed.length;
+          if (this.rowsDisplayed?.length <= 0) {
+            this.gridOptions.api.showLoadingOverlay();
+          } else {
+            this.successCallback(this.rowsDisplayed, this.data.totalNumRecords);
           }
-          this.successCallback(this.rowsDisplayed, lastRow);
         }
       } else {
         this.gridOptions.api.setRowData(this.rowsDisplayed);
@@ -169,7 +169,7 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
         rowCount: undefined;
 
         getRows(params: IGetRowsParams): void {
-          grid.endRow = params.endRow;
+          console.log('asking for ' + params.startRow + ' to ' + params.endRow);
           grid.successCallback = params.successCallback;
           grid.onPageChanged(params.startRow / grid.pageSize);
         }
@@ -674,7 +674,7 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
     }
 
     if (!this.data || this.isSortedServerSide()) {
-      this.reloadTable(false);
+      this.reloadTable(this.infiniteScroll);
     }
   }
 
@@ -694,6 +694,9 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
 
     if (resetPageNumber) {
       this._currentPageNum = 0;
+      if (this.infiniteScroll) {
+        setTimeout(() => this.gridOptions.api.setDatasource(this.gridOptions.datasource), 0);
+      }
     }
 
     if (resetSortField) {
