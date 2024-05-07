@@ -111,7 +111,6 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
 
   private successCallback: (rowsThisBlock: any[], lastRow?: number) => void;
   private _infiniteScroll: boolean = false;
-  private endRow: number;
 
   @Input() set searchResultsData(searchResultsData: PaginatedResponse<T> | NoGridDataMessage | LoadingFailed | null | undefined) {
     if (isNoGridDataMessage(searchResultsData)) {
@@ -142,11 +141,7 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
       this.gridOptions.api.hideOverlay();
       if (this.gridOptions.rowModelType === 'infinite') {
         if (this.successCallback) { // avoid first invocation, when successCallback is not set already
-          let lastRow = -1;
-          if (this.data.totalNumRecords <= this.endRow) {
-            lastRow = (this._currentPageNum * this.pageSize) + this.rowsDisplayed.length;
-          }
-          this.successCallback(this.rowsDisplayed, lastRow);
+          this.successCallback(this.rowsDisplayed, this.data.totalNumRecords);
         }
       } else {
         this.gridOptions.api.setRowData(this.rowsDisplayed);
@@ -173,7 +168,7 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
         rowCount: undefined;
 
         getRows(params: IGetRowsParams): void {
-          grid.endRow = params.endRow;
+          console.log('asking for ' + params.startRow + ' to ' + params.endRow);
           grid.successCallback = params.successCallback;
           grid.onPageChanged(params.startRow / grid.pageSize);
         }
