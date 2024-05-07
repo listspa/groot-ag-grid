@@ -10,6 +10,7 @@ export class AppComponent {
   menu: SimpleNavBarItem[] = [
     {label: 'Samples', url: '/demo-simple'},
     {label: 'Customizing cells', url: '/custom-components'},
+    {label: 'Infinite Scroll', url: '/infinite-scroll'},
   ];
 
   constructor(_: TranslationsLanguageService) {

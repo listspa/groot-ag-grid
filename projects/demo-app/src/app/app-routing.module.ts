@@ -4,6 +4,7 @@ import {PageDemoTableComponent} from './pages/page-demo-table/page-demo-table.co
 import {PageHomepageComponent} from './pages/page-homepage/page-homepage.component';
 import {PageCustomComponentsComponent} from './pages/page-custom-components/page-custom-components.component';
 import {PageDemoStyleComponent} from './pages/page-demo-style/page-demo-style.component';
+import {PageDemoInfiniteScrollComponent} from './pages/page-demo-infinite-scroll/page-demo-infinite-scroll.component';
 
 const routes: Routes = [
   {path: '', pathMatch: 'full', redirectTo: 'home'},
@@ -11,6 +12,7 @@ const routes: Routes = [
   {path: 'demo-simple', component: PageDemoTableComponent},
   {path: 'custom-components', component: PageCustomComponentsComponent},
   {path: 'demo-style', component: PageDemoStyleComponent},
+  {path: 'infinite-scroll', component: PageDemoInfiniteScrollComponent},
 ];
 
 @NgModule({

@@ -1,0 +1,43 @@
+<groot-ag-grid
+  class="mb-4"
+  #table1
+  [hideTitleBar]="true"
+  [columnDefs]="columns"
+  [pageSize]="4"
+  [searchResultsData]="searchResultsData"
+  (search)="search($event)"
+  [actionButtonTemplate]="actionsTemplate"
+  [infiniteScroll]="true"
+  gridHeightCss="200px"
+>
+  <ng-template #actionsTemplate let-row>
+    <groot-actions-button [insideTable]="true">
+      <groot-actions-button-entry label="open"></groot-actions-button-entry>
+      <groot-actions-button-entry label="remove"></groot-actions-button-entry>
+      <groot-actions-button-entry label="send email"></groot-actions-button-entry>
+    </groot-actions-button>
+  </ng-template>
+</groot-ag-grid>
+
+<p>No results infinite scroll table</p>
+
+<groot-ag-grid
+  class="mb-4"
+  #table2
+  [hideTitleBar]="true"
+  [columnDefs]="columns"
+  [pageSize]="4"
+  [searchResultsData]="emptyData"
+  (search)="searchEmptyData($event)"
+  [actionButtonTemplate]="actionsTemplate"
+  [infiniteScroll]="true"
+  gridHeightCss="200px"
+>
+  <ng-template #actionsTemplate let-row>
+    <groot-actions-button [insideTable]="true">
+      <groot-actions-button-entry label="open"></groot-actions-button-entry>
+      <groot-actions-button-entry label="remove"></groot-actions-button-entry>
+      <groot-actions-button-entry label="send email"></groot-actions-button-entry>
+    </groot-actions-button>
+  </ng-template>
+</groot-ag-grid>

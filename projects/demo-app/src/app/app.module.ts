@@ -31,6 +31,7 @@ import {AgGridModule} from 'ag-grid-angular';
 import {ButtonsModule} from 'ngx-bootstrap/buttons';
 import {PageHomepageComponent} from './pages/page-homepage/page-homepage.component';
 import {PageCustomComponentsComponent} from './pages/page-custom-components/page-custom-components.component';
+import { PageDemoInfiniteScrollComponent } from './pages/page-demo-infinite-scroll/page-demo-infinite-scroll.component';
 import { PageDemoStyleComponent } from './pages/page-demo-style/page-demo-style.component';
 
 // Required as a separate function for AOT compilation
@@ -44,7 +45,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     PageDemoTableComponent,
     PageHomepageComponent,
     PageCustomComponentsComponent,
-    PageDemoStyleComponent
+    PageDemoStyleComponent,
+    PageDemoInfiniteScrollComponent
   ],
   imports: [
     BrowserModule,

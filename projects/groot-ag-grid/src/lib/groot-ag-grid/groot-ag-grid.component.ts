@@ -19,6 +19,8 @@ import {
   GridApi,
   GridOptions,
   IRowNode,
+  IDatasource,
+  IGetRowsParams,
   IsRowSelectable,
   Module,
   RowClassParams,
@@ -126,6 +128,9 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
   @Output() rowDragMove = new EventEmitter<RowDragMoveEvent>();
   @Output() rowDragLeave = new EventEmitter<RowDragLeaveEvent>();
 
+  private successCallback: (rowsThisBlock: any[], lastRow?: number) => void;
+  private _infiniteScroll: boolean = false;
+
   @Input() set searchResultsData(searchResultsData: PaginatedResponse<T> | NoGridDataMessage | LoadingFailed | null | undefined) {
     if (isNoGridDataMessage(searchResultsData)) {
       this.noRowsOverlayComponentParams.loadingError = false;
@@ -149,11 +154,43 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
 
     if (this.gridOptions.api) {
       this.gridOptions.api.hideOverlay();
-      this.gridOptions.api.setRowData(this.rowsDisplayed);
+      if (this.gridOptions.rowModelType === 'infinite') {
+        if (this.successCallback) { // avoid first invocation, when successCallback is not set already
+          this.successCallback(this.rowsDisplayed, this.data.totalNumRecords);
+        }
+      } else {
+        this.gridOptions.api.setRowData(this.rowsDisplayed);
+      }
     }
 
     this.setDefaultColComparator();
+    if (this.gridOptions.api && this.rowsDisplayed?.length <= 0) {
+      this.gridOptions.api.showNoRowsOverlay();
+    }
   }
+
+  get infiniteScroll(): boolean {
+    return this._infiniteScroll;
+  }
+
+  @Input() set infiniteScroll(infiniteScroll: boolean) {
+    this._infiniteScroll = infiniteScroll;
+    this.gridOptions.rowModelType = infiniteScroll ? 'infinite' : this.gridOptions.rowModelType;
+    if (infiniteScroll) {
+      this.gridOptions.cacheBlockSize = this.pageSize;
+      const grid = this;
+      this.gridOptions.datasource = new class implements IDatasource {
+        rowCount: undefined;
+
+        getRows(params: IGetRowsParams): void {
+          console.log('asking for ' + params.startRow + ' to ' + params.endRow);
+          grid.successCallback = params.successCallback;
+          grid.onPageChanged(params.startRow / grid.pageSize);
+        }
+      }();
+    }
+  }
+
 
   /**
    * Note: the columns must have set colId to the name of the database column.
@@ -648,7 +685,7 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
     }
 
     if (!this.data || this.isSortedServerSide()) {
-      this.reloadTable(false);
+      this.reloadTable(this.infiniteScroll);
     }
   }
 
@@ -670,6 +707,9 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
 
     if (resetPageNumber) {
       this._currentPageNum = 0;
+      if (this.infiniteScroll) {
+        setTimeout(() => this.gridOptions.api.setDatasource(this.gridOptions.datasource), 0);
+      }
     }
 
     if (resetSortField) {
