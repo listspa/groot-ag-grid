@@ -1,17 +1,22 @@
 # Groot-ag-grid releases
 
-## Version 6.0.0 - in progress
+## Version 6.0.0 - 2024-05-08
 
-  BREAKING CHANGES:
-  - Angular 15
-  - Ag-Grid 30.2.x
-  - Bootstrap 5
-  - Groot 4.x
-  - NodeJs >= 16.x
+NOTABLE BREAKING CHANGES:
+- NodeJs >= 16.x
+- Angular 15.2
+- Bootstrap 5.3
+- Ag-Grid 30.2
+- Font Awesome 6.4
+- Groot 4.x
+- IE11 deprecation due to Angular 15 deprecation
 
-  Breaking changes on input parameters:
-  - getRowHeight now accepts param of type RowHeightParams instead of RowNode
-  - getRowNodeId is deprecated, use getRowId instead (see https://www.ag-grid.com/changelog/?fixVersion=27.1.0)
+Breaking changes on input parameters:
+- getRowHeight now accepts param of type RowHeightParams instead of RowNode
+- getRowNodeId is deprecated, use getRowId instead (see https://www.ag-grid.com/changelog/?fixVersion=27.1.0)
+
+- feat: allow change default theme with input param "defaultClass"
+- feat: allow disable pagination
 
 ## Version 5.7.8 - 2024-02-28
 
