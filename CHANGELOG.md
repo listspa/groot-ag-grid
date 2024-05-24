@@ -18,6 +18,14 @@ Breaking changes on input parameters:
 - feat: allow change default theme with input param "defaultClass"
 - feat: allow disable pagination
 
+## Version 5.7.10 - 2024-05-13
+
+- feat: add the ability to disable autosize for all columns. Specify `[disableAutosize]="true"`
+
+## Version 5.7.9 - 2024-05-07
+
+- feat: add infinite scroll. Just specify `[infiniteScroll]="true"` on a groot-ag-grid that uses pagination, and it will switch to infinite scroll instead of pagination.
+
 ## Version 5.7.8 - 2024-02-28
 
 - feat: set sortingOrder for defaultSort column, if not already defined
