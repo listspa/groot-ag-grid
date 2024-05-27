@@ -15,7 +15,7 @@ npm i @listgroup/groot-ag-grid ag-grid-angular ag-grid-community
 
 To see the documentation, run the application with `npm run start` and navigate the showcase project.
 
-This library uses Angular 11.1 and Bootstrap 4.
+This library uses Angular 15.2.9 and Bootstrap 5.
 
 ## Links
 
