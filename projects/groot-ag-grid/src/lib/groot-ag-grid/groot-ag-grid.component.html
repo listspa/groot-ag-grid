@@ -22,7 +22,7 @@
   [class]="defaultClass"
   [gridOptions]="gridOptions"
   (sortChanged)="onSortChanged()"
-  (gridReady)="gridReady()"
+  (gridReady)="gridReady($event)"
   (firstDataRendered)="firstDataRendered()"
   noRowsOverlayComponent="GrootAgGridNoRowsOverlayComponent"
   [noRowsOverlayComponentParams]="noRowsOverlayComponentParams"

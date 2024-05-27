@@ -1,11 +1,10 @@
 import {Component, OnInit, TemplateRef, ViewChild} from '@angular/core';
-import {ColDef, GetDataPath, GetRowIdFunc, Module} from 'ag-grid-community';
+import {ColDef, ColGroupDef, GetDataPath, GetRowIdFunc, Module} from 'ag-grid-community';
 import {GrootAgGridRenderer} from '../../../../../groot-ag-grid/src/lib/groot-ag-grid/groot-ag-grid-customization.consts';
 import {LoadingFailed, PaginatedResponse} from '@listgroup/groot';
 import {GrootAgGridSelection} from '../../../../../groot-ag-grid/src/lib/groot-ag-grid/groot-ag-grid-selection.model';
 import {GrootAgGridComponent} from '../../../../../groot-ag-grid/src/lib/groot-ag-grid/groot-ag-grid.component';
 import {NoGridDataMessage} from '../../../../../groot-ag-grid/src/lib/groot-ag-grid/no-grid-data.model';
-import {ColGroupDef} from 'ag-grid-community/dist/lib/entities/colDef';
 import {
   GrootAgGridColumnSelectorModalComponent
 } from '../../../../../groot-ag-grid/src/lib/groot-ag-grid/groot-ag-grid-column-selector-modal/groot-ag-grid-column-selector-modal.component';
@@ -42,12 +41,21 @@ export class PageDemoTableComponent implements OnInit {
   @ViewChild('alignedGrid1', {static: false}) alignedGrid1: GrootAgGridComponent<any>;
   @ViewChild('alignedGrid2', {static: false}) alignedGrid2: GrootAgGridComponent<any>;
   @ViewChild('gridHeader', {static: false}) gridHeader: GrootAgGridComponent<any>;
+  @ViewChild('gridColumnHeaderTemplate', {static: false}) gridColumnHeaderTemplate: GrootAgGridComponent<any>;
   @ViewChild('columnHeaderTemplate', {static: true}) columnHeaderTemplate: TemplateRef<any>;
   availableColumns: ColDef[];
   columns: ColDef[];
   customHeaderColumns: ColDef[];
   columnsGroup: ColGroupDef[];
-  searchResultsData: PaginatedResponse<User>;
+  searchResultsDataTable1: PaginatedResponse<User>;
+  searchResultsDataTable2: PaginatedResponse<User>;
+  searchResultsDataTable3: PaginatedResponse<User>;
+  searchResultsDataTable4: PaginatedResponse<User>;
+  searchResultsDataGridSelection: PaginatedResponse<User>;
+  searchResultsDataAlignedGrid1: PaginatedResponse<User>;
+  searchResultsDataAlignedGrid2: PaginatedResponse<User>;
+  searchResultsDataGridHeader: PaginatedResponse<User>;
+  searchResultsDataColumnHeaderTemplate: PaginatedResponse<User>;
   @ViewChild('cellTemplate', { static: true }) cellTemplate: TemplateRef<any>;
   selectionMode: 'single' | 'multi' | 'multi-click' = 'multi';
   @ViewChild('gridSelection', { static: true }) gridSelection: GrootAgGridComponent<User>;
@@ -196,9 +204,8 @@ export class PageDemoTableComponent implements OnInit {
       }
     };
   }
-
-  search(event: MultiSortPaginationOptions): void {
-    this.searchResultsData = {
+  getResultData(event) {
+    return {
       pageNum: event.pageNum,
       pageLen: event.pageLen,
       totalNumRecords: 4,
@@ -209,26 +216,69 @@ export class PageDemoTableComponent implements OnInit {
         {id: 'U004', name: 'Baby Boy', age: 4, birthDate: new Date('2016-07-02'), grownUp: false, lastUpdateTimestamp: new Date()},
       ]
     };
-
-    this.applySort(event);
   }
 
-  private applySort(event: MultiSortPaginationOptions): void {
-    // Apply sort
-    if (!event.sort) {
-      return;
-    }
-    this.searchResultsData.records.sort((r1, r2) => {
-      for (const s of event.sort) {
-        if (r1[s.sortField] < r2[s.sortField]) {
-          return s.sortReversed ? +1 : -1;
-        } else if (r1[s.sortField] > r2[s.sortField]) {
-          return s.sortReversed ? -1 : +1;
-        }
-      }
-      // if all fields in sort are equal, records are equal
-      return 0;
-    });
+  searchTable1(event: MultiSortPaginationOptions): void {
+    this.searchResultsDataTable1 = this.getResultData(event);
+    this.applySort(event, this.searchResultsDataTable1);
+  }
+
+  searchTable2(event: MultiSortPaginationOptions): void {
+    this.searchResultsDataTable2 = this.getResultData(event);
+    this.applySort(event, this.searchResultsDataTable2);
+  }
+
+  searchTable3(event: MultiSortPaginationOptions): void {
+    this.searchResultsDataTable3 = this.getResultData(event);
+    this.applySort(event, this.searchResultsDataTable3);
+  }
+
+  searchTable4(event: MultiSortPaginationOptions): void {
+    this.searchResultsDataTable4 = this.getResultData(event);
+    this.applySort(event, this.searchResultsDataTable4);
+  }
+
+  searchGridSelection(event: MultiSortPaginationOptions): void {
+    this.searchResultsDataGridSelection = this.getResultData(event);
+    this.applySort(event, this.searchResultsDataGridSelection);
+  }
+
+  searchAlignedGrid1(event: MultiSortPaginationOptions): void {
+    this.searchResultsDataAlignedGrid1 = this.getResultData(event);
+    this.applySort(event, this.searchResultsDataAlignedGrid1);
+  }
+
+  searchAlignedGrid2(event: MultiSortPaginationOptions): void {
+    this.searchResultsDataAlignedGrid2 = this.getResultData(event);
+    this.applySort(event, this.searchResultsDataAlignedGrid2);
+  }
+
+  searchGridHeader(event: MultiSortPaginationOptions): void {
+    this.searchResultsDataGridHeader = this.getResultData(event);
+    this.applySort(event, this.searchResultsDataGridHeader);
+  }
+
+  searchColumnHeaderTemplate(event: MultiSortPaginationOptions): void {
+    this.searchResultsDataColumnHeaderTemplate = this.getResultData(event);
+    this.applySort(event, this.searchResultsDataColumnHeaderTemplate);
+  }
+
+  private applySort(event: MultiSortPaginationOptions, searchResultsData: PaginatedResponse<User>): void {
+    // // Apply sort
+    // if (!event.sort) {
+    //   return;
+    // }
+    // searchResultsData.records.sort((r1, r2) => {
+    //   for (const s of event.sort) {
+    //     if (r1[s.sortField] < r2[s.sortField]) {
+    //       return s.sortReversed ? +1 : -1;
+    //     } else if (r1[s.sortField] > r2[s.sortField]) {
+    //       return s.sortReversed ? -1 : +1;
+    //     }
+    //   }
+    //   // if all fields in sort are equal, records are equal
+    //   return 0;
+    // });
   }
 
   setSelection(event: GrootAgGridSelection<User>): void {
@@ -289,13 +339,13 @@ export class PageDemoTableComponent implements OnInit {
 
   changeAge(row: any): void {
     row.age = row.age + (Math.round(Math.random() * 100) * (Math.random() < 0.5 ? -1 : 1));
-    this.table1.gridOptions.api.refreshCells();
-    this.table2.gridOptions.api.refreshCells();
-    this.table3.gridOptions.api.refreshCells();
-    this.table4.gridOptions.api.refreshCells();
-    this.alignedGrid1.gridOptions.api.refreshCells();
-    this.alignedGrid2.gridOptions.api.refreshCells();
-    this.gridHeader.gridOptions.api.refreshCells();
-    this.gridSelection.gridOptions.api.refreshCells();
+    this.table1.api.refreshCells();
+    this.table2.api.refreshCells();
+    this.table3.api.refreshCells();
+    this.table4.api.refreshCells();
+    this.alignedGrid1.api.refreshCells();
+    this.alignedGrid2.api.refreshCells();
+    this.gridHeader.api.refreshCells();
+    this.gridSelection.api.refreshCells();
   }
 }

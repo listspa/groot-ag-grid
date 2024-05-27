@@ -43,8 +43,7 @@ export class GrootAgGridHeaderTemplateComponent implements IHeaderAngularComp {
     } else {
       this.sorted = '';
     }
-    this.params.columnApi['moreThanOneColumnSorted'] = this.params.columnApi.getColumnState().filter(c => c.sort).length > 1;
-    console.log(`${this.params.column.getId()}: [${this.sorted}], moreThanOneColumnSorted: ${this.params.columnApi['moreThanOneColumnSorted']}`);
+    this.params.api['moreThanOneColumnSorted'] = this.params.api.getColumnState().filter(c => c.sort).length > 1;
   }
 
   @HostListener('click', ['$event'])

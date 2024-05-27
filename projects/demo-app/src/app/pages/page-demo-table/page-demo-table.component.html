@@ -6,8 +6,8 @@
   #table1
   class="mb-4"
   [columnDefs]="columns"
-  [searchResultsData]="searchResultsData"
-  (search)="search($event)"
+  [searchResultsData]="searchResultsDataTable1"
+  (search)="searchTable1($event)"
   [defaultSort]="[{sortField: 'id', sortReversed: true}]"
 ></groot-ag-grid>
 
@@ -50,8 +50,8 @@
   #gridSelection
   [hideTitleBar]="true"
   [columnDefs]="columns"
-  [searchResultsData]="searchResultsData"
-  (search)="search($event)"
+  [searchResultsData]="searchResultsDataGridSelection"
+  (search)="searchGridSelection($event)"
   [checkboxSelection]="selectionMode === 'multi'"
   [headerCheckboxSelection]="selectionMode === 'multi'"
   [singleRowSelection]="selectionMode === 'single'"
@@ -69,8 +69,8 @@
   #table2
   [hideTitleBar]="true"
   [columnDefs]="columns"
-  [searchResultsData]="searchResultsData"
-  (search)="search($event)"
+  [searchResultsData]="searchResultsDataTable2"
+  (search)="searchTable2($event)"
   [accordionHeight]="30"
   [accordionTemplate]="accordionTemplate"
 >
@@ -88,8 +88,8 @@
   #table3
   [hideTitleBar]="true"
   [columnDefs]="columns"
-  [searchResultsData]="searchResultsData"
-  (search)="search($event)"
+  [searchResultsData]="searchResultsDataTable3"
+  (search)="searchTable3($event)"
   [actionButtonTemplate]="actionsTemplate"
 >
   <ng-template #actionsTemplate let-row>
@@ -143,8 +143,8 @@
   #alignedGrid1
   [hideTitleBar]="true"
   [columnDefs]="columns"
-  [searchResultsData]="searchResultsData"
-  (search)="search($event)"
+  [searchResultsData]="searchResultsDataAlignedGrid1"
+  (search)="searchAlignedGrid1($event)"
   [alignedGrids]="[alignedGrid2]"
 ></groot-ag-grid>
 <groot-ag-grid
@@ -152,8 +152,8 @@
   class="mb-4"
   [hideTitleBar]="true"
   [columnDefs]="columns"
-  [searchResultsData]="searchResultsData"
-  (search)="search($event)"
+  [searchResultsData]="searchResultsDataAlignedGrid2"
+  (search)="searchAlignedGrid2($event)"
   [alignedGrids]="[alignedGrid1]"
 ></groot-ag-grid>
 
@@ -168,8 +168,8 @@
   #table4
   [hideTitleBar]="true"
   [columnDefs]="columnsGroup"
-  [searchResultsData]="searchResultsData"
-  (search)="search($event)"
+  [searchResultsData]="searchResultsDataTable4"
+  (search)="searchTable4($event)"
 ></groot-ag-grid>
 
 <h2>Table headers and column selector</h2>
@@ -177,8 +177,8 @@
 <p>You can show a table header and the column's selector window:</p>
 
 <groot-ag-grid-table-header
-  [gridData]="searchResultsData"
-  [totalNumRecords]="searchResultsData ? searchResultsData.totalNumRecords : null"
+  [gridData]="searchResultsDataGridHeader"
+  [totalNumRecords]="searchResultsDataGridHeader ? searchResultsDataGridHeader.totalNumRecords : null"
   [selection]="selection"
   [actions]="tplHeaderActions"
   [actionsSelection]="tplHeaderSelectionActions"
@@ -199,8 +199,8 @@
   #gridHeader
   class="mb-4"
   [columnDefs]="columns"
-  [searchResultsData]="searchResultsData"
-  (search)="search($event)"
+  [searchResultsData]="searchResultsDataGridHeader"
+  (search)="searchGridHeader($event)"
   [defaultSort]="[{sortField: 'id', sortReversed: true}]"
   [hideTitleBar]="true"
 ></groot-ag-grid>
@@ -211,7 +211,7 @@
 
 <pre><code>
 &lt;ng-template #columnHeaderTemplate let-col="col"&gt;
-  {{ "{{" }}col.headerName&#125;&#125;
+  {{ "{{" }}col.colId&#125;&#125;
   &lt;i class="fa fa-italic"&gt;&lt;/i&gt;
 &lt;/ng-template&gt;
 </code></pre>
@@ -235,18 +235,18 @@
 
 
 <groot-ag-grid
-  #gridHeader
+  #gridColumnHeaderTemplate
   class="mb-4"
   [columnDefs]="customHeaderColumns"
-  [searchResultsData]="searchResultsData"
-  (search)="search($event)"
+  [searchResultsData]="searchResultsDataColumnHeaderTemplate"
+  (search)="searchColumnHeaderTemplate($event)"
   [defaultSort]="[{sortField: 'grownUp', sortReversed: false}, {sortField: 'age', sortReversed: true}]"
   [hideTitleBar]="true"
 ></groot-ag-grid>
 
 <ng-template #columnHeaderTemplate let-col="col">
   <i class="fa fa-star"></i>
-  {{col.headerName}}
+  {{col.colId}}
 </ng-template>
 
 <h2>Tree (Requires Ag-Grid Enterprise)</h2>
