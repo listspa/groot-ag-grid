@@ -211,14 +211,14 @@
 
 <pre><code>
 &lt;ng-template #columnHeaderTemplate let-col="col"&gt;
-  {{ "{{" }}col.headerName}}
+  {{ "{{" }}col.headerName&#125;&#125;
   &lt;i class="fa fa-italic"&gt;&lt;/i&gt;
 &lt;/ng-template&gt;
 </code></pre>
 
 <pre><code>
 
-  @ViewChild('columnHeaderTemplate', {{ "{" }}static: true}) columnHeaderTemplate: TemplateRef&lt;any&gt;;
+  &#64;ViewChild('columnHeaderTemplate', {{ "{" }}static: true&#125;) columnHeaderTemplate: TemplateRef&lt;any&gt;;
 
   ...
 
@@ -226,8 +226,8 @@
     colId: 'name',
     field: 'name',
       headerComponent: 'headerTemplateRenderer',
-      headerComponentParams: {{ "{" }} ngTemplate: this.columnHeaderTemplate}
-    },
+      headerComponentParams: {{ "{" }} ngTemplate: this.columnHeaderTemplate&#125;
+    &#125;,
     ...
   ]
 </code></pre>

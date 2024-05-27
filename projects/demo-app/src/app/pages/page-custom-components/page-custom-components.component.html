@@ -17,7 +17,7 @@
   field: 'age',
   cellRenderer: GrootAgGridRenderer.numbers,
   cellClass: 'ag-cell-right',
-}</code></pre>
+&#125;</code></pre>
 
 <h2>Use a template</h2>
 
@@ -51,12 +51,12 @@
 <pre><code>export function registerCustomGridComponents(grootAgGridCustomizationService: GrootAgGridCustomizationService) &#123;
   return () => &#123;
     grootAgGridCustomizationService.registerFrameworkComponent('myComp', MyCustomRendererComponent);
-  };
-}</code></pre>
+  &#125;;
+&#125;</code></pre>
 
 <p>and add in the <code>providers</code> section of your module:</p>
 
-<pre><code>&#123;provide: APP_INITIALIZER, useFactory: registerCustomGridComponents, multi: true, deps: [GrootAgGridCustomizationService]}</code></pre>
+<pre><code>&#123;provide: APP_INITIALIZER, useFactory: registerCustomGridComponents, multi: true, deps: [GrootAgGridCustomizationService]&#125;</code></pre>
 
 <p>After this, you will be able to refer in the <code>colDef</code> to your component using <code>myComp</code>.</p>
 
