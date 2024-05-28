@@ -63,14 +63,14 @@ const SPECIAL_TOOL_CELL: ColDef = {
   width: 30,
 };
 
-function getDatasource(grootAgGrid: GrootAgGridComponent<any>) {
+function getDatasource(grootAgGrid: GrootAgGridComponent<any>): IDatasource {
   return new class implements IDatasource {
     rowCount: undefined;
     getRows(params: IGetRowsParams): void {
       grootAgGrid.successCallback = params.successCallback;
       grootAgGrid.onPageChanged(params.startRow / grootAgGrid.pageSize);
     }
-  }()
+  }();
 }
 
 @Component({
@@ -123,7 +123,7 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
   @Input() groupDisplayType: RowGroupingDisplayType | undefined = this.groupMultiAutoColumn ? 'multipleColumns' : 'singleColumn';
   @Input() suppressAggFuncInHeader = false;
   @Input() getRowId: GetRowIdFunc<any> | undefined;
-    /**
+  /**
    * @deprecated AG-6394 - gridOptions.immutableData and gridOptions.getRowNodeId() are deprecated.
    * Instead, implement getRowId(), and the grid will then also treat the data as immutable data automatically.
    * https://www.ag-grid.com/changelog/?fixVersion=27.1.0
@@ -132,7 +132,7 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
   @Input() disableAutosize = false;
   @Input() defaultClass = 'ag-theme-balham ag-grid-rows-clickable';
   @Input() disablePagination = false;
-  @Input() infiniteScroll: boolean = false;
+  @Input() infiniteScroll = false;
 
   @Output() rowDragEnter = new EventEmitter<RowDragEnterEvent>();
   @Output() rowDragEnd = new EventEmitter<RowDragEndEvent>();
@@ -140,7 +140,7 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
   @Output() rowDragLeave = new EventEmitter<RowDragLeaveEvent>();
 
   successCallback: (rowsThisBlock: any[], lastRow?: number) => void;
-  private treeData: boolean = false;
+  private treeData = false;
   private _getDataPath: GetDataPath = undefined;
   private defaultColDef = {
     filter: false,
@@ -688,7 +688,7 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
   }
 
   autoSizeColumns(): void {
-    if(!this.disableAutosize){
+    if (!this.disableAutosize) {
       this.api.autoSizeAllColumns();
     }
   }
