@@ -31,7 +31,7 @@ import {
   RowGroupingDisplayType,
   RowHeightParams,
   RowStyle,
-  GridReadyEvent,
+  GridReadyEvent
 } from 'ag-grid-community';
 import {TranslateService} from '@ngx-translate/core';
 import {GrootAgGridNoRowsOverlayComponent, GrootAgGridNoRowsParams} from './groot-ag-grid-no-rows-overlay/groot-ag-grid-no-rows-overlay.component';
@@ -545,8 +545,10 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
   }
 
   private resetDefaultSorting(): void {
-    this.defaultColDef.sortable = !this.disableSorting;
-    this.api?.setGridOption('defaultColDef', this.defaultColDef);
+    if (this.defaultColDef.sortable !== !this.disableSorting) {
+      this.defaultColDef.sortable = !this.disableSorting;
+      this.api?.setGridOption('defaultColDef', this.defaultColDef);
+    }
     this.sorting = this._defaultSort ?? (
       this.defaultSortColumn ? [{sortField: this.defaultSortColumn, sortReversed: this.defaultSortReverseFlag}] : null);
     this.setSorting();
@@ -632,17 +634,17 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
   }
 
   gridReady(event: GridReadyEvent<T>): void {
-    this.isGridReady = true;
     this.api = event.api;
-    this.api.setGridOption('columnDefs', this.gridOptions.columnDefs); // Update labels
+    this.handleSpecialColumns();
     this.restoreColState();
     const sortingSet = this.setSorting();
     this.agGridReady.next(this.api);
-
     // Avoid reloading if we changed the sort - if we did, we will receive an `onSortChange` event
+
     if (!sortingSet) {
       this.reloadTable(true);
     }
+    this.isGridReady = true;
   }
 
   private setSorting(): boolean {

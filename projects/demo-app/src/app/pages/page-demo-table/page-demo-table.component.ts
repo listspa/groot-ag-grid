@@ -264,21 +264,21 @@ export class PageDemoTableComponent implements OnInit {
   }
 
   private applySort(event: MultiSortPaginationOptions, searchResultsData: PaginatedResponse<User>): void {
-    // // Apply sort
-    // if (!event.sort) {
-    //   return;
-    // }
-    // searchResultsData.records.sort((r1, r2) => {
-    //   for (const s of event.sort) {
-    //     if (r1[s.sortField] < r2[s.sortField]) {
-    //       return s.sortReversed ? +1 : -1;
-    //     } else if (r1[s.sortField] > r2[s.sortField]) {
-    //       return s.sortReversed ? -1 : +1;
-    //     }
-    //   }
-    //   // if all fields in sort are equal, records are equal
-    //   return 0;
-    // });
+    // Apply sort
+    if (!event.sort) {
+      return;
+    }
+    searchResultsData.records.sort((r1, r2) => {
+      for (const s of event.sort) {
+        if (r1[s.sortField] < r2[s.sortField]) {
+          return s.sortReversed ? +1 : -1;
+        } else if (r1[s.sortField] > r2[s.sortField]) {
+          return s.sortReversed ? -1 : +1;
+        }
+      }
+      // if all fields in sort are equal, records are equal
+      return 0;
+    });
   }
 
   setSelection(event: GrootAgGridSelection<User>): void {
