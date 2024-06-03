@@ -124,7 +124,7 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
   @Input() groupMultiAutoColumn = false;
   @Input() groupDisplayType: RowGroupingDisplayType | undefined = this.groupMultiAutoColumn ? 'multipleColumns' : 'singleColumn';
   @Input() suppressAggFuncInHeader = false;
-  @Input() getRowId: GetRowIdFunc<any> | undefined;
+  @Input() getRowId: GetRowIdFunc | undefined;
   /**
    * @deprecated AG-6394 - gridOptions.immutableData and gridOptions.getRowNodeId() are deprecated.
    * Instead, implement getRowId(), and the grid will then also treat the data as immutable data automatically.
