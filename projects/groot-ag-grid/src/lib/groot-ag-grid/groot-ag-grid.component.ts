@@ -142,12 +142,22 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
   successCallback: (rowsThisBlock: any[], lastRow?: number) => void;
   private treeData = false;
   private _getDataPath: GetDataPath = undefined;
-  private defaultColDef = {
+  private _defaultColDef: ColDef<T> = {
     filter: false,
     sortable: true,
     resizable: true,
     lockPinned: true,
+    autoHeaderHeight: true,
+    wrapHeaderText: true
   };
+
+  @Input() set defaultColDef(defaultColDef: ColDef<T>) {
+    if (defaultColDef) {
+      this._defaultColDef = {...defaultColDef};
+      this.api?.setGridOption('defaultColDef', this._defaultColDef);
+      this.handleSpecialColumns();
+    }
+  }
 
   @Input() set searchResultsData(searchResultsData: PaginatedResponse<T> | NoGridDataMessage | LoadingFailed | null | undefined) {
     if (isNoGridDataMessage(searchResultsData)) {
@@ -408,16 +418,14 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
 
   @Input()
   set lockPinned(lockPinned: boolean) {
-    this._lockPinned = lockPinned;
-    this.defaultColDef.lockPinned = this._lockPinned;
-    this.api?.setGridOption('defaultColDef', this.defaultColDef);
+    this._defaultColDef.lockPinned = lockPinned;
+    this.api?.setGridOption('defaultColDef', this._defaultColDef);
     this.handleSpecialColumns();
   }
 
   private _defaultSort: SortPagination[];
   public data: PaginatedResponse<T> = null;
   private _isRowSelectable: IsRowSelectable = () => true;
-  private _lockPinned = true;
   private groupExpanded = 0;
   private _rowDragManaged = false;
   private _suppressMoveWhenRowDragging = false;
@@ -479,8 +487,8 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.gridOptions = {
-      defaultColDef: this.defaultColDef,
-      columnDefs: [],
+      defaultColDef: this._defaultColDef,
+      columnDefs: this.columnDefs_ ?? [],
       components: {
         GrootAgGridNoRowsOverlayComponent,
         GrootAgGridLoadingOverlayComponent,
@@ -545,9 +553,9 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
   }
 
   private resetDefaultSorting(): void {
-    if (this.defaultColDef.sortable !== !this.disableSorting) {
-      this.defaultColDef.sortable = !this.disableSorting;
-      this.api?.setGridOption('defaultColDef', this.defaultColDef);
+    if (this._defaultColDef.sortable !== !this.disableSorting) {
+      this._defaultColDef.sortable = !this.disableSorting;
+      this.api?.setGridOption('defaultColDef', this._defaultColDef);
     }
     this.sorting = this._defaultSort ?? (
       this.defaultSortColumn ? [{sortField: this.defaultSortColumn, sortReversed: this.defaultSortReverseFlag}] : null);
