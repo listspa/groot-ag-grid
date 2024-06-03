@@ -68,6 +68,7 @@ export class PageDemoTableComponent implements OnInit {
   searchResultsDataTree: PaginatedResponse<CategoryData>;
   columnsTree: ColDef[];
   treeGroupColDef: ColDef;
+
   getDataPath: GetDataPath<any> = data => {
     if (data.subCategory) {
       return [data.macroCategory, data.category, data.subCategory];
@@ -76,7 +77,8 @@ export class PageDemoTableComponent implements OnInit {
     } else {
       return [data.macroCategory];
     }
-  };
+  }
+
   getRowId: GetRowIdFunc<any> = data => {
     const { subCategory, macroCategory, category } = data.data;
     if (subCategory) {
@@ -204,7 +206,7 @@ export class PageDemoTableComponent implements OnInit {
       }
     };
   }
-  getResultData(event) {
+  getResultData(event): PaginatedResponse<User> {
     return {
       pageNum: event.pageNum,
       pageLen: event.pageLen,
