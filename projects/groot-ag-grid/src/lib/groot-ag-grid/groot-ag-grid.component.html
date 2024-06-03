@@ -8,7 +8,7 @@
   [downloadExcelFileName]="downloadExcelFileName"
   [showRefreshIcon]="showRefreshIcon"
   [lastRefreshTimestamp]="lastRefreshTimestamp"
-  (refresh)="reloadTable()"
+  (refresh)="reloadTable(infiniteScroll)"
   [label]="titleLabel"
   *ngIf="!hideTitleBar"
 >

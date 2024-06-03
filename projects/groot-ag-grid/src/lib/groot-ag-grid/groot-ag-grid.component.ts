@@ -465,7 +465,7 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
       }
       return rowHeightParams.data?.$isAccordionRow ? this._accordionHeight : this.rowHeight;
     });
-    this.reloadTable();
+    this.reloadTable(this.infiniteScroll);
   }
 
   get accordionHeight(): number {
@@ -486,6 +486,17 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    let rowClassRules = {
+      'accordion-row': rowNode => rowNode.data?.$isAccordionRow,
+      'accordion-expanded': rowNode => rowNode.data?.$showingAccordion,
+    };
+    if (this.rowClassRules) {
+      rowClassRules = {
+        ...rowClassRules,
+        ...this.rowClassRules
+      };
+    }
+
     this.gridOptions = {
       defaultColDef: this._defaultColDef,
       columnDefs: this.columnDefs_ ?? [],
@@ -516,10 +527,7 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
         }
         return rowHeightParams.data?.$isAccordionRow ? this._accordionHeight : this.rowHeight;
       },
-      rowClassRules: {
-        'accordion-row': rowNode => rowNode.data?.$isAccordionRow,
-        'accordion-expanded': rowNode => rowNode.data?.$showingAccordion,
-      },
+      rowClassRules,
       suppressCellFocus: true,
       enableCellTextSelection: true,
       suppressScrollOnNewData: true,
@@ -534,18 +542,9 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
       cacheBlockSize: this.infiniteScroll ? this.pageSize : undefined,
       datasource: this.infiniteScroll ? getDatasource(this) : undefined,
       getRowClass: this._getRowClass,
-      getRowStyle: this._getRowStyle
+      getRowStyle: this._getRowStyle,
+      domLayout: this.gridHeightCss ? 'normal' : 'autoHeight',
     };
-    if (!this.gridHeightCss) {
-      this.gridOptions.domLayout = 'autoHeight';
-    }
-
-    if (this.rowClassRules) {
-      this.gridOptions.rowClassRules = {
-        ...this.gridOptions.rowClassRules,
-        ...this.rowClassRules
-      };
-    }
 
     this.resetDefaultSorting();
     this._initialized = true;
@@ -699,7 +698,7 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
 
   autoSizeColumns(): void {
     if (!this.disableAutosize) {
-      this.api.autoSizeAllColumns();
+      this.api?.autoSizeAllColumns();
     }
   }
 
