@@ -111,7 +111,7 @@ export class PageDemoTableComponent implements OnInit {
         sortable: true
       },
       {
-        colId: 'age showing delta on update',
+        colId: 'ageShowingDelta',
         field: 'age',
         cellRenderer: GrootAgGridRenderer.numbers,
         cellRendererParams: {showDelta: true},
