@@ -31,7 +31,9 @@ import {
   RowGroupingDisplayType,
   RowHeightParams,
   RowStyle,
-  GridReadyEvent
+  GridReadyEvent,
+  RowModelType,
+  ManagedGridOptionKey
 } from 'ag-grid-community';
 import {TranslateService} from '@ngx-translate/core';
 import {GrootAgGridNoRowsOverlayComponent, GrootAgGridNoRowsParams} from './groot-ag-grid-no-rows-overlay/groot-ag-grid-no-rows-overlay.component';
@@ -133,6 +135,7 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
   @Input() defaultClass = 'ag-theme-balham ag-grid-rows-clickable';
   @Input() disablePagination = false;
   @Input() infiniteScroll = false;
+  @Input() rowModelType: RowModelType = 'clientSide';
 
   @Output() rowDragEnter = new EventEmitter<RowDragEnterEvent>();
   @Output() rowDragEnd = new EventEmitter<RowDragEndEvent>();
@@ -538,7 +541,7 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
       groupDefaultExpanded: !this.infiniteScroll ? this.groupExpanded : undefined,
       rowDragManaged: this._rowDragManaged,
       suppressMoveWhenRowDragging: this._suppressMoveWhenRowDragging,
-      rowModelType: this.infiniteScroll ? 'infinite' : 'clientSide',
+      rowModelType: this.infiniteScroll ? 'infinite' : this.rowModelType,
       cacheBlockSize: this.infiniteScroll ? this.pageSize : undefined,
       datasource: this.infiniteScroll ? getDatasource(this) : undefined,
       getRowClass: this._getRowClass,
@@ -858,5 +861,9 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
 
   private isSortedServerSide(): boolean {
     return (this.keepServerSorting === null && this.isPaginated()) || this.keepServerSorting;
+  }
+
+  setGridOption(option: ManagedGridOptionKey, value: any): void {
+    this.api?.setGridOption(option, value);
   }
 }
