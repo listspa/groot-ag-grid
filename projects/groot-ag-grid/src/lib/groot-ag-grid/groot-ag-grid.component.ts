@@ -548,7 +548,6 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
     }
 
     this.resetDefaultSorting();
-    this.translateHeaders();
     this._initialized = true;
   }
 
@@ -563,7 +562,8 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
   }
 
   private translateHeaders(): void {
-    if (!this.gridOptions.columnDefs?.length) {
+    const columnDefs = this.api.getGridOption('columnDefs');
+    if (!columnDefs?.length) {
       return;
     }
 
@@ -573,7 +573,7 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
 
     const columnState = this.api ? this.api.getColumnState() : null;
     const labelKeys: string[] = [];
-    this.gridOptions.columnDefs.forEach((col: ColDef | ColGroupDef) => {
+    columnDefs.forEach((col: ColDef | ColGroupDef) => {
       if ('children' in col) {
         col.children.forEach(child => {
           labelKeys.push(this.getColumnLabel(child));
@@ -584,7 +584,7 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
     if (labelKeys.length > 0) {
       this.labelSub = this.translate.stream(labelKeys)
         .subscribe(labels => {
-          this.gridOptions.columnDefs.forEach((col: ColDef | ColGroupDef, i) => {
+          columnDefs.forEach((col: ColDef | ColGroupDef, i) => {
             if ('children' in col) {
               col.children.forEach(child => {
                 this.getTranslationForLeafColumn(child, labels, i);
@@ -594,13 +594,13 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
           });
           if (this.api) {
             // Update labels in the grid
-            this.api.setGridOption('columnDefs', this.gridOptions.columnDefs);
+            this.api.setGridOption('columnDefs', columnDefs);
             this.api.applyColumnState({state: columnState});
           }
         });
     } else {
       if (this.api) {
-        this.api.setGridOption('columnDefs', this.gridOptions.columnDefs);
+        this.api.setGridOption('columnDefs', columnDefs);
         this.api.applyColumnState({state: columnState});
       }
     }
