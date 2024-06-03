@@ -10,12 +10,12 @@
   [lastRefreshTimestamp]="lastRefreshTimestamp"
   (refresh)="reloadTable(infiniteScroll)"
   [label]="titleLabel"
-  *ngIf="!hideTitleBar"
+  *ngIf="_initialized && !hideTitleBar"
 >
   <ng-container *ngTemplateOutlet="tableTitleRightArea"></ng-container>
 </groot-table-title-bar>
 
-<ag-grid-angular
+<ag-grid-angular *ngIf="_initialized"
   #grid
   style="width: 100%;"
   [style.height]="gridHeightCss"

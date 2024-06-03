@@ -1,8 +1,6 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
-import {GrootAgGridComponent} from '../../../../../groot-ag-grid/src/lib/groot-ag-grid/groot-ag-grid.component';
+import {Component, OnInit} from '@angular/core';
 import {ColDef} from 'ag-grid-community';
 import {PaginatedResponse} from '@listgroup/groot';
-import {BsModalService} from 'ngx-bootstrap/modal';
 import {
   GrootAgGridRenderer
 } from '../../../../../groot-ag-grid/src/lib/groot-ag-grid/groot-ag-grid-customization.consts';
@@ -25,16 +23,11 @@ interface User {
   styleUrls: ['./page-demo-infinite-scroll.component.scss']
 })
 export class PageDemoInfiniteScrollComponent implements OnInit {
-
-  @ViewChild('table1', {static: false}) table1: GrootAgGridComponent<any>;
-
   availableColumns: ColDef[];
   columns: ColDef[];
   searchResultsData: PaginatedResponse<User>;
   emptyData: PaginatedResponse<User>;
 
-  constructor(private bsModalService: BsModalService) {
-  }
   ngOnInit(): void {
     this.availableColumns = [
       {
@@ -55,7 +48,7 @@ export class PageDemoInfiniteScrollComponent implements OnInit {
         sortable: true
       },
       {
-        colId: 'age showing delta on update',
+        colId: 'ageShowingDelta',
         field: 'age',
         cellRenderer: GrootAgGridRenderer.numbers,
         cellRendererParams: {showDelta: true},
@@ -116,30 +109,9 @@ export class PageDemoInfiniteScrollComponent implements OnInit {
         {id: 'U042', name: 'Baby Boy', age: 4, birthDate: new Date('2016-07-02'), grownUp: false, lastUpdateTimestamp: new Date()},
       ].slice(event.pageNum * event.pageLen, event.pageNum * event.pageLen + event.pageLen)
     };
-
-    this.applySort(event);
   }
 
   searchEmptyData(event: MultiSortPaginationOptions): void {
     this.emptyData = {pageNum: 0, pageLen: 10, records: [], totalNumRecords: 0};
   }
-
-  private applySort(event: MultiSortPaginationOptions): void {
-    // Apply sort
-    if (!event.sort) {
-      return;
-    }
-    this.searchResultsData.records.sort((r1, r2) => {
-      for (const s of event.sort) {
-        if (r1[s.sortField] < r2[s.sortField]) {
-          return s.sortReversed ? +1 : -1;
-        } else if (r1[s.sortField] > r2[s.sortField]) {
-          return s.sortReversed ? -1 : +1;
-        }
-      }
-      // if all fields in sort are equal, records are equal
-      return 0;
-    });
-  }
-
 }

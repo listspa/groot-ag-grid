@@ -65,16 +65,6 @@ const SPECIAL_TOOL_CELL: ColDef = {
   width: 30,
 };
 
-function getDatasource(grootAgGrid: GrootAgGridComponent<any>): IDatasource {
-  return new class implements IDatasource {
-    rowCount: undefined;
-    getRows(params: IGetRowsParams): void {
-      grootAgGrid.successCallback = params.successCallback;
-      grootAgGrid.onPageChanged(params.startRow / grootAgGrid.pageSize);
-    }
-  }();
-}
-
 @Component({
   selector: 'groot-ag-grid',
   templateUrl: './groot-ag-grid.component.html',
@@ -198,6 +188,16 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
     if (this.api && this.rowsDisplayed?.length <= 0) {
       this.api.showNoRowsOverlay();
     }
+  }
+
+  private getDatasource(grootAgGrid: GrootAgGridComponent<any>): IDatasource {
+    return new class implements IDatasource {
+      rowCount = grootAgGrid.data?.totalNumRecords;
+      getRows(params: IGetRowsParams): void {
+        grootAgGrid.successCallback = params.successCallback;
+        grootAgGrid.onPageChanged(params.startRow / grootAgGrid.pageSize);
+      }
+    }();
   }
 
   /**
@@ -453,7 +453,7 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
   @ViewChild('accordionButtonTemplate', {static: true}) accordionButtonTemplate: TemplateRef<any>;
   @ViewChild('grid', {static: true}) grid: AgGridAngular;
   @ViewChild('gridPagination', {static: true}) gridPagination: TablePaginationComponent;
-  private _initialized = false;
+  _initialized = false;
   public isGridReady = false;
   public api: GridApi;
 
@@ -500,6 +500,10 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
       };
     }
 
+    if (this.infiniteScroll) {
+     this.rowModelType = 'infinite';
+    }
+
     this.gridOptions = {
       defaultColDef: this._defaultColDef,
       columnDefs: this.columnDefs_ ?? [],
@@ -541,12 +545,13 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
       groupDefaultExpanded: !this.infiniteScroll ? this.groupExpanded : undefined,
       rowDragManaged: this._rowDragManaged,
       suppressMoveWhenRowDragging: this._suppressMoveWhenRowDragging,
-      rowModelType: this.infiniteScroll ? 'infinite' : this.rowModelType,
+      rowModelType: this.rowModelType,
       cacheBlockSize: this.infiniteScroll ? this.pageSize : undefined,
-      datasource: this.infiniteScroll ? getDatasource(this) : undefined,
+      datasource: this.infiniteScroll ? this.getDatasource(this) : undefined,
       getRowClass: this._getRowClass,
       getRowStyle: this._getRowStyle,
       domLayout: this.gridHeightCss ? 'normal' : 'autoHeight',
+      maxConcurrentDatasourceRequests: 1
     };
 
     this.resetDefaultSorting();
@@ -649,8 +654,8 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
     this.restoreColState();
     const sortingSet = this.setSorting();
     this.agGridReady.next(this.api);
-    // Avoid reloading if we changed the sort - if we did, we will receive an `onSortChange` event
 
+    // Avoid reloading if we changed the sort - if we did, we will receive an `onSortChange` event
     if (!sortingSet) {
       this.reloadTable(true);
     }
@@ -713,9 +718,6 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
 
     if (resetPageNumber) {
       this._currentPageNum = 0;
-      if (this.infiniteScroll) {
-        setTimeout(() => this.api.setGridOption('datasource', this.gridOptions.datasource), 0);
-      }
     }
 
     if (resetSortField) {
