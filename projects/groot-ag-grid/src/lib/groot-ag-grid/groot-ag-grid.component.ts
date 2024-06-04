@@ -32,7 +32,7 @@ import {
   RowHeightParams,
   RowStyle,
   GridReadyEvent,
-  ManagedGridOptionKey
+  ManagedGridOptionKey, Column
 } from 'ag-grid-community';
 import {TranslateService} from '@ngx-translate/core';
 import {GrootAgGridNoRowsOverlayComponent, GrootAgGridNoRowsParams} from './groot-ag-grid-no-rows-overlay/groot-ag-grid-no-rows-overlay.component';
@@ -124,6 +124,9 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
   @Input() defaultClass = 'ag-theme-balham ag-grid-rows-clickable';
   @Input() disablePagination = false;
   @Input() infiniteScroll = false;
+
+  @Input() columnsForAutoSize: (string | ColDef | Column)[] = [];
+  @Input() skipHeaderForAutoSize = false;
 
   @Output() rowDragEnter = new EventEmitter<RowDragEnterEvent>();
   @Output() rowDragEnd = new EventEmitter<RowDragEndEvent>();
@@ -700,7 +703,11 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
 
   autoSizeColumns(): void {
     if (!this.disableAutosize) {
-      this.api?.autoSizeAllColumns();
+      if(this.columnsForAutoSize.length){
+        this.api?.autoSizeColumns(this.columnsForAutoSize, this.skipHeaderForAutoSize);
+      } else {
+        this.api?.autoSizeAllColumns(this.skipHeaderForAutoSize);
+      }
     }
   }
 
