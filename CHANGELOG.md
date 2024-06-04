@@ -1,15 +1,17 @@
 # Groot-ag-grid releases
 
-## Version 6.0.0 - 2024-05-08
+## Version 6.1.0 - 2024-06-04
 
 NOTABLE BREAKING CHANGES:
 - NodeJs >= 16.x
-- Angular 15.2
+- Angular 17
 - Bootstrap 5.3
-- Ag-Grid 30.2
+- Ag-Grid 31
 - Font Awesome 6.4
 - Groot 4.x
 - IE11 deprecation due to Angular 15 deprecation
+
+To upgrade ag-grid follow the guide at https://www.ag-grid.com/angular-data-grid/upgrading-to-ag-grid-31/
 
 Breaking changes on input parameters:
 - getRowHeight now accepts param of type RowHeightParams instead of RowNode
