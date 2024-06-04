@@ -32,7 +32,6 @@ import {
   RowHeightParams,
   RowStyle,
   GridReadyEvent,
-  RowModelType,
   ManagedGridOptionKey
 } from 'ag-grid-community';
 import {TranslateService} from '@ngx-translate/core';
@@ -125,7 +124,6 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
   @Input() defaultClass = 'ag-theme-balham ag-grid-rows-clickable';
   @Input() disablePagination = false;
   @Input() infiniteScroll = false;
-  @Input() rowModelType: RowModelType = 'clientSide';
 
   @Output() rowDragEnter = new EventEmitter<RowDragEnterEvent>();
   @Output() rowDragEnd = new EventEmitter<RowDragEndEvent>();
@@ -500,10 +498,6 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
       };
     }
 
-    if (this.infiniteScroll) {
-     this.rowModelType = 'infinite';
-    }
-
     this.gridOptions = {
       defaultColDef: this._defaultColDef,
       columnDefs: this.columnDefs_ ?? [],
@@ -545,7 +539,7 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
       groupDefaultExpanded: !this.infiniteScroll ? this.groupExpanded : undefined,
       rowDragManaged: this._rowDragManaged,
       suppressMoveWhenRowDragging: this._suppressMoveWhenRowDragging,
-      rowModelType: this.rowModelType,
+      rowModelType: this.infiniteScroll ? 'infinite' : 'clientSide',
       cacheBlockSize: this.infiniteScroll ? this.pageSize : undefined,
       datasource: this.infiniteScroll ? this.getDatasource(this) : undefined,
       getRowClass: this._getRowClass,
