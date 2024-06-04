@@ -858,8 +858,4 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
   private isSortedServerSide(): boolean {
     return (this.keepServerSorting === null && this.isPaginated()) || this.keepServerSorting;
   }
-
-  setGridOption(option: ManagedGridOptionKey, value: any): void {
-    this.api?.setGridOption(option, value);
-  }
 }
