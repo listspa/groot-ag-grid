@@ -32,7 +32,7 @@ import {
   RowHeightParams,
   RowStyle,
   GridReadyEvent,
-  ManagedGridOptionKey, Column
+  Column
 } from 'ag-grid-community';
 import {TranslateService} from '@ngx-translate/core';
 import {GrootAgGridNoRowsOverlayComponent, GrootAgGridNoRowsParams} from './groot-ag-grid-no-rows-overlay/groot-ag-grid-no-rows-overlay.component';
