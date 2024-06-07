@@ -1,4 +1,4 @@
-@use "@ag-grid-community/styles" as ag;
+@use "ag-grid-community/styles" as ag;
 
 $table-header-background-color: $light-primary !default;
 $table-header-foreground-color: color-contrast($table-header-background-color) !default;
