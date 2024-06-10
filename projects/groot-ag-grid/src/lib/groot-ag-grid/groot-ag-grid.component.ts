@@ -215,9 +215,8 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
   }
 
   private getDatasource(grootAgGrid: GrootAgGridComponent<any>): IDatasource {
-    return new class implements IDatasource {
-      rowCount = grootAgGrid.data?.totalNumRecords;
 
+    return new class implements IDatasource {
       getRows(params: IGetRowsParams): void {
         grootAgGrid.successCallback = params.successCallback;
         grootAgGrid.onPageChanged(params.startRow / grootAgGrid.pageSize);
@@ -572,7 +571,8 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
       getRowClass: this._getRowClass,
       getRowStyle: this._getRowStyle,
       domLayout: this.gridHeightCss ? 'normal' : 'autoHeight',
-      maxConcurrentDatasourceRequests: 1
+      maxConcurrentDatasourceRequests: 1,
+      blockLoadDebounceMillis: 100
     };
 
     this.resetDefaultSorting();
@@ -743,6 +743,9 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
 
     if (resetPageNumber) {
       this._currentPageNum = 0;
+      if (this.infiniteScroll) {
+        setTimeout(() => this.api.setGridOption('datasource', this.gridOptions.datasource), 0);
+      }
     }
 
     if (resetSortField) {
