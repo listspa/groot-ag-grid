@@ -201,16 +201,21 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
       this.api.hideOverlay();
       if (this.gridOptions.rowModelType === 'infinite') {
         if (this.successCallback) { // avoid first invocation, when successCallback is not set already
-          this.successCallback(this.rowsDisplayed, this.data.totalNumRecords);
+          // set lastRow only in the last page to avoid having a little scrollbar with no data available
+          if ((this.data.pageNum + 1) * this.data.pageLen >= this.data.totalNumRecords) {
+            this.successCallback(this.rowsDisplayed, this.data.totalNumRecords);
+          } else {
+            this.successCallback(this.rowsDisplayed, null);
+          }
         }
       } else {
+        this.setDefaultColComparator();
         this.api.setGridOption('rowData', this.rowsDisplayed);
       }
-    }
 
-    this.setDefaultColComparator();
-    if (this.api && this.rowsDisplayed?.length <= 0) {
-      this.api.showNoRowsOverlay();
+      if (this.rowsDisplayed?.length <= 0) {
+        this.api.showNoRowsOverlay();
+      }
     }
   }
 
@@ -571,7 +576,6 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
       getRowClass: this._getRowClass,
       getRowStyle: this._getRowStyle,
       domLayout: this.gridHeightCss ? 'normal' : 'autoHeight',
-      maxConcurrentDatasourceRequests: 1,
       blockLoadDebounceMillis: 100
     };
 
@@ -666,7 +670,8 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
 
   onPageChanged(pageNum: number): void {
     this._currentPageNum = pageNum;
-    this.reloadTable(false);
+    this.api?.showLoadingOverlay();
+    this.search.emit(this.getCurrentPagination());
   }
 
   gridReady(event: GridReadyEvent<T>): void {
@@ -677,7 +682,7 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
     this.agGridReady.next(this.api);
 
     // Avoid reloading if we changed the sort - if we did, we will receive an `onSortChange` event
-    if (!sortingSet) {
+    if (!sortingSet && !this.infiniteScroll) {
       this.reloadTable(true);
     }
     this.isGridReady = true;
@@ -743,9 +748,6 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
 
     if (resetPageNumber) {
       this._currentPageNum = 0;
-      if (this.infiniteScroll) {
-        setTimeout(() => this.api.setGridOption('datasource', this.gridOptions.datasource), 0);
-      }
     }
 
     if (resetSortField) {
@@ -754,7 +756,15 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
 
     this.api?.showLoadingOverlay();
 
-    this.search.emit(this.getCurrentPagination());
+    if (this.infiniteScroll) {
+      if (resetPageNumber) {
+        this.api.setGridOption('datasource', this.gridOptions.datasource);
+      } else {
+        this.api.refreshInfiniteCache();
+      }
+    } else {
+      this.search.emit(this.getCurrentPagination());
+    }
   }
 
   getCurrentPagination(): MultiSortPaginationOptions {
@@ -890,6 +900,6 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
   }
 
   private isSortedServerSide(): boolean {
-    return (this.keepServerSorting === null && this.isPaginated()) || this.keepServerSorting;
+    return (this.keepServerSorting === null && this.isPaginated()) || this.keepServerSorting || this.infiniteScroll;
   }
 }
