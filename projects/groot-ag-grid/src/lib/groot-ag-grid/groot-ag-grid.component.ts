@@ -1,4 +1,14 @@
-import {Component, ContentChild, EventEmitter, Input, OnDestroy, OnInit, Output, TemplateRef, ViewChild} from '@angular/core';
+import {
+  Component,
+  ContentChild,
+  EventEmitter,
+  Input,
+  OnDestroy,
+  OnInit,
+  Output,
+  TemplateRef,
+  ViewChild
+} from '@angular/core';
 import {Subscription} from 'rxjs';
 import {
   GrootTableTitleRightAreaDirective,
@@ -32,16 +42,29 @@ import {
   RowHeightParams,
   RowStyle,
   GridReadyEvent,
-  Column
+  Column, AlignedGrid
 } from 'ag-grid-community';
 import {TranslateService} from '@ngx-translate/core';
-import {GrootAgGridNoRowsOverlayComponent, GrootAgGridNoRowsParams} from './groot-ag-grid-no-rows-overlay/groot-ag-grid-no-rows-overlay.component';
-import {GrootAgGridLoadingOverlayComponent} from './groot-ag-grid-loading-overlay/groot-ag-grid-loading-overlay.component';
-import {GrootAgGridRendererBooleansComponent} from './groot-ag-grid-renderer-booleans/groot-ag-grid-renderer-booleans.component';
+import {
+  GrootAgGridNoRowsOverlayComponent,
+  GrootAgGridNoRowsParams
+} from './groot-ag-grid-no-rows-overlay/groot-ag-grid-no-rows-overlay.component';
+import {
+  GrootAgGridLoadingOverlayComponent
+} from './groot-ag-grid-loading-overlay/groot-ag-grid-loading-overlay.component';
+import {
+  GrootAgGridRendererBooleansComponent
+} from './groot-ag-grid-renderer-booleans/groot-ag-grid-renderer-booleans.component';
 import {GrootAgGridRendererDatesComponent} from './groot-ag-grid-renderer-dates/groot-ag-grid-renderer-dates.component';
-import {GrootAgGridRendererNumbersComponent} from './groot-ag-grid-renderer-numbers/groot-ag-grid-renderer-numbers.component';
-import {GrootAgGridRendererTemplateComponent} from './groot-ag-grid-renderer-template/groot-ag-grid-renderer-template.component';
-import {GrootAgGridHeaderTemplateComponent} from './groot-ag-grid-header-template/groot-ag-grid-header-template.component';
+import {
+  GrootAgGridRendererNumbersComponent
+} from './groot-ag-grid-renderer-numbers/groot-ag-grid-renderer-numbers.component';
+import {
+  GrootAgGridRendererTemplateComponent
+} from './groot-ag-grid-renderer-template/groot-ag-grid-renderer-template.component';
+import {
+  GrootAgGridHeaderTemplateComponent
+} from './groot-ag-grid-header-template/groot-ag-grid-header-template.component';
 import {GrootAgGridCustomizationService} from './groot-ag-grid-customization.service';
 import {GrootAgGridSelection} from './groot-ag-grid-selection.model';
 import {isNoGridDataMessage, NoGridDataMessage} from './no-grid-data.model';
@@ -194,6 +217,7 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
   private getDatasource(grootAgGrid: GrootAgGridComponent<any>): IDatasource {
     return new class implements IDatasource {
       rowCount = grootAgGrid.data?.totalNumRecords;
+
       getRows(params: IGetRowsParams): void {
         grootAgGrid.successCallback = params.successCallback;
         grootAgGrid.onPageChanged(params.startRow / grootAgGrid.pageSize);
@@ -450,7 +474,7 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
   private _accordionHeight = 60;
   private _getRowStyle: ((rowNode: RowClassParams) => RowStyle) = null;
   private _getRowClass: ((rowNode: RowClassParams) => string | string[]) = null;
-  public alignedGridsComponents: AgGridAngular[] = [];
+  private _alignedGrids: () => AlignedGrid[] = () => [];
   @ViewChild('accordionButtonTemplate', {static: true}) accordionButtonTemplate: TemplateRef<any>;
   @ViewChild('grid', {static: true}) grid: AgGridAngular;
   @ViewChild('gridPagination', {static: true}) gridPagination: TablePaginationComponent;
@@ -477,12 +501,12 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
   }
 
   @Input()
-  set alignedGrids(value: GrootAgGridComponent<any>[]) {
-    if (!value) {
-      this.alignedGridsComponents = [];
-    } else {
-      this.alignedGridsComponents = value.map(v => v.grid);
-    }
+  set alignedGrids(grids: GrootAgGridComponent<any>[]) {
+    this._alignedGrids = () => (grids || []).map(el => el?.api ?? null);
+  }
+
+  get alignedGrids(): () => AlignedGrid[] {
+    return this._alignedGrids;
   }
 
   constructor(private translate: TranslateService,
@@ -703,7 +727,7 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
 
   autoSizeColumns(): void {
     if (!this.disableAutosize) {
-      if(this.columnsForAutoSize.length){
+      if (this.columnsForAutoSize.length) {
         this.api?.autoSizeColumns(this.columnsForAutoSize, this.skipHeaderForAutoSize);
       } else {
         this.api?.autoSizeAllColumns(this.skipHeaderForAutoSize);
