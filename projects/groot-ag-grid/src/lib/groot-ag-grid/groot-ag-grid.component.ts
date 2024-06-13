@@ -727,7 +727,7 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
 
   autoSizeColumns(): void {
     if (!this.disableAutosize) {
-      if (this.columnsForAutoSize.length) {
+      if (this.columnsForAutoSize?.length) {
         this.api?.autoSizeColumns(this.columnsForAutoSize, this.skipHeaderForAutoSize);
       } else {
         this.api?.autoSizeAllColumns(this.skipHeaderForAutoSize);
