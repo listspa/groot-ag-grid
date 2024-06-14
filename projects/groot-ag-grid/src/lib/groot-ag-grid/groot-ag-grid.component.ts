@@ -679,13 +679,13 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
     this.handleSpecialColumns();
     this.restoreColState();
     const sortingSet = this.setSorting();
+    this.isGridReady = true;
     this.agGridReady.next(this.api);
 
     // Avoid reloading if we changed the sort - if we did, we will receive an `onSortChange` event
     if (!sortingSet && !this.infiniteScroll) {
       this.reloadTable(true);
     }
-    this.isGridReady = true;
   }
 
   private setSorting(): boolean {
