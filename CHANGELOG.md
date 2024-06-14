@@ -1,6 +1,6 @@
 # Groot-ag-grid releases
 
-## Version 6.1.0 - 2024-06-04
+## Version 6.1.1 - 2024-06-14
 
 NOTABLE BREAKING CHANGES:
 - NodeJs >= 16.x
