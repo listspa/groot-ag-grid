@@ -42,7 +42,9 @@ import {
   RowHeightParams,
   RowStyle,
   GridReadyEvent,
-  Column, AlignedGrid
+  Column,
+  AlignedGrid,
+  CellValueChangedEvent
 } from 'ag-grid-community';
 import {TranslateService} from '@ngx-translate/core';
 import {
@@ -99,6 +101,7 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
   @Output() bodyScroll = new EventEmitter<any>();
   @Output() selectionChanged = new EventEmitter<GrootAgGridSelection<T>>();
   @Output() agGridReady = new EventEmitter<GridApi>();
+  @Output() cellValueChanged = new EventEmitter<CellValueChangedEvent>();
 
   @Input() disableSorting = false;
   /**
