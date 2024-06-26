@@ -1,5 +1,9 @@
 # Groot-ag-grid releases
 
+## Version 6.1.2 - 2024-06-26
+
+- feat: expose cellValueChangedEvent
+
 ## Version 6.1.1 - 2024-06-14
 
 NOTABLE BREAKING CHANGES:
