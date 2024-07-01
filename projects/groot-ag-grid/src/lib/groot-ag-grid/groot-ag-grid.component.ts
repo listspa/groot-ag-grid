@@ -90,13 +90,13 @@ const SPECIAL_TOOL_CELL: ColDef = {
 };
 
 interface TreeTableBase {
-  id: string;
   parentId: string | null;
+  id?: string;
   level?: number;
   expanded?: boolean;
 }
 
-type TreeTableWithExtras<T> = TreeTableBase & T & {
+export type TreeTableWithExtras<T> = TreeTableBase & T & {
   children?: TreeTableWithExtras<T>[];
 };
 
@@ -311,8 +311,8 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
         ...SPECIAL_TOOL_CELL,
         width: undefined,
         maxWidth: undefined,
-      ...this.communityTreeGroupColDef,
-      cellRenderer: 'templateRenderer',
+        ...this.communityTreeGroupColDef,
+        cellRenderer: 'templateRenderer',
         cellRendererParams: {
           ngTemplate: this.communityTreeTemplate
         },
@@ -952,6 +952,14 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
     const tree: TreeTableWithExtras<T>[] = [];
 
     rows.records.forEach((val: TreeTableWithExtras<T>) => {
+      val.id = this.getRowId ?
+        this.getRowId({
+          api: this.api,
+          columnApi: undefined,
+          context: this.gridOptions?.context,
+          level: 0,
+          data: val
+        }) : val.id;
       recordMap[val.id] = {
         ...val,
         expanded: this.nodeExpandedStatus[val.id] ?? (val.expanded || false),
@@ -963,7 +971,7 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
       if (val.parentId === null) {
         tree.push(recordMap[val.id]);
       } else {
-        if (recordMap[val.parentId]){
+        if (recordMap[val.parentId]) {
           recordMap[val.parentId].children.push(recordMap[val.id]);
         }
       }
@@ -1059,7 +1067,7 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
 
       nestedChildren.forEach(child => {
         const index = rowData.findIndex(el => el.id === child.id);
-        if (index !== -1){
+        if (index !== -1) {
           this.nodeExpandedStatus.set(row.id, false);
           child.expanded = false;
           rowData.splice(index, 1);
@@ -1071,9 +1079,9 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
     return null;
   }
 
-  private collectNestedChildren(row: TreeTableWithExtras<T>): TreeTableWithExtras<T>[]{
+  private collectNestedChildren(row: TreeTableWithExtras<T>): TreeTableWithExtras<T>[] {
     let nestedChildren: TreeTableWithExtras<T>[] = [];
-    if (row.children){
+    if (row.children) {
       row.children.forEach(child => {
         nestedChildren.push(child);
         nestedChildren = nestedChildren.concat(this.collectNestedChildren(child));

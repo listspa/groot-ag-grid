@@ -3,7 +3,7 @@ import {ColDef, ColGroupDef, GetDataPath, GetRowIdFunc, Module} from 'ag-grid-co
 import {GrootAgGridRenderer} from '../../../../../groot-ag-grid/src/lib/groot-ag-grid/groot-ag-grid-customization.consts';
 import {LoadingFailed, PaginatedResponse} from '@listgroup/groot';
 import {GrootAgGridSelection} from '../../../../../groot-ag-grid/src/lib/groot-ag-grid/groot-ag-grid-selection.model';
-import {GrootAgGridComponent} from '../../../../../groot-ag-grid/src/lib/groot-ag-grid/groot-ag-grid.component';
+import {GrootAgGridComponent, TreeTableWithExtras} from '../../../../../groot-ag-grid/src/lib/groot-ag-grid/groot-ag-grid.component';
 import {NoGridDataMessage} from '../../../../../groot-ag-grid/src/lib/groot-ag-grid/no-grid-data.model';
 import {
   GrootAgGridColumnSelectorModalComponent
@@ -28,23 +28,6 @@ interface CategoryData {
   subCategory?: string;
   count: number;
 }
-
-interface TreeTableBase {
-  id: string;
-  parentId: string | null;
-  macroCategory: string;
-  category: string;
-  subCategory: string;
-  nodeOrder?: string;
-  expanded?: boolean;
-  description?: string;
-  level?: number;
-}
-
-type TreeTableWithExtras<T> = TreeTableBase & T & {
-  children?: TreeTableWithExtras<T>[];
-};
-
 
 @Component({
   templateUrl: './page-demo-table.component.html',
@@ -84,7 +67,7 @@ export class PageDemoTableComponent implements OnInit {
 
   treeModules: Array<Module> = [RowGroupingModule] as unknown as Array<Module>;
   searchResultsDataTree: PaginatedResponse<CategoryData>;
-  searchResultsDataTree2: PaginatedResponse<TreeTableWithExtras<CategoryData>>;
+  searchResultsDataTree2: PaginatedResponse<TreeTableWithExtras<any>>;
   columnsTree: ColDef[];
   treeGroupColDef: ColDef;
   communityColumnTree: ColDef[];
