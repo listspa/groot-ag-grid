@@ -29,6 +29,23 @@ interface CategoryData {
   count: number;
 }
 
+interface TreeTableBase {
+  id: string;
+  parentId: string | null;
+  macroCategory: string;
+  category: string;
+  subCategory: string;
+  nodeOrder?: string;
+  expanded?: boolean;
+  description?: string;
+  level?: number;
+}
+
+type TreeTableWithExtras<T> = TreeTableBase & T & {
+  children?: TreeTableWithExtras<T>[];
+};
+
+
 @Component({
   templateUrl: './page-demo-table.component.html',
   styleUrls: ['./page-demo-table.component.scss']
@@ -43,6 +60,7 @@ export class PageDemoTableComponent implements OnInit {
   @ViewChild('gridHeader', {static: false}) gridHeader: GrootAgGridComponent<any>;
   @ViewChild('gridColumnHeaderTemplate', {static: false}) gridColumnHeaderTemplate: GrootAgGridComponent<any>;
   @ViewChild('columnHeaderTemplate', {static: true}) columnHeaderTemplate: TemplateRef<any>;
+  @ViewChild('communityTreeTable', {static: true}) communityTreeTable: TemplateRef<any>;
   availableColumns: ColDef[];
   columns: ColDef[];
   customHeaderColumns: ColDef[];
@@ -66,8 +84,11 @@ export class PageDemoTableComponent implements OnInit {
 
   treeModules: Array<Module> = [RowGroupingModule] as unknown as Array<Module>;
   searchResultsDataTree: PaginatedResponse<CategoryData>;
+  searchResultsDataTree2: PaginatedResponse<TreeTableWithExtras<CategoryData>>;
   columnsTree: ColDef[];
   treeGroupColDef: ColDef;
+  communityColumnTree: ColDef[];
+  communityGroupColDef: ColDef;
 
   getDataPath: GetDataPath<any> = data => {
     if (data.subCategory) {
@@ -88,6 +109,10 @@ export class PageDemoTableComponent implements OnInit {
     } else {
       return macroCategory;
     }
+  }
+
+  getRowIdForCommunityTreeData: GetRowIdFunc<any> = data => {
+    return data?.data?.id;
   }
 
   constructor(private bsModalService: BsModalService) {
@@ -205,6 +230,13 @@ export class PageDemoTableComponent implements OnInit {
         suppressCount: true,
       }
     };
+
+    this.communityColumnTree = [
+      { colId: 'count', field: 'count', cellRenderer: GrootAgGridRenderer.numbers, cellClass: 'ag-cell-right' },
+    ];
+    this.communityGroupColDef = {
+      colId: 'category', field: 'description', headerName: 'Category'
+    }
   }
   getResultData(event): PaginatedResponse<User> {
     return {
@@ -335,6 +367,25 @@ export class PageDemoTableComponent implements OnInit {
         { macroCategory: 'Liquid product', category: 'Cash', subCategory: 'Traveller\'s cheque', count: 14 },
         { macroCategory: 'Liquid product', category: 'Treasury bills', count: 23 },
         { macroCategory: 'Liquid product', category: 'Treasury bills', subCategory: 'Treasury bills', count: 23 },
+      ]
+    };
+    this.searchResultsDataTree2 = {
+      pageNum: 0,
+      pageLen: 10,
+      totalNumRecords: 8,
+      records: [
+        {parentId: null, macroCategory: 'liquidProduct', category: '', subCategory: '', description: 'Liquid prod', count: 130, id: '00' },
+        {parentId: '00', macroCategory: 'liquidProduct', category: 'cash', subCategory: '', description: 'CASH', count: 100, id: '00_00'},
+        {parentId: '00_00', macroCategory: 'liquidProduct', category: 'cash', subCategory: 'travellersCheque', description: 'Traveller\'s chequess', count: 12,id: '00_00_00' },
+        {parentId: '00_00', macroCategory: 'liquidProduct', category: 'cash', subCategory: 'foodExpense', description: 'Food expenseee', count: 88, id: '00_00_01' },
+        {parentId: '00_00_01', macroCategory: 'liquidProduct', category: 'cash', subCategory: 'foodExpense', description: 'Liv 4', count: 2, id: '00_00_01_00' },
+        {parentId: '00_00_01_00', macroCategory: 'liquidProduct', category: 'cash', subCategory: 'foodExpense', description: 'liv 5', count: 105, id: '00_00_01_00_00' },
+        {parentId: '00', macroCategory: 'liquidProduct', category: 'cards', subCategory: '', description: 'CARDS subcat', count: 30, id: '00_01'},
+        {parentId: '00_01', macroCategory: 'liquidProduct', category: 'cards', subCategory: 'travellersCheque', description: 'CARD Traveller\'s chequess', count: 16, id: '00_01_00'},
+        {parentId: '00_01', macroCategory: 'liquidProduct', category: 'cards', subCategory: 'foodExpense', description: 'CARD Food expenseee', count: 14, id: '00_01_01' },
+        {parentId: null, macroCategory: 'notLiquidProduct', category: '', subCategory: '', description: 'Not Liquid Product', count: 55, id: '01'},
+        {parentId: '01', macroCategory: 'notLiquidProduct', category: 'testCat1', subCategory: '', description: 'Test desc 1', count: 35, children:[], id: '01_00' },
+        {parentId: '01', macroCategory: 'notLiquidProduct', category: 'testCat2', subCategory: '', description: 'Test desc 2', count: 20, children:[],id: '01_01' },
       ]
     };
   }

@@ -71,3 +71,13 @@
     <i class="fa-solid fa-chevron-up" *ngIf="row.$showingAccordion" aria-hidden="true"></i>
   </div>
 </ng-template>
+
+<ng-template #communityTreeTemplate let-row let-index="index">
+  <div
+    (click)="row.expanded ? handleCollapseRow(row, true) : handleExpandRow(row, true)"
+    [style.padding-left.rem]="row.level">
+    <i class="fa-solid fa-chevron-down communityTreeIcon" *ngIf="row.children.length!=0 && row.expanded" aria-hidden="true"></i>
+    <i class="fa-solid fa-chevron-right communityTreeIcon" *ngIf="row.children.length!=0 && !row.expanded" aria-hidden="true"></i>
+    <span class="ms-4">{{row[communityTreeGroupColDef.field]}}</span>
+  </div>
+</ng-template>

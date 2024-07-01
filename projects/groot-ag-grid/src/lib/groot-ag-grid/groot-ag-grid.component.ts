@@ -89,6 +89,17 @@ const SPECIAL_TOOL_CELL: ColDef = {
   width: 30,
 };
 
+interface TreeTableBase {
+  id: string;
+  parentId: string | null;
+  level?: number;
+  expanded?: boolean;
+}
+
+type TreeTableWithExtras<T> = TreeTableBase & T & {
+  children?: TreeTableWithExtras<T>[];
+};
+
 @Component({
   selector: 'groot-ag-grid',
   templateUrl: './groot-ag-grid.component.html',
@@ -151,6 +162,9 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
   @Input() disablePagination = false;
   @Input() infiniteScroll = false;
 
+  @Input() communityTreeGroupColDef: ColDef = null;
+  @Input() useCommunityTree = false;
+
   @Input() columnsForAutoSize: (string | ColDef | Column)[] = [];
   @Input() skipHeaderForAutoSize = false;
 
@@ -196,7 +210,7 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
       this.noRowsOverlayComponentParams.loadingError = false;
       this.noRowsOverlayComponentParams.message = null;
       this.noRowsOverlayComponentParams.style = null;
-      this.data = searchResultsData;
+      this.data = !this.useCommunityTree ? searchResultsData : this.manipulateDataForCommunityTreeData(searchResultsData);
       this.rowsDisplayed = this.data?.records || [];
     }
 
@@ -291,6 +305,20 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
 
   private handleSpecialColumns(): void {
     const colDefs = this.columnDefs_ ? [...this.columnDefs_] : [];
+
+    if (this.useCommunityTree) {
+      const communityTreeCell: ColDef = {
+        ...SPECIAL_TOOL_CELL,
+        width: undefined,
+        maxWidth: undefined,
+      ...this.communityTreeGroupColDef,
+      cellRenderer: 'templateRenderer',
+        cellRendererParams: {
+          ngTemplate: this.communityTreeTemplate
+        },
+      };
+      colDefs.unshift(communityTreeCell);
+    }
 
     if (this.checkboxSelection_) {
       const checkboxCell: ColDef = {
@@ -483,6 +511,7 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
   private _getRowClass: ((rowNode: RowClassParams) => string | string[]) = null;
   private _alignedGrids: () => AlignedGrid[] = () => [];
   @ViewChild('accordionButtonTemplate', {static: true}) accordionButtonTemplate: TemplateRef<any>;
+  @ViewChild('communityTreeTemplate', {static: true}) communityTreeTemplate: TemplateRef<any>;
   @ViewChild('grid', {static: true}) grid: AgGridAngular;
   @ViewChild('gridPagination', {static: true}) gridPagination: TablePaginationComponent;
   _initialized = false;
@@ -904,5 +933,152 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
 
   private isSortedServerSide(): boolean {
     return (this.keepServerSorting === null && this.isPaginated()) || this.keepServerSorting || this.infiniteScroll;
+  }
+
+  // data currently shown in the table
+  communityTreeData: TreeTableWithExtras<T>[] = [];
+  // tree structured data, obtained through manipulation
+  initialCommunityTreeData: TreeTableWithExtras<T>[] = [];
+  // used to keep track of node status
+  nodeExpandedStatus: Map<string, boolean> = new Map();
+
+  assignLevels(node: TreeTableWithExtras<T>, level: number): void {
+    node.level = node.level ? node.level : level;
+    node.children.forEach(childNode => this.assignLevels(childNode, level + 1));
+  }
+
+  manipulateDataForCommunityTreeData(rows: PaginatedResponse<T>): PaginatedResponse<TreeTableWithExtras<T>> {
+    const recordMap: { [key: number]: TreeTableWithExtras<T> } = {};
+    const tree: TreeTableWithExtras<T>[] = [];
+
+    rows.records.forEach((val: TreeTableWithExtras<T>) => {
+      recordMap[val.id] = {
+        ...val,
+        expanded: this.nodeExpandedStatus[val.id] ?? (val.expanded || false),
+        children: []
+      };
+    });
+
+    rows.records.forEach((val: TreeTableWithExtras<T>) => {
+      if (val.parentId === null) {
+        tree.push(recordMap[val.id]);
+      } else {
+        if (recordMap[val.parentId]){
+          recordMap[val.parentId].children.push(recordMap[val.id]);
+        }
+      }
+    });
+
+    tree.forEach(root => this.assignLevels(root, 0));
+
+    this.initialCommunityTreeData = [...tree];
+    this.communityTreeData = [...tree];
+    this.drawGrid(this.communityTreeData);
+
+    return ({
+      records: this.communityTreeData,
+      totalNumRecords: 0,
+      pageNum: 0,
+      pageLen: 0
+    }) as unknown as PaginatedResponse<any>;
+  }
+
+  private drawGrid(dataArray: TreeTableWithExtras<T>[]): void {
+    dataArray.forEach(row => {
+      if (row.expanded) {
+        this.handleExpandRow(row, false);
+        if (row.children) {
+          this.drawGrid(row.children);
+        }
+      }
+    });
+    this.rowsDisplayed = [...this.communityTreeData];
+    this.api?.setGridOption('rowData', this.rowsDisplayed);
+  }
+
+  handleExpandRow(row: TreeTableWithExtras<T>, singleRow?: boolean): void {
+    this.communityTreeData = this.expandRow(row);
+    if (this.communityTreeData && singleRow) {
+      this.rowsDisplayed = [...this.communityTreeData];
+      this.api?.setGridOption('rowData', this.rowsDisplayed);
+    }
+  }
+
+  expandAll(): void {
+    this.communityTreeData = this.manageExpansionRecursive(this.initialCommunityTreeData, true);
+    this.drawGrid(this.communityTreeData);
+  }
+
+  collapseAll(): void {
+    this.communityTreeData = this.manageExpansionRecursive(this.initialCommunityTreeData, false);
+    this.drawGrid(this.communityTreeData);
+  }
+
+  private manageExpansionRecursive(dataArray: TreeTableWithExtras<T>[], expand: boolean): TreeTableWithExtras<T>[] {
+    dataArray.forEach(row => {
+      if (row.children) {
+        this.nodeExpandedStatus.set(row.id, expand);
+        row.expanded = expand;
+        row.children = this.manageExpansionRecursive(row.children, expand);
+      }
+    });
+    return dataArray;
+  }
+
+  private expandRow(row: TreeTableWithExtras<T>): TreeTableWithExtras<T>[] {
+    const elementToExpandIndex = this.communityTreeData.findIndex(el => el.id === row.id);
+    if (elementToExpandIndex !== -1) {
+      const rowData = [...this.communityTreeData];
+      rowData[elementToExpandIndex].expanded = true;
+      this.nodeExpandedStatus.set(row.id, true);
+
+      rowData.splice(elementToExpandIndex + 1, 0, ...row.children);
+
+      return rowData;
+    }
+    return null;
+  }
+
+  handleCollapseRow(row: TreeTableWithExtras<T>, rowAction?: boolean): void {
+    this.communityTreeData = this.collapseRow(row);
+    if (this.communityTreeData && rowAction) {
+      this.rowsDisplayed = [...this.communityTreeData];
+      this.api?.setGridOption('rowData', this.rowsDisplayed);
+    }
+  }
+
+
+  private collapseRow(row: TreeTableWithExtras<T>): TreeTableWithExtras<T>[] {
+    const elementToCollapseIndex = this.communityTreeData.findIndex(el => el.id === row.id);
+    if (elementToCollapseIndex !== -1) {
+      const rowData = [...this.communityTreeData];
+      rowData[elementToCollapseIndex].expanded = false;
+      this.nodeExpandedStatus.set(row.id, false);
+
+      const nestedChildren = this.collectNestedChildren(row);
+
+      nestedChildren.forEach(child => {
+        const index = rowData.findIndex(el => el.id === child.id);
+        if (index !== -1){
+          this.nodeExpandedStatus.set(row.id, false);
+          child.expanded = false;
+          rowData.splice(index, 1);
+        }
+      });
+
+      return rowData;
+    }
+    return null;
+  }
+
+  private collectNestedChildren(row: TreeTableWithExtras<T>): TreeTableWithExtras<T>[]{
+    let nestedChildren: TreeTableWithExtras<T>[] = [];
+    if (row.children){
+      row.children.forEach(child => {
+        nestedChildren.push(child);
+        nestedChildren = nestedChildren.concat(this.collectNestedChildren(child));
+      });
+    }
+    return nestedChildren;
   }
 }
