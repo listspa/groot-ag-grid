@@ -94,8 +94,12 @@ export class PageDemoTableComponent implements OnInit {
     }
   }
 
-  getRowIdForCommunityTreeData: GetRowIdFunc<any> = data => {
-    return data?.data?.id;
+  getRowIdForCommunityTreeData: GetRowIdFunc<any> = params => {
+    return params?.data?.rowId;
+  }
+
+  getDataPathForCommunityTreeData: GetDataPath<any> = data => {
+    return data?.rowId.split('_');
   }
 
   constructor(private bsModalService: BsModalService) {
@@ -357,18 +361,18 @@ export class PageDemoTableComponent implements OnInit {
       pageLen: 10,
       totalNumRecords: 8,
       records: [
-        {parentId: null, macroCategory: 'liquidProduct', category: '', subCategory: '', description: 'Liquid prod', count: 130, id: '00' },
-        {parentId: '00', macroCategory: 'liquidProduct', category: 'cash', subCategory: '', description: 'CASH', count: 100, id: '00_00'},
-        {parentId: '00_00', macroCategory: 'liquidProduct', category: 'cash', subCategory: 'travellersCheque', description: 'Traveller\'s chequess', count: 12,id: '00_00_00' },
-        {parentId: '00_00', macroCategory: 'liquidProduct', category: 'cash', subCategory: 'foodExpense', description: 'Food expenseee', count: 88, id: '00_00_01' },
-        {parentId: '00_00_01', macroCategory: 'liquidProduct', category: 'cash', subCategory: 'foodExpense', description: 'Liv 4', count: 2, id: '00_00_01_00' },
-        {parentId: '00_00_01_00', macroCategory: 'liquidProduct', category: 'cash', subCategory: 'foodExpense', description: 'liv 5', count: 105, id: '00_00_01_00_00' },
-        {parentId: '00', macroCategory: 'liquidProduct', category: 'cards', subCategory: '', description: 'CARDS subcat', count: 30, id: '00_01'},
-        {parentId: '00_01', macroCategory: 'liquidProduct', category: 'cards', subCategory: 'travellersCheque', description: 'CARD Traveller\'s chequess', count: 16, id: '00_01_00'},
-        {parentId: '00_01', macroCategory: 'liquidProduct', category: 'cards', subCategory: 'foodExpense', description: 'CARD Food expenseee', count: 14, id: '00_01_01' },
-        {parentId: null, macroCategory: 'notLiquidProduct', category: '', subCategory: '', description: 'Not Liquid Product', count: 55, id: '01'},
-        {parentId: '01', macroCategory: 'notLiquidProduct', category: 'testCat1', subCategory: '', description: 'Test desc 1', count: 35, children:[], id: '01_00' },
-        {parentId: '01', macroCategory: 'notLiquidProduct', category: 'testCat2', subCategory: '', description: 'Test desc 2', count: 20, children:[],id: '01_01' },
+        {macroCategory: 'liquidProduct', category: '', subCategory: '', description: 'Liquid prod', count: 130, rowId: '00' },
+        {macroCategory: 'liquidProduct', category: 'cash', subCategory: '', description: 'CASH', count: 100, rowId: '00_00'},
+        {macroCategory: 'liquidProduct', category: 'cash', subCategory: 'travellersCheque', description: 'Traveller\'s chequess', count: 12, rowId: '00_00_00' },
+        {macroCategory: 'liquidProduct', category: 'cash', subCategory: 'foodExpense', description: 'Food expenseee', count: 88, rowId: '00_00_01' },
+        {macroCategory: 'liquidProduct', category: 'cash', subCategory: 'foodExpense', description: 'Liv 4', count: 2, rowId: '00_00_01_00' },
+        {macroCategory: 'liquidProduct', category: 'cash', subCategory: 'foodExpense', description: 'liv 5', count: 105, rowId: '00_00_01_00_00' },
+        {macroCategory: 'liquidProduct', category: 'cards', subCategory: '', description: 'CARDS subcat', count: 30, rowId: '00_01'},
+        {macroCategory: 'liquidProduct', category: 'cards', subCategory: 'travellersCheque', description: 'CARD Traveller\'s chequess', count: 16, rowId: '00_01_00'},
+        {macroCategory: 'liquidProduct', category: 'cards', subCategory: 'foodExpense', description: 'CARD Food expenseee', count: 14, rowId: '00_01_01' },
+        {macroCategory: 'notLiquidProduct', category: '', subCategory: '', description: 'Not Liquid Product', count: 55, rowId: '01'},
+        {macroCategory: 'notLiquidProduct', category: 'testCat1', subCategory: '', description: 'Test desc 1', count: 35, children:[], rowId: '01_00' },
+        {macroCategory: 'notLiquidProduct', category: 'testCat2', subCategory: '', description: 'Test desc 2', count: 20, children:[], rowId: '01_01' },
       ]
     };
   }

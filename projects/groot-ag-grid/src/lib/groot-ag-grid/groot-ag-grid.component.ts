@@ -176,6 +176,7 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
   successCallback: (rowsThisBlock: any[], lastRow?: number) => void;
   private treeData = false;
   private _getDataPath: GetDataPath = undefined;
+  private _getDataPathCommunity: GetDataPath = undefined;
   private _defaultColDef: ColDef<T> = {
     filter: false,
     sortable: true,
@@ -480,6 +481,13 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
   }
 
   @Input()
+  set getDataPathCommunity(fun: GetDataPath) {
+    if (fun) {
+      this._getDataPathCommunity = fun;
+    }
+  }
+
+  @Input()
   set lockPinned(lockPinned: boolean) {
     this._defaultColDef.lockPinned = lockPinned;
     this.api?.setGridOption('defaultColDef', this._defaultColDef);
@@ -493,7 +501,12 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
   private _rowDragManaged = false;
   private _suppressMoveWhenRowDragging = false;
   public gridOptions: GridOptions;
-  public noRowsOverlayComponentParams: GrootAgGridNoRowsParams = {loadingError: false, api: null, columnApi: undefined, context: undefined};
+  public noRowsOverlayComponentParams: GrootAgGridNoRowsParams = {
+    loadingError: false,
+    api: null,
+    columnApi: undefined,
+    context: undefined
+  };
   private labelSub: Subscription;
   private _currentPageNum = 0;
   private sorting: SortPagination[] | null;
@@ -948,7 +961,8 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
   }
 
   manipulateDataForCommunityTreeData(rows: PaginatedResponse<T>): PaginatedResponse<TreeTableWithExtras<T>> {
-    const recordMap: { [key: number]: TreeTableWithExtras<T> } = {};
+    const recordMap: { [key: string]: TreeTableWithExtras<T> } = {};
+    const dataPathToRowId = {};
     const tree: TreeTableWithExtras<T>[] = [];
 
     rows.records.forEach((val: TreeTableWithExtras<T>) => {
@@ -960,6 +974,7 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
           level: 0,
           data: val
         }) : val.id;
+
       recordMap[val.id] = {
         ...val,
         expanded: this.nodeExpandedStatus[val.id] ?? (val.expanded || false),
@@ -968,11 +983,24 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
     });
 
     rows.records.forEach((val: TreeTableWithExtras<T>) => {
+      if (this._getDataPathCommunity){
+        const dataPath = this._getDataPathCommunity(val);
+        dataPathToRowId[dataPath.join('/')] = val.id;
+        val.parentId = null;
+
+        if (dataPath?.length > 1) {
+          const parentDataPath = dataPath.slice(0, -1).join('/');
+          if (dataPathToRowId[parentDataPath]) {
+            val.parentId = dataPathToRowId[parentDataPath];
+          }
+        }
+      }
+
       if (val.parentId === null) {
         tree.push(recordMap[val.id]);
       } else {
         if (recordMap[val.parentId]) {
-          recordMap[val.parentId].children.push(recordMap[val.id]);
+          recordMap[val.parentId].children.push({...recordMap[val.id], parentId: val.parentId});
         }
       }
     });
@@ -1089,4 +1117,5 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
     }
     return nestedChildren;
   }
+
 }
