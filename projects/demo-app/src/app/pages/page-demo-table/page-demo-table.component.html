@@ -11,7 +11,7 @@
   [defaultSort]="[{sortField: 'id', sortReversed: true}]"
 ></groot-ag-grid>
 
-<ng-template #cellTemplate  let-row="row">
+<ng-template #cellTemplate let-row="row">
   <groot-button class="btn-sm btn-outline-primary" label="test" (click)="changeAge(row)"></groot-button>
 </ng-template>
 
@@ -75,7 +75,7 @@
   [accordionTemplate]="accordionTemplate"
 >
   <ng-template #accordionTemplate let-row>
-    <p>Here you can show more details about the row. For instance, here we show {{row.name}}.</p>
+    <p>Here you can show more details about the row. For instance, here we show {{ row.name }}.</p>
   </ng-template>
 </groot-ag-grid>
 
@@ -207,7 +207,8 @@
 
 <h2>Column header template</h2>
 
-<p>Column headers can be customized by setting headerComponent and headerComponentParams.ngTemplate in the relative ColDef, and define a template
+<p>Column headers can be customized by setting headerComponent and headerComponentParams.ngTemplate in the relative
+  ColDef, and define a template
 
 <pre><code>
 &lt;ng-template #columnHeaderTemplate let-col="col"&gt;
@@ -223,7 +224,7 @@
   ...
 
   columns: ColDef[] = [{{ "{" }}
-    colId: 'name',
+  colId: 'name',
     field: 'name',
       headerComponent: 'headerTemplateRenderer',
       headerComponentParams: {{ "{" }} ngTemplate: this.columnHeaderTemplate&#125;
@@ -231,7 +232,6 @@
     ...
   ]
 </code></pre>
-
 
 
 <groot-ag-grid
@@ -246,7 +246,7 @@
 
 <ng-template #columnHeaderTemplate let-col="col">
   <i class="fa fa-star"></i>
-  {{col.colId}}
+  {{ col.colId }}
 </ng-template>
 
 <h2>Tree (Requires Ag-Grid Enterprise)</h2>
@@ -265,7 +265,9 @@
   </li>
   <li>pass the function <code>getDataPath</code> - the behavior can be found in the Ag-Grid documentation;</li>
   <li>(optionally) define a <code>autoGroupColumnDef</code> - again, see the AG-Grid documentation.</li>
-  <li>(optionally) pass the function <code>getRowNodeId</code> - this assigns an id to each data row and enables immutable data. See <code>getRowNodeId</code> and <code>immutableData</code> in the Ag-Grid documentation. </li>
+  <li>(optionally) pass the function <code>getRowNodeId</code> - this assigns an id to each data row and enables
+    immutable data. See <code>getRowNodeId</code> and <code>immutableData</code> in the Ag-Grid documentation.
+  </li>
 </ul>
 
 <groot-ag-grid-table-header
@@ -274,7 +276,8 @@
   [actions]="tplHeaderActionsTree"
 >
   <ng-template #tplHeaderActionsTree>
-    <groot-ag-grid-table-action style="margin-right: auto" class="fa-solid fa-rotate contrib-chk-box" (click)="searchTree()" aria-hidden="true">
+    <groot-ag-grid-table-action style="margin-right: auto" class="fa-solid fa-rotate contrib-chk-box"
+                                (click)="searchTree()" aria-hidden="true">
     </groot-ag-grid-table-action>
   </ng-template>
 </groot-ag-grid-table-header>
@@ -304,16 +307,32 @@
     <code>[getDataPath]</code>, <code>[autoGroupColumnDef]</code>
   </li>
 </ul>
-<button (click) = "communityTreeTable.expandAll()">expand all</button>
-<button (click) = "communityTreeTable.collapseAll()">collapse all</button>
+
+<groot-ag-grid-table-header [actions]="tplHeaderActionsCommunityTree">
+  <ng-template #tplHeaderActionsCommunityTree>
+    <groot-ag-grid-table-action label="Expand All" (click)="communityTreeTable.expandAll()" aria-hidden="true"></groot-ag-grid-table-action>
+    <groot-ag-grid-table-action label="Collapse All" (click)="communityTreeTable.collapseAll()" aria-hidden="true"></groot-ag-grid-table-action>
+  </ng-template>
+</groot-ag-grid-table-header>
 <groot-ag-grid
   #communityTreeTable
   class="mb-4"
   [columnDefs]="communityColumnTree"
-  [communityTreeGroupColDef]="communityGroupColDef"
-  [getDataPathCommunity]="getDataPathForCommunityTreeData"
-  [searchResultsData]="searchResultsDataTree2"
   [useCommunityTree]="true"
-  (search)="searchTree()"
+  [getDataPathCommunity]="getDataPathForCommunityTreeData"
+  [communityTreeGroupColDef]="communityGroupColDef"
   [getRowId]="getRowIdForCommunityTreeData"
+  [searchResultsData]="searchResultsDataTree2"
+  (search)="searchTree()"
+  [hideTitleBar]="true"
 ></groot-ag-grid>
+
+
+<ng-template #communityTreeTemplate let-row let-index="index" let-params>
+  <span
+    class="font-monospace">
+      <i class="fa-solid fa-car"
+         aria-hidden="true"></i>
+    {{ row.description }}
+  </span>
+</ng-template>

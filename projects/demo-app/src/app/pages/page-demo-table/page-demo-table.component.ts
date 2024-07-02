@@ -58,6 +58,7 @@ export class PageDemoTableComponent implements OnInit {
   searchResultsDataGridHeader: PaginatedResponse<User>;
   searchResultsDataColumnHeaderTemplate: PaginatedResponse<User>;
   @ViewChild('cellTemplate', { static: true }) cellTemplate: TemplateRef<any>;
+  @ViewChild('communityTreeTemplate', { static: true }) communityTreeTemplate: TemplateRef<any>;
   selectionMode: 'single' | 'multi' | 'multi-click' = 'multi';
   @ViewChild('gridSelection', { static: true }) gridSelection: GrootAgGridComponent<User>;
   loadingFailedData: LoadingFailed = { loadingFailed: true };
@@ -95,11 +96,12 @@ export class PageDemoTableComponent implements OnInit {
   }
 
   getRowIdForCommunityTreeData: GetRowIdFunc<any> = params => {
-    return params?.data?.rowId;
+     return params?.data?.rowId;
   }
 
+
   getDataPathForCommunityTreeData: GetDataPath<any> = data => {
-    return data?.rowId.split('_');
+    return data?.rowId?.split('_');
   }
 
   constructor(private bsModalService: BsModalService) {
@@ -222,7 +224,11 @@ export class PageDemoTableComponent implements OnInit {
       { colId: 'count', field: 'count', cellRenderer: GrootAgGridRenderer.numbers, cellClass: 'ag-cell-right' },
     ];
     this.communityGroupColDef = {
-      colId: 'category', field: 'description', headerName: 'Category'
+      colId: 'category', field: 'description', headerName: 'Category',
+      cellRenderer: 'templateRenderer',
+      cellRendererParams: {
+        ngTemplate: this.communityTreeTemplate
+      },
     }
   }
   getResultData(event): PaginatedResponse<User> {
@@ -373,6 +379,7 @@ export class PageDemoTableComponent implements OnInit {
         {macroCategory: 'notLiquidProduct', category: '', subCategory: '', description: 'Not Liquid Product', count: 55, rowId: '01'},
         {macroCategory: 'notLiquidProduct', category: 'testCat1', subCategory: '', description: 'Test desc 1', count: 35, children:[], rowId: '01_00' },
         {macroCategory: 'notLiquidProduct', category: 'testCat2', subCategory: '', description: 'Test desc 2', count: 20, children:[], rowId: '01_01' },
+
       ]
     };
   }

@@ -90,10 +90,11 @@ const SPECIAL_TOOL_CELL: ColDef = {
 };
 
 interface TreeTableBase {
-  parentId: string | null;
+  parentId?: string | null;
   id?: string;
   level?: number;
   expanded?: boolean;
+  dataPath?: string[];
 }
 
 export type TreeTableWithExtras<T> = TreeTableBase & T & {
@@ -162,21 +163,28 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
   @Input() disablePagination = false;
   @Input() infiniteScroll = false;
 
-  @Input() communityTreeGroupColDef: ColDef = null;
   @Input() useCommunityTree = false;
+  @Input() communityTreeGroupColDef: ColDef = null;
+  @Input() getDataPathCommunity: GetDataPath;
+
+  // data currently shown in the tree table
+  communityTreeData: TreeTableWithExtras<T>[] = [];
+  // tree structured data, obtained through manipulation
+  initialCommunityTreeData: TreeTableWithExtras<T>[] = [];
+  // used to keep track of node status: expanded/not-expanded
+  nodeExpandedStatus: Map<string, boolean> = new Map();
 
   @Input() columnsForAutoSize: (string | ColDef | Column)[] = [];
-  @Input() skipHeaderForAutoSize = false;
 
+  @Input() skipHeaderForAutoSize = false;
   @Output() rowDragEnter = new EventEmitter<RowDragEnterEvent>();
   @Output() rowDragEnd = new EventEmitter<RowDragEndEvent>();
   @Output() rowDragMove = new EventEmitter<RowDragMoveEvent>();
-  @Output() rowDragLeave = new EventEmitter<RowDragLeaveEvent>();
 
+  @Output() rowDragLeave = new EventEmitter<RowDragLeaveEvent>();
   successCallback: (rowsThisBlock: any[], lastRow?: number) => void;
   private treeData = false;
   private _getDataPath: GetDataPath = undefined;
-  private _getDataPathCommunity: GetDataPath = undefined;
   private _defaultColDef: ColDef<T> = {
     filter: false,
     sortable: true,
@@ -308,6 +316,9 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
     const colDefs = this.columnDefs_ ? [...this.columnDefs_] : [];
 
     if (this.useCommunityTree) {
+      if (this.communityTreeGroupColDef?.cellRenderer === 'templateRenderer'){
+        this.communityTreeGroupColTemplate_ = this.communityTreeGroupColDef.cellRendererParams?.ngTemplate;
+      }
       const communityTreeCell: ColDef = {
         ...SPECIAL_TOOL_CELL,
         width: undefined,
@@ -481,13 +492,6 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
   }
 
   @Input()
-  set getDataPathCommunity(fun: GetDataPath) {
-    if (fun) {
-      this._getDataPathCommunity = fun;
-    }
-  }
-
-  @Input()
   set lockPinned(lockPinned: boolean) {
     this._defaultColDef.lockPinned = lockPinned;
     this.api?.setGridOption('defaultColDef', this._defaultColDef);
@@ -512,6 +516,7 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
   private sorting: SortPagination[] | null;
   private _savedColumnState: string | null = null;
   private accordionTemplate_: TemplateRef<any> = null;
+  protected communityTreeGroupColTemplate_: TemplateRef<any> = null;
   private actionButtonTemplate_: TemplateRef<any>;
   private actionButtonTemplateRight_: boolean;
   private additionalButtonsTemplate_: TemplateRef<any>[];
@@ -948,24 +953,12 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
     return (this.keepServerSorting === null && this.isPaginated()) || this.keepServerSorting || this.infiniteScroll;
   }
 
-  // data currently shown in the table
-  communityTreeData: TreeTableWithExtras<T>[] = [];
-  // tree structured data, obtained through manipulation
-  initialCommunityTreeData: TreeTableWithExtras<T>[] = [];
-  // used to keep track of node status
-  nodeExpandedStatus: Map<string, boolean> = new Map();
-
-  assignLevels(node: TreeTableWithExtras<T>, level: number): void {
-    node.level = node.level ? node.level : level;
-    node.children.forEach(childNode => this.assignLevels(childNode, level + 1));
-  }
-
-  manipulateDataForCommunityTreeData(rows: PaginatedResponse<T>): PaginatedResponse<TreeTableWithExtras<T>> {
+  private manipulateDataForCommunityTreeData(rows: PaginatedResponse<T>): PaginatedResponse<TreeTableWithExtras<T>> {
     const recordMap: { [key: string]: TreeTableWithExtras<T> } = {};
     const dataPathToRowId = {};
     const tree: TreeTableWithExtras<T>[] = [];
 
-    rows.records.forEach((val: TreeTableWithExtras<T>) => {
+    rows?.records.forEach((val: TreeTableWithExtras<T>) => {
       val.id = this.getRowId ?
         this.getRowId({
           api: this.api,
@@ -982,12 +975,12 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
       };
     });
 
-    rows.records.forEach((val: TreeTableWithExtras<T>) => {
-      if (this._getDataPathCommunity){
-        const dataPath = this._getDataPathCommunity(val);
+    rows?.records.forEach((val: TreeTableWithExtras<T>) => {
+      if (this.getDataPathCommunity){
+        const dataPath = this.getDataPathCommunity(val);
         dataPathToRowId[dataPath.join('/')] = val.id;
         val.parentId = null;
-
+        val.dataPath = dataPath;
         if (dataPath?.length > 1) {
           const parentDataPath = dataPath.slice(0, -1).join('/');
           if (dataPathToRowId[parentDataPath]) {
@@ -997,10 +990,10 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
       }
 
       if (val.parentId === null) {
-        tree.push(recordMap[val.id]);
+        tree.push({...recordMap[val.id], dataPath: val.dataPath ?? val.dataPath});
       } else {
         if (recordMap[val.parentId]) {
-          recordMap[val.parentId].children.push({...recordMap[val.id], parentId: val.parentId});
+          recordMap[val.parentId].children.push({...recordMap[val.id], parentId: val.parentId, dataPath: val.dataPath ?? val.dataPath});
         }
       }
     });
@@ -1032,9 +1025,22 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
     this.api?.setGridOption('rowData', this.rowsDisplayed);
   }
 
+  private assignLevels(node: TreeTableWithExtras<T>, level: number): void {
+    node.level = node.level ? node.level : level;
+    node.children.forEach(childNode => this.assignLevels(childNode, level + 1));
+  }
+
   handleExpandRow(row: TreeTableWithExtras<T>, singleRow?: boolean): void {
     this.communityTreeData = this.expandRow(row);
     if (this.communityTreeData && singleRow) {
+      this.rowsDisplayed = [...this.communityTreeData];
+      this.api?.setGridOption('rowData', this.rowsDisplayed);
+    }
+  }
+
+  handleCollapseRow(row: TreeTableWithExtras<T>, rowAction?: boolean): void {
+    this.communityTreeData = this.collapseRow(row);
+    if (this.communityTreeData && rowAction) {
       this.rowsDisplayed = [...this.communityTreeData];
       this.api?.setGridOption('rowData', this.rowsDisplayed);
     }
@@ -1075,15 +1081,6 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
     return null;
   }
 
-  handleCollapseRow(row: TreeTableWithExtras<T>, rowAction?: boolean): void {
-    this.communityTreeData = this.collapseRow(row);
-    if (this.communityTreeData && rowAction) {
-      this.rowsDisplayed = [...this.communityTreeData];
-      this.api?.setGridOption('rowData', this.rowsDisplayed);
-    }
-  }
-
-
   private collapseRow(row: TreeTableWithExtras<T>): TreeTableWithExtras<T>[] {
     const elementToCollapseIndex = this.communityTreeData.findIndex(el => el.id === row.id);
     if (elementToCollapseIndex !== -1) {
@@ -1116,6 +1113,14 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
       });
     }
     return nestedChildren;
+  }
+
+  getGroupField(row: TreeTableWithExtras<T>): string {
+    if (row.dataPath){
+      return row.dataPath[row.dataPath.length - 1];
+    } else {
+      return row[this.communityTreeGroupColDef.field];
+    }
   }
 
 }

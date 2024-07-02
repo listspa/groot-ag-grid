@@ -16,39 +16,39 @@
 </groot-table-title-bar>
 
 <ag-grid-angular *ngIf="_initialized"
-  #grid
-  style="width: 100%;"
-  [style.height]="gridHeightCss"
-  [class]="defaultClass"
-  [gridOptions]="gridOptions"
-  (sortChanged)="onSortChanged()"
-  (gridReady)="gridReady($event)"
-  (firstDataRendered)="firstDataRendered()"
-  noRowsOverlayComponent="GrootAgGridNoRowsOverlayComponent"
-  [noRowsOverlayComponentParams]="noRowsOverlayComponentParams"
-  loadingOverlayComponent="GrootAgGridLoadingOverlayComponent"
-  (dragStopped)="saveColumnOrder()"
-  (cellClicked)="cellClicked.emit($event)"
-  (cellMouseDown)="cellMouseDown($event)"
-  [rowSelection]="(checkboxSelection || rowMultiSelectWithClick) ? 'multiple' : (singleRowSelection ? 'single' : undefined)"
-  [rowMultiSelectWithClick]="checkboxSelection || rowMultiSelectWithClick"
-  [suppressRowClickSelection]="checkboxSelection"
-  [suppressRowTransform]="suppressRowTransform"
-  [suppressDragLeaveHidesColumns]="true"
-  (bodyScroll)="onScroll($event)"
-  (selectionChanged)="gridSelectionChanged()"
-  [alignedGrids]="alignedGrids"
-  (gridSizeChanged)="autoSizeColumns()"
-  [modules]="modules"
-  [autoGroupColumnDef]="autoGroupColumnDef"
-  [groupDisplayType]="groupDisplayType"
-  [suppressAggFuncInHeader]="suppressAggFuncInHeader"
-  [getRowId]="getRowId"
-  (rowDragEnter)="onRowDragEnter($event)"
-  (rowDragEnd)="onRowDragEnd($event)"
-  (rowDragMove)="onRowDragMove($event)"
-  (rowDragLeave)="onRowDragLeave($event)"
-  (cellValueChanged)="cellValueChanged.next($event)"
+                 #grid
+                 style="width: 100%;"
+                 [style.height]="gridHeightCss"
+                 [class]="defaultClass"
+                 [gridOptions]="gridOptions"
+                 (sortChanged)="onSortChanged()"
+                 (gridReady)="gridReady($event)"
+                 (firstDataRendered)="firstDataRendered()"
+                 noRowsOverlayComponent="GrootAgGridNoRowsOverlayComponent"
+                 [noRowsOverlayComponentParams]="noRowsOverlayComponentParams"
+                 loadingOverlayComponent="GrootAgGridLoadingOverlayComponent"
+                 (dragStopped)="saveColumnOrder()"
+                 (cellClicked)="cellClicked.emit($event)"
+                 (cellMouseDown)="cellMouseDown($event)"
+                 [rowSelection]="(checkboxSelection || rowMultiSelectWithClick) ? 'multiple' : (singleRowSelection ? 'single' : undefined)"
+                 [rowMultiSelectWithClick]="checkboxSelection || rowMultiSelectWithClick"
+                 [suppressRowClickSelection]="checkboxSelection"
+                 [suppressRowTransform]="suppressRowTransform"
+                 [suppressDragLeaveHidesColumns]="true"
+                 (bodyScroll)="onScroll($event)"
+                 (selectionChanged)="gridSelectionChanged()"
+                 [alignedGrids]="alignedGrids"
+                 (gridSizeChanged)="autoSizeColumns()"
+                 [modules]="modules"
+                 [autoGroupColumnDef]="autoGroupColumnDef"
+                 [groupDisplayType]="groupDisplayType"
+                 [suppressAggFuncInHeader]="suppressAggFuncInHeader"
+                 [getRowId]="getRowId"
+                 (rowDragEnter)="onRowDragEnter($event)"
+                 (rowDragEnd)="onRowDragEnd($event)"
+                 (rowDragMove)="onRowDragMove($event)"
+                 (rowDragLeave)="onRowDragLeave($event)"
+                 (cellValueChanged)="cellValueChanged.next($event)"
 ></ag-grid-angular>
 
 
@@ -72,12 +72,20 @@
   </div>
 </ng-template>
 
-<ng-template #communityTreeTemplate let-row let-index="index">
+<ng-template #communityTreeTemplate let-row let-index="index" let-params>
   <div
     (click)="row.expanded ? handleCollapseRow(row, true) : handleExpandRow(row, true)"
     [style.padding-left.rem]="row.level">
-    <i class="fa-solid fa-chevron-down communityTreeIcon" *ngIf="row.children.length!=0 && row.expanded" aria-hidden="true"></i>
-    <i class="fa-solid fa-chevron-right communityTreeIcon" *ngIf="row.children.length!=0 && !row.expanded" aria-hidden="true"></i>
-    <span class="ms-4">{{row[communityTreeGroupColDef.field]}}</span>
+    <i class="fa-solid fa-chevron-down communityTreeIcon" *ngIf="row.children.length!=0 && row.expanded"
+       aria-hidden="true"></i>
+    <i class="fa-solid fa-chevron-right communityTreeIcon" *ngIf="row.children.length!=0 && !row.expanded"
+       aria-hidden="true"></i>
+    <span class="ms-4">
+      <ng-container *ngIf="communityTreeGroupColTemplate_">
+      <ng-container
+        *ngTemplateOutlet="communityTreeGroupColTemplate_; context: { $implicit: row, index: index, params: params }"></ng-container>
+      </ng-container>
+      <span *ngIf="!communityTreeGroupColTemplate_">{{ getGroupField(row) }}</span>
+    </span>
   </div>
 </ng-template>
