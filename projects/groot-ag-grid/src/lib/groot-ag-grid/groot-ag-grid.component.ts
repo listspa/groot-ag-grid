@@ -970,7 +970,7 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
 
       recordMap[val.id] = {
         ...val,
-        expanded: this.nodeExpandedStatus[val.id] ?? (val.expanded || false),
+        expanded: this.nodeExpandedStatus.get(val.id) ?? (val.expanded || false),
         children: []
       };
     });
@@ -1056,12 +1056,19 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
     this.drawGrid(this.communityTreeData);
   }
 
-  private manageExpansionRecursive(dataArray: TreeTableWithExtras<T>[], expand: boolean): TreeTableWithExtras<T>[] {
+  expandLevel(level: number): void {
+    this.communityTreeData = this.manageExpansionRecursive(this.initialCommunityTreeData, true, level);
+    this.drawGrid(this.communityTreeData);
+  }
+
+  private manageExpansionRecursive(dataArray: TreeTableWithExtras<T>[], expand: boolean, level: number = undefined): TreeTableWithExtras<T>[] {
     dataArray.forEach(row => {
-      if (row.children) {
-        this.nodeExpandedStatus.set(row.id, expand);
-        row.expanded = expand;
-        row.children = this.manageExpansionRecursive(row.children, expand);
+      if (level === undefined || row.level <= level){
+        if (row.children) {
+          this.nodeExpandedStatus.set(row.id, expand);
+          row.expanded = expand;
+          row.children = this.manageExpansionRecursive(row.children, expand, level);
+        }
       }
     });
     return dataArray;
