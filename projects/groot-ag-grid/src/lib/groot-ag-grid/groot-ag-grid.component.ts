@@ -219,7 +219,7 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
       this.noRowsOverlayComponentParams.loadingError = false;
       this.noRowsOverlayComponentParams.message = null;
       this.noRowsOverlayComponentParams.style = null;
-      this.data = !this.useCommunityTree ? searchResultsData : this.manipulateDataForCommunityTreeData(searchResultsData);
+      this.data = !this.useCommunityTree ? searchResultsData : this.communityTreeManipulateData(searchResultsData);
       this.rowsDisplayed = this.data?.records || [];
     }
 
@@ -953,7 +953,7 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
     return (this.keepServerSorting === null && this.isPaginated()) || this.keepServerSorting || this.infiniteScroll;
   }
 
-  private manipulateDataForCommunityTreeData(rows: PaginatedResponse<T>): PaginatedResponse<TreeTableWithExtras<T>> {
+  private communityTreeManipulateData(rows: PaginatedResponse<T>): PaginatedResponse<TreeTableWithExtras<T>> {
     const recordMap: { [key: string]: TreeTableWithExtras<T> } = {};
     const dataPathToRowId = {};
     const tree: TreeTableWithExtras<T>[] = [];
@@ -1015,7 +1015,7 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
   private drawGrid(dataArray: TreeTableWithExtras<T>[]): void {
     dataArray.forEach(row => {
       if (row.expanded) {
-        this.handleExpandRow(row, false);
+        this.communityTreeHandleExpandRow(row, false);
         if (row.children) {
           this.drawGrid(row.children);
         }
@@ -1030,7 +1030,7 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
     node.children.forEach(childNode => this.assignLevels(childNode, level + 1));
   }
 
-  handleExpandRow(row: TreeTableWithExtras<T>, singleRow?: boolean): void {
+  communityTreeHandleExpandRow(row: TreeTableWithExtras<T>, singleRow?: boolean): void {
     this.communityTreeData = this.expandRow(row);
     if (this.communityTreeData && singleRow) {
       this.rowsDisplayed = [...this.communityTreeData];
@@ -1038,7 +1038,7 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
     }
   }
 
-  handleCollapseRow(row: TreeTableWithExtras<T>, rowAction?: boolean): void {
+  communityTreeHandleCollapseRow(row: TreeTableWithExtras<T>, rowAction?: boolean): void {
     this.communityTreeData = this.collapseRow(row);
     if (this.communityTreeData && rowAction) {
       this.rowsDisplayed = [...this.communityTreeData];
@@ -1046,17 +1046,17 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
     }
   }
 
-  expandAll(): void {
+  communityTreeExpandAll(): void {
     this.communityTreeData = this.manageExpansionRecursive(this.initialCommunityTreeData, true);
     this.drawGrid(this.communityTreeData);
   }
 
-  collapseAll(): void {
+  communityTreeCollapseAll(): void {
     this.communityTreeData = this.manageExpansionRecursive(this.initialCommunityTreeData, false);
     this.drawGrid(this.communityTreeData);
   }
 
-  expandLevel(level: number): void {
+  communityTreeExpandLevel(level: number): void {
     this.communityTreeData = this.manageExpansionRecursive(this.initialCommunityTreeData, true, level);
     this.drawGrid(this.communityTreeData);
   }
@@ -1122,7 +1122,7 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
     return nestedChildren;
   }
 
-  getGroupField(row: TreeTableWithExtras<T>): string {
+  communityTreeGetGroupField(row: TreeTableWithExtras<T>): string {
     if (row.dataPath){
       return row.dataPath[row.dataPath.length - 1];
     } else {

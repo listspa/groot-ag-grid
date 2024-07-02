@@ -1,5 +1,9 @@
 # Groot-ag-grid releases
 
+## Version 6.1.3 - 2024-07-xx
+
+- feat: Community Tree Table implementation (no need for Enterprise module)
+
 ## Version 6.1.2 - 2024-06-26
 
 - feat: expose cellValueChangedEvent
