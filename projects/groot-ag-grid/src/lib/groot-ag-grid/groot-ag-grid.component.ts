@@ -166,7 +166,7 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
   @Input() useCommunityTree = false;
   @Input() communityTreeGroupColDef: ColDef = null;
   @Input() getDataPathCommunity: GetDataPath;
-
+  protected communityTreeGroupColTemplate_: TemplateRef<any> = null;
   // data currently shown in the tree table
   communityTreeData: TreeTableWithExtras<T>[] = [];
   // tree structured data, obtained through manipulation
@@ -516,7 +516,6 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
   private sorting: SortPagination[] | null;
   private _savedColumnState: string | null = null;
   private accordionTemplate_: TemplateRef<any> = null;
-  protected communityTreeGroupColTemplate_: TemplateRef<any> = null;
   private actionButtonTemplate_: TemplateRef<any>;
   private actionButtonTemplateRight_: boolean;
   private additionalButtonsTemplate_: TemplateRef<any>[];
