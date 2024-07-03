@@ -294,18 +294,46 @@
   [getRowId]="getRowId"
 ></groot-ag-grid>
 
-<h2>Custom Tree Data (doesn't require Ag-Grid Enterprise)</h2>
+<h2>Community Tree Data (doesn't require Ag-Grid Enterprise)</h2>
 <p>
-  You need to:
+  How to use it:
 </p>
 
 <ul>
-  <li>Data must be provided in the right format. Mandatory fields are
+  <li><code>[useCommunityTree]</code> input must be set to <code>true</code> ;</li>
+  <li>Make sure you are <code>NOT</code> providing <code>modules</code> related to Ag-Grid Enterprise such as <code>RowGroupingModule</code> ;</li>
+  <li>Make sure you are <code>NOT</code> providing the following inputs:
+    <code>[getDataPath]</code>, <code>[autoGroupColumnDef]</code>, <code>[groupDefaultExpanded]</code> ;
+  </li>
+  <li>Provided data must contain the <code>id</code> property; alternatively, <code>[getRowId]</code> must be used ;</li>
+  <li>Provided data must contain the <code>parentId</code> property; alternatively, <code>[getDataPathCommunity]</code> must be used ;</li>
+  <li>(optional) You can provide <code>[communityTreeGroupColDef]</code>, to define options of the group column ;</li>
+  <li>(optional) You can provide a custom template to the <code>communityTreeGroupColDef</code> ; for example:
+    <pre><code>
+      &#64;ViewChild('communityTreeTemplate', {{ "{" }} static: true &#125;&#125;) communityTreeTemplate: TemplateRef&lt;any&gt;
 
+      ...
+      cellRenderer: 'templateRenderer',
+      cellRendererParams: {{ "{" }}
+        ngTemplate: this.communityTreeTemplate
+      &#125;&#125;
+      ...
+
+      where
+
+      &lt;ng-template #communityTreeTemplate let-row let-index="index" let-params&gt;
+        &lt;span class="font-monospace"&gt;
+          &lt;i *ngIf="row.macroCategory === 'transportation'" class="fa-solid fa-car" aria-hidden="true">&lt;/i&gt;
+          &lt;i *ngIf="row.macroCategory === 'food'" class="fa-solid fa-pizza-slice" aria-hidden="true">&lt;/i&gt;
+          &lt;i *ngIf="row.macroCategory === 'home'" class="fa-solid fa-house" aria-hidden="true">&lt;/i&gt;
+          {{ "{{" }} row.description &#125;&#125;
+        &lt;/span&gt;
+      &lt;/ng-template&gt;
+    </code></pre>
   </li>
-  <li>Make sure you are not providing values for the following inputs:
-    <code>[getDataPath]</code>, <code>[autoGroupColumnDef]</code>
-  </li>
+  <li>NB. If no template is provided, it will try use the data-path. If <code>[getDataPath]</code> is not provided, it will render the value of the <code>field</code> property specified in the <code>communityTreeGroupColDef</code> object.
+
+
 </ul>
 
 <groot-ag-grid-table-header [actions]="tplHeaderActionsCommunityTree">
@@ -318,22 +346,22 @@
 <groot-ag-grid
   #communityTreeTable
   class="mb-4"
-  [columnDefs]="communityColumnTree"
+  [columnDefs]="communityTreeColumns"
   [useCommunityTree]="true"
-  [getDataPathCommunity]="getDataPathForCommunityTreeData"
-  [communityTreeGroupColDef]="communityGroupColDef"
-  [getRowId]="getRowIdForCommunityTreeData"
-  [searchResultsData]="searchResultsDataTree2"
+  [getDataPathCommunity]="getDataPathCommunityTree"
+  [communityTreeGroupColDef]="communityTreeGroupColDef"
+  [getRowId]="getRowIdCommunityTree"
+  [searchResultsData]="searchResultsDataCommunityTree"
   (search)="searchTree()"
   [hideTitleBar]="true"
 ></groot-ag-grid>
 
 
 <ng-template #communityTreeTemplate let-row let-index="index" let-params>
-  <span
-    class="font-monospace">
-      <i class="fa-solid fa-car"
-         aria-hidden="true"></i>
-    {{ row.description }}
+  <span class="font-monospace">
+      <i *ngIf="row.macroCategory === 'transportation'" class="fa-solid fa-car" aria-hidden="true"></i>
+      <i *ngIf="row.macroCategory === 'food'" class="fa-solid fa-pizza-slice" aria-hidden="true"></i>
+      <i *ngIf="row.macroCategory === 'home'" class="fa-solid fa-house" aria-hidden="true"></i>
+      {{ row.description }}
   </span>
 </ng-template>

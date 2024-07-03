@@ -58,21 +58,22 @@ export class PageDemoTableComponent implements OnInit {
   searchResultsDataGridHeader: PaginatedResponse<User>;
   searchResultsDataColumnHeaderTemplate: PaginatedResponse<User>;
   @ViewChild('cellTemplate', { static: true }) cellTemplate: TemplateRef<any>;
-  @ViewChild('communityTreeTemplate', { static: true }) communityTreeTemplate: TemplateRef<any>;
   selectionMode: 'single' | 'multi' | 'multi-click' = 'multi';
   @ViewChild('gridSelection', { static: true }) gridSelection: GrootAgGridComponent<User>;
   loadingFailedData: LoadingFailed = { loadingFailed: true };
   emptyData: PaginatedResponse<User>;
   alertData: NoGridDataMessage = { message: 'A generic warning', style: 'warning' };
   selection: GrootAgGridSelection<User>;
-
   treeModules: Array<Module> = [RowGroupingModule] as unknown as Array<Module>;
+
   searchResultsDataTree: PaginatedResponse<CategoryData>;
-  searchResultsDataTree2: PaginatedResponse<TreeTableWithExtras<any>>;
+  searchResultsDataCommunityTree: PaginatedResponse<TreeTableWithExtras<any>>;
   columnsTree: ColDef[];
   treeGroupColDef: ColDef;
-  communityColumnTree: ColDef[];
-  communityGroupColDef: ColDef;
+
+  communityTreeColumns: ColDef[];
+  communityTreeGroupColDef: ColDef;
+  @ViewChild('communityTreeTemplate', { static: true }) communityTreeTemplate: TemplateRef<any>;
 
   getDataPath: GetDataPath<any> = data => {
     if (data.subCategory) {
@@ -95,12 +96,11 @@ export class PageDemoTableComponent implements OnInit {
     }
   }
 
-  getRowIdForCommunityTreeData: GetRowIdFunc<any> = params => {
+  getRowIdCommunityTree: GetRowIdFunc<any> = params => {
      return params?.data?.rowId;
   }
 
-
-  getDataPathForCommunityTreeData: GetDataPath<any> = data => {
+  getDataPathCommunityTree: GetDataPath<any> = data => {
     return data?.rowId?.split('_');
   }
 
@@ -220,10 +220,10 @@ export class PageDemoTableComponent implements OnInit {
       }
     };
 
-    this.communityColumnTree = [
+    this.communityTreeColumns = [
       { colId: 'count', field: 'count', cellRenderer: GrootAgGridRenderer.numbers, cellClass: 'ag-cell-right' },
     ];
-    this.communityGroupColDef = {
+    this.communityTreeGroupColDef = {
       colId: 'category', field: 'description', headerName: 'Category',
       cellRenderer: 'templateRenderer',
       cellRendererParams: {
@@ -362,24 +362,27 @@ export class PageDemoTableComponent implements OnInit {
         { macroCategory: 'Liquid product', category: 'Treasury bills', subCategory: 'Treasury bills', count: 23 },
       ]
     };
-    this.searchResultsDataTree2 = {
+    this.searchResultsDataCommunityTree = {
       pageNum: 0,
       pageLen: 10,
-      totalNumRecords: 8,
+      totalNumRecords: 16,
       records: [
-        {macroCategory: 'liquidProduct', category: '', subCategory: '', description: 'Liquid prod', count: 130, rowId: '00' },
-        {macroCategory: 'liquidProduct', category: 'cash', subCategory: '', description: 'CASH', count: 100, rowId: '00_00'},
-        {macroCategory: 'liquidProduct', category: 'cash', subCategory: 'travellersCheque', description: 'Traveller\'s chequess', count: 12, rowId: '00_00_00' },
-        {macroCategory: 'liquidProduct', category: 'cash', subCategory: 'foodExpense', description: 'Food expenseee', count: 88, rowId: '00_00_01' },
-        {macroCategory: 'liquidProduct', category: 'cash', subCategory: 'foodExpense', description: 'Liv 4', count: 2, rowId: '00_00_01_00' },
-        {macroCategory: 'liquidProduct', category: 'cash', subCategory: 'foodExpense', description: 'liv 5', count: 105, rowId: '00_00_01_00_00' },
-        {macroCategory: 'liquidProduct', category: 'cards', subCategory: '', description: 'CARDS subcat', count: 30, rowId: '00_01'},
-        {macroCategory: 'liquidProduct', category: 'cards', subCategory: 'travellersCheque', description: 'CARD Traveller\'s chequess', count: 16, rowId: '00_01_00'},
-        {macroCategory: 'liquidProduct', category: 'cards', subCategory: 'foodExpense', description: 'CARD Food expenseee', count: 14, rowId: '00_01_01' },
-        {macroCategory: 'notLiquidProduct', category: '', subCategory: '', description: 'Not Liquid Product', count: 55, rowId: '01'},
-        {macroCategory: 'notLiquidProduct', category: 'testCat1', subCategory: '', description: 'Test desc 1', count: 35, children:[], rowId: '01_00' },
-        {macroCategory: 'notLiquidProduct', category: 'testCat2', subCategory: '', description: 'Test desc 2', count: 20, children:[], rowId: '01_01' },
-
+        {macroCategory: 'transportation', category: '', subCategory: '', description: 'Transportation', count: 542, rowId: '00' },
+        {macroCategory: 'transportation', category: 'personal', subCategory: '', description: 'Train', count: 12, rowId: '00_00'},
+        {macroCategory: 'transportation', category: 'personal', subCategory: 'train', subSubCategory: 'holidays', description: 'Holiday trips', count: 12, rowId: '00_00_00' },
+        {macroCategory: 'transportation', category: 'personal', subCategory: 'car', subSubCategory: '', description: 'Car', count: 530, rowId: '00_01' },
+        {macroCategory: 'transportation', category: 'personal', subCategory: 'car', subSubCategory: 'maintenance', description: 'Maintenance expenses', count: 345, rowId: '00_01_00' },
+        {macroCategory: 'transportation', category: 'personal', subCategory: 'car', subSubCategory: 'maintenance', subSubSubCategory: 'engine', description: 'Engine', count: 95, rowId: '00_01_00_00' },
+        {macroCategory: 'transportation', category: 'personal', subCategory: 'car', subSubCategory: 'maintenance', subSubSubCategory: 'tyres', description: 'Tyres', count: 250, rowId: '00_01_00_01' },
+        {macroCategory: 'transportation', category: 'personal', subCategory: 'car', subSubCategory: 'fuel', description: 'Fuel', count: 185, rowId: '00_01_01' },
+        {macroCategory: 'transportation', category: 'personal', subCategory: 'car', subSubCategory: 'fuel', subSubSubCategory: 'diesel', description: 'Diesel', count: 105, rowId: '00_01_01_00' },
+        {macroCategory: 'transportation', category: 'personal', subCategory: 'car', subSubCategory: 'fuel', subSubSubCategory: 'electric', description: 'EV Vehicle', count: 80, rowId: '00_01_01_01' },
+        {macroCategory: 'food', category: '', subCategory: '', description: 'Food', count: 55, rowId: '01'},
+        {macroCategory: 'food', category: 'groceries', subCategory: '', description: 'Groceries', count: 35, children:[], rowId: '01_00' },
+        {macroCategory: 'food', category: 'eatOutside', subCategory: '', description: 'Eating Outside', count: 20, children:[], rowId: '01_01' },
+        {macroCategory: 'home', category: '', subCategory: '', description: 'Home', count: 95, rowId: '02'},
+        {macroCategory: 'home', category: 'internet', subCategory: '', description: 'Internet', count: 35, children:[], rowId: '02_00' },
+        {macroCategory: 'home', category: 'electricity', subCategory: '', description: 'Electricity', count: 60, children:[], rowId: '02_01' },
       ]
     };
   }
