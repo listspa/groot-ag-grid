@@ -165,7 +165,6 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
 
   @Input() useCommunityTree = false;
   @Input() communityTreeGroupColDef: ColDef = null;
-  @Input() getDataPathCommunity: GetDataPath;
   protected communityTreeGroupColTemplate_: TemplateRef<any> = null;
   // data currently shown in the tree table
   communityTreeData: TreeTableWithExtras<T>[] = [];
@@ -173,6 +172,8 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
   initialCommunityTreeData: TreeTableWithExtras<T>[] = [];
   // used to keep track of node status: expanded/not-expanded
   nodeExpandedStatus: Map<string, boolean> = new Map();
+
+  @Input() getDataPath: GetDataPath = undefined;
 
   @Input() columnsForAutoSize: (string | ColDef | Column)[] = [];
 
@@ -482,16 +483,6 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
   }
 
   @Input()
-  set getDataPath(fun: GetDataPath) {
-    if (fun) {
-      this.treeData = true;
-      this._getDataPath = fun;
-      this.api?.setGridOption('treeData', this.treeData);
-      this.api?.setGridOption('getDataPath', this._getDataPath);
-    }
-  }
-
-  @Input()
   set lockPinned(lockPinned: boolean) {
     this._defaultColDef.lockPinned = lockPinned;
     this.api?.setGridOption('defaultColDef', this._defaultColDef);
@@ -578,6 +569,8 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
       };
     }
 
+    this.setGetDataPath();
+
     this.gridOptions = {
       defaultColDef: this._defaultColDef,
       columnDefs: this.columnDefs_ ?? [],
@@ -630,6 +623,15 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
 
     this.resetDefaultSorting();
     this._initialized = true;
+  }
+
+  private setGetDataPath(): void {
+    this._getDataPath = this.getDataPath;
+    if (!this.useCommunityTree) {
+        this.treeData = true;
+        this.api?.setGridOption('treeData', this.treeData);
+        this.api?.setGridOption('getDataPath', this._getDataPath);
+      }
   }
 
   private resetDefaultSorting(): void {
@@ -975,13 +977,13 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
     });
 
     rows?.records.forEach((val: TreeTableWithExtras<T>) => {
-      if (this.getDataPathCommunity){
-        const dataPath = this.getDataPathCommunity(val);
-        dataPathToRowId[dataPath.join('/')] = val.id;
+      if (this._getDataPath){
+        const dataPath = this._getDataPath(val);
+        dataPathToRowId[dataPath.join('@#$')] = val.id;
         val.parentId = null;
         val.dataPath = dataPath;
         if (dataPath?.length > 1) {
-          const parentDataPath = dataPath.slice(0, -1).join('/');
+          const parentDataPath = dataPath.slice(0, -1).join('@#$');
           if (dataPathToRowId[parentDataPath]) {
             val.parentId = dataPathToRowId[parentDataPath];
           }

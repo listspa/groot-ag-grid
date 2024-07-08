@@ -303,10 +303,10 @@
   <li><code>[useCommunityTree]</code> input must be set to <code>true</code> ;</li>
   <li>Make sure you are <code>NOT</code> providing <code>modules</code> related to Ag-Grid Enterprise such as <code>RowGroupingModule</code> ;</li>
   <li>Make sure you are <code>NOT</code> providing the following inputs:
-    <code>[getDataPath]</code>, <code>[autoGroupColumnDef]</code>, <code>[groupDefaultExpanded]</code> ;
+    <code>[autoGroupColumnDef]</code>, <code>[groupDefaultExpanded]</code> ;
   </li>
   <li>Provided data must contain the <code>id</code> property; alternatively, <code>[getRowId]</code> must be used ;</li>
-  <li>Provided data must contain the <code>parentId</code> property; alternatively, <code>[getDataPathCommunity]</code> must be used ;</li>
+  <li>Provided data must contain the <code>parentId</code> property; alternatively, <code>[getDataPath]</code> must be used ;</li>
   <li>(optional) You can provide <code>[communityTreeGroupColDef]</code>, to define options of the group column ;</li>
   <li>(optional) You can provide a custom template to the <code>communityTreeGroupColDef</code> ; for example:
     <pre><code>
@@ -348,7 +348,7 @@
   class="mb-4"
   [columnDefs]="communityTreeColumns"
   [useCommunityTree]="true"
-  [getDataPathCommunity]="getDataPathCommunityTree"
+  [getDataPath]="getDataPathCommunityTree"
   [communityTreeGroupColDef]="communityTreeGroupColDef"
   [getRowId]="getRowIdCommunityTree"
   [searchResultsData]="searchResultsDataCommunityTree"

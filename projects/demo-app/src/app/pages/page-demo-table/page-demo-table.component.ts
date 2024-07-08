@@ -1,9 +1,14 @@
 import {Component, OnInit, TemplateRef, ViewChild} from '@angular/core';
 import {ColDef, ColGroupDef, GetDataPath, GetRowIdFunc, Module} from 'ag-grid-community';
-import {GrootAgGridRenderer} from '../../../../../groot-ag-grid/src/lib/groot-ag-grid/groot-ag-grid-customization.consts';
+import {
+  GrootAgGridRenderer
+} from '../../../../../groot-ag-grid/src/lib/groot-ag-grid/groot-ag-grid-customization.consts';
 import {LoadingFailed, PaginatedResponse} from '@listgroup/groot';
 import {GrootAgGridSelection} from '../../../../../groot-ag-grid/src/lib/groot-ag-grid/groot-ag-grid-selection.model';
-import {GrootAgGridComponent, TreeTableWithExtras} from '../../../../../groot-ag-grid/src/lib/groot-ag-grid/groot-ag-grid.component';
+import {
+  GrootAgGridComponent,
+  TreeTableWithExtras
+} from '../../../../../groot-ag-grid/src/lib/groot-ag-grid/groot-ag-grid.component';
 import {NoGridDataMessage} from '../../../../../groot-ag-grid/src/lib/groot-ag-grid/no-grid-data.model';
 import {
   GrootAgGridColumnSelectorModalComponent
@@ -11,7 +16,9 @@ import {
 import {Subject} from 'rxjs';
 import {BsModalService} from 'ngx-bootstrap/modal';
 import {RowGroupingModule} from '@ag-grid-enterprise/row-grouping';
-import {MultiSortPaginationOptions} from '../../../../../groot-ag-grid/src/lib/groot-ag-grid/groot-ag-grid-pagination.model';
+import {
+  MultiSortPaginationOptions
+} from '../../../../../groot-ag-grid/src/lib/groot-ag-grid/groot-ag-grid-pagination.model';
 
 interface User {
   id: string;
@@ -57,12 +64,12 @@ export class PageDemoTableComponent implements OnInit {
   searchResultsDataAlignedGrid2: PaginatedResponse<User>;
   searchResultsDataGridHeader: PaginatedResponse<User>;
   searchResultsDataColumnHeaderTemplate: PaginatedResponse<User>;
-  @ViewChild('cellTemplate', { static: true }) cellTemplate: TemplateRef<any>;
+  @ViewChild('cellTemplate', {static: true}) cellTemplate: TemplateRef<any>;
   selectionMode: 'single' | 'multi' | 'multi-click' = 'multi';
-  @ViewChild('gridSelection', { static: true }) gridSelection: GrootAgGridComponent<User>;
-  loadingFailedData: LoadingFailed = { loadingFailed: true };
+  @ViewChild('gridSelection', {static: true}) gridSelection: GrootAgGridComponent<User>;
+  loadingFailedData: LoadingFailed = {loadingFailed: true};
   emptyData: PaginatedResponse<User>;
-  alertData: NoGridDataMessage = { message: 'A generic warning', style: 'warning' };
+  alertData: NoGridDataMessage = {message: 'A generic warning', style: 'warning'};
   selection: GrootAgGridSelection<User>;
   treeModules: Array<Module> = [RowGroupingModule] as unknown as Array<Module>;
 
@@ -73,7 +80,7 @@ export class PageDemoTableComponent implements OnInit {
 
   communityTreeColumns: ColDef[];
   communityTreeGroupColDef: ColDef;
-  @ViewChild('communityTreeTemplate', { static: true }) communityTreeTemplate: TemplateRef<any>;
+  @ViewChild('communityTreeTemplate', {static: true}) communityTreeTemplate: TemplateRef<any>;
 
   getDataPath: GetDataPath<any> = data => {
     if (data.subCategory) {
@@ -86,7 +93,7 @@ export class PageDemoTableComponent implements OnInit {
   }
 
   getRowId: GetRowIdFunc<any> = data => {
-    const { subCategory, macroCategory, category } = data.data;
+    const {subCategory, macroCategory, category} = data.data;
     if (subCategory) {
       return macroCategory + category + subCategory;
     } else if (category) {
@@ -97,7 +104,7 @@ export class PageDemoTableComponent implements OnInit {
   }
 
   getRowIdCommunityTree: GetRowIdFunc<any> = params => {
-     return params?.data?.rowId;
+    return params?.data?.rowId;
   }
 
   getDataPathCommunityTree: GetDataPath<any> = data => {
@@ -113,7 +120,7 @@ export class PageDemoTableComponent implements OnInit {
         colId: 'id',
         field: 'id',
         sortable: true
-  },
+      },
       {
         colId: 'name',
         field: 'name',
@@ -162,7 +169,7 @@ export class PageDemoTableComponent implements OnInit {
     this.customHeaderColumns = [...this.availableColumns.map(c => ({
       ...c,
       headerComponent: 'headerTemplateRenderer',
-      headerComponentParams: { ngTemplate: this.columnHeaderTemplate}
+      headerComponentParams: {ngTemplate: this.columnHeaderTemplate}
     }))];
 
     this.columnsGroup = [{
@@ -201,7 +208,7 @@ export class PageDemoTableComponent implements OnInit {
         {
           colId: 'buttons',
           cellRenderer: GrootAgGridRenderer.template,
-          cellRendererParams: { ngTemplate: this.cellTemplate },
+          cellRendererParams: {ngTemplate: this.cellTemplate},
           columnGroupShow: 'open'
         },
       ]
@@ -210,7 +217,7 @@ export class PageDemoTableComponent implements OnInit {
 
     this.columnsTree = [
       // First column is the auto group
-      { colId: 'count', field: 'count', cellRenderer: GrootAgGridRenderer.numbers, cellClass: 'ag-cell-right' },
+      {colId: 'count', field: 'count', cellRenderer: GrootAgGridRenderer.numbers, cellClass: 'ag-cell-right'},
     ];
     this.treeGroupColDef = {
       headerName: 'Category',
@@ -221,16 +228,19 @@ export class PageDemoTableComponent implements OnInit {
     };
 
     this.communityTreeColumns = [
-      { colId: 'count', field: 'count', cellRenderer: GrootAgGridRenderer.numbers, cellClass: 'ag-cell-right' },
+      {colId: 'count', field: 'count', cellRenderer: GrootAgGridRenderer.numbers, cellClass: 'ag-cell-right'},
     ];
     this.communityTreeGroupColDef = {
-      colId: 'category', field: 'description', headerName: 'Category',
+      colId: 'category',
+      field: 'description',
+      headerName: 'Category',
       cellRenderer: 'templateRenderer',
       cellRendererParams: {
         ngTemplate: this.communityTreeTemplate
       },
     }
   }
+
   getResultData(event): PaginatedResponse<User> {
     return {
       pageNum: event.pageNum,
@@ -314,11 +324,11 @@ export class PageDemoTableComponent implements OnInit {
   }
 
   searchLoadingFailed(): void {
-    this.loadingFailedData = { ...this.loadingFailedData };
+    this.loadingFailedData = {...this.loadingFailedData};
   }
 
   searchAlertData(): void {
-    this.alertData = { ...this.alertData };
+    this.alertData = {...this.alertData};
   }
 
   showColumnSelector(): void {
@@ -345,7 +355,7 @@ export class PageDemoTableComponent implements OnInit {
   }
 
   searchEmptyData(): void {
-    this.emptyData = { pageNum: 0, pageLen: 10, records: [], totalNumRecords: 0 };
+    this.emptyData = {pageNum: 0, pageLen: 10, records: [], totalNumRecords: 0};
   }
 
   searchTree(): void {
@@ -354,12 +364,12 @@ export class PageDemoTableComponent implements OnInit {
       pageLen: 10,
       totalNumRecords: 8,
       records: [
-        { macroCategory: 'Liquid product', count: 47 },
-        { macroCategory: 'Liquid product', category: 'Cash', count: 24 },
-        { macroCategory: 'Liquid product', category: 'Cash', subCategory: 'Cash', count: 10 },
-        { macroCategory: 'Liquid product', category: 'Cash', subCategory: 'Traveller\'s cheque', count: 14 },
-        { macroCategory: 'Liquid product', category: 'Treasury bills', count: 23 },
-        { macroCategory: 'Liquid product', category: 'Treasury bills', subCategory: 'Treasury bills', count: 23 },
+        {macroCategory: 'Liquid product', count: 47},
+        {macroCategory: 'Liquid product', category: 'Cash', count: 24},
+        {macroCategory: 'Liquid product', category: 'Cash', subCategory: 'Cash', count: 10},
+        {macroCategory: 'Liquid product', category: 'Cash', subCategory: 'Traveller\'s cheque', count: 14},
+        {macroCategory: 'Liquid product', category: 'Treasury bills', count: 23},
+        {macroCategory: 'Liquid product', category: 'Treasury bills', subCategory: 'Treasury bills', count: 23},
       ]
     };
     this.searchResultsDataCommunityTree = {
