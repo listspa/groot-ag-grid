@@ -302,13 +302,12 @@
 <ul>
   <li><code>[useCommunityTree]</code> input must be set to <code>true</code> ;</li>
   <li>Make sure you are <code>NOT</code> providing <code>modules</code> related to Ag-Grid Enterprise such as <code>RowGroupingModule</code> ;</li>
-  <li>Make sure you are <code>NOT</code> providing the following inputs:
-    <code>[autoGroupColumnDef]</code>, <code>[groupDefaultExpanded]</code> ;
+  <li>You can use the same inputs that you would use with the enterprise version:
+    <code>[getDataPath]</code>, <code>[autoGroupColumnDef]</code>, <code>[groupDefaultExpanded]</code> ;
   </li>
   <li>Provided data must contain the <code>id</code> property; alternatively, <code>[getRowId]</code> must be used ;</li>
   <li>Provided data must contain the <code>parentId</code> property; alternatively, <code>[getDataPath]</code> must be used ;</li>
-  <li>(optional) You can provide <code>[communityTreeGroupColDef]</code>, to define options of the group column ;</li>
-  <li>(optional) You can provide a custom template to the <code>communityTreeGroupColDef</code> ; for example:
+  <li>(optional) You can provide a custom template inside the <code>autoGroupColumnDef</code> ; for example:
     <pre><code>
       &#64;ViewChild('communityTreeTemplate', {{ "{" }} static: true &#125;&#125;) communityTreeTemplate: TemplateRef&lt;any&gt;
 
@@ -331,7 +330,7 @@
       &lt;/ng-template&gt;
     </code></pre>
   </li>
-  <li>NB. If no template is provided, it will try use the data-path. If <code>[getDataPath]</code> is not provided, it will render the value of the <code>field</code> property specified in the <code>communityTreeGroupColDef</code> object.
+  <li>NB. If no template is provided, it will try use the data-path. If <code>[getDataPath]</code> is not provided, it will render the value of the <code>field</code> property specified in the <code>autoGroupColumnDef</code> object.
 
 
 </ul>
