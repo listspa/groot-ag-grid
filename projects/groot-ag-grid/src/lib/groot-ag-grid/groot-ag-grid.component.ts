@@ -641,7 +641,7 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
     if (this.groupDefaultExpanded) {
       this.groupExpanded = this.groupDefaultExpanded;
       if (this.useCommunityTree){
-        this.groupExpanded === -1 ? this.epandAll() : this.expandLevel(this.groupExpanded);
+        this.groupExpanded === -1 ? this.expandAll() : this.expandLevel(this.groupExpanded);
       } else {
         this.api?.setGridOption('groupDefaultExpanded', this.groupExpanded);
       }
@@ -1084,7 +1084,7 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
     }
   }
 
-  epandAll(): void {
+  expandAll(): void {
     if (this.useCommunityTree) {
       this.communityTreeData = this.manageExpansionRecursive(this.initialCommunityTreeData, true);
       this.drawGrid(this.communityTreeData);
