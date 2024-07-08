@@ -40,7 +40,7 @@
                  [alignedGrids]="alignedGrids"
                  (gridSizeChanged)="autoSizeColumns()"
                  [modules]="modules"
-                 [autoGroupColumnDef]="autoGroupColumnDef"
+                 [autoGroupColumnDef]="_autoGroupColumnDef"
                  [groupDisplayType]="groupDisplayType"
                  [suppressAggFuncInHeader]="suppressAggFuncInHeader"
                  [getRowId]="getRowId"
@@ -74,19 +74,19 @@
 
 <ng-template #communityTreeTemplate let-row let-index="index" let-params>
   <div
-    [style.padding-left.rem]="row.level">
-    <i class="fa-solid fa-chevron-down communityTreeIcon" *ngIf="row.children.length!=0 && row.expanded"
+    [style.padding-left.rem]="row._treeMetadata.level">
+    <i class="fa-solid fa-chevron-down communityTreeIcon" *ngIf="row._children.length!=0 && row._treeMetadata.expanded"
        (click)="communityTreeHandleCollapseRow(row, true)"
        aria-hidden="true"></i>
-    <i class="fa-solid fa-chevron-right communityTreeIcon" *ngIf="row.children.length!=0 && !row.expanded"
+    <i class="fa-solid fa-chevron-right communityTreeIcon" *ngIf="row._children.length!=0 && !row._treeMetadata.expanded"
        (click)="communityTreeHandleExpandRow(row, true)"
        aria-hidden="true"></i>
-    <span [ngStyle]="{'margin-left.rem': (0.5) * (3 + (row.children.length === 0 ? 4 : 0))}">
-      <ng-container *ngIf="communityTreeGroupColTemplate_">
+    <span [ngStyle]="{'margin-left.rem': (0.5) * (3 + (row._children.length === 0 ? 4 : 0))}">
+      <ng-container *ngIf="_communityTreeGroupColTemplate">
       <ng-container
-        *ngTemplateOutlet="communityTreeGroupColTemplate_; context: { $implicit: row, index: index, params: params }"></ng-container>
+        *ngTemplateOutlet="_communityTreeGroupColTemplate; context: { $implicit: row, index: index, params: params }"></ng-container>
       </ng-container>
-      <span *ngIf="!communityTreeGroupColTemplate_">{{ communityTreeGetGroupField(row) }}</span>
+      <span *ngIf="!_communityTreeGroupColTemplate">{{ communityTreeGetGroupField(row) }}</span>
     </span>
   </div>
 </ng-template>
