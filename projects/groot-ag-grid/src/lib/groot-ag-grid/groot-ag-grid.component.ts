@@ -1038,8 +1038,12 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
 
     tree.forEach(root => this.assignLevels(root, 0));
 
+    const firstElaboration = this.initialCommunityTreeData.length === 0;
     this.initialCommunityTreeData = [...tree];
     this.communityTreeData = [...tree];
+    if (firstElaboration){
+      this.setGroupDefaultExpanded();
+    }
     this.drawGrid(this.communityTreeData);
 
     return ({
