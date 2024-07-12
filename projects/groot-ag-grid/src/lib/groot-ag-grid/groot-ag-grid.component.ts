@@ -744,7 +744,9 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
 
   onPageChanged(pageNum: number): void {
     this._currentPageNum = pageNum;
-    this.api?.showLoadingOverlay();
+    if (this.api && !this.api?.isDestroyed()){
+      this.api?.showLoadingOverlay();
+    }
     this.search.emit(this.getCurrentPagination());
   }
 
@@ -828,13 +830,17 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
       this.resetDefaultSorting();
     }
 
-    this.api?.showLoadingOverlay();
+    if (!this.api?.isDestroyed()){
+      this.api?.showLoadingOverlay();
+    }
 
     if (this.infiniteScroll) {
       if (resetPageNumber) {
         this.api.setGridOption('datasource', this.gridOptions.datasource);
       } else {
-        this.api.refreshInfiniteCache();
+        if (!this.api?.isDestroyed()){
+          this.api?.refreshInfiniteCache();
+        }
       }
     } else {
       this.search.emit(this.getCurrentPagination());
