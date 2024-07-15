@@ -1,6 +1,6 @@
 # Groot-ag-grid releases
 
-## Version 6.1.3 - 2024-07-xx
+## Version 6.1.3 - 2024-07-15
 
 - feat: Community Tree Table implementation (no need for Enterprise module)
 
