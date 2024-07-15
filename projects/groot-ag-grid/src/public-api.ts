@@ -18,4 +18,6 @@ export * from './lib/groot-ag-grid/groot-ag-grid-customization.consts';
 export * from './lib/groot-ag-grid/groot-ag-grid.module';
 export * from './lib/groot-ag-grid/groot-ag-grid-customization.service';
 export * from './lib/groot-ag-grid/groot-ag-grid-selection.model';
+export * from './lib/groot-ag-grid/groot-ag-grid-tree-data.model';
+export * from './lib/groot-ag-grid/groot-ag-grid-tree-data.service';
 export * from './lib/groot-ag-grid/no-grid-data.model';

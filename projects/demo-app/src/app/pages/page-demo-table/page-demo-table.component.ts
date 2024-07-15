@@ -6,8 +6,7 @@ import {
 import {LoadingFailed, PaginatedResponse} from '@listgroup/groot';
 import {GrootAgGridSelection} from '../../../../../groot-ag-grid/src/lib/groot-ag-grid/groot-ag-grid-selection.model';
 import {
-  GrootAgGridComponent,
-  TreeTableWithExtras
+  GrootAgGridComponent
 } from '../../../../../groot-ag-grid/src/lib/groot-ag-grid/groot-ag-grid.component';
 import {NoGridDataMessage} from '../../../../../groot-ag-grid/src/lib/groot-ag-grid/no-grid-data.model';
 import {
@@ -19,6 +18,7 @@ import {RowGroupingModule} from '@ag-grid-enterprise/row-grouping';
 import {
   MultiSortPaginationOptions
 } from '../../../../../groot-ag-grid/src/lib/groot-ag-grid/groot-ag-grid-pagination.model';
+import {TreeTableWithExtras} from "../../../../../groot-ag-grid/src/lib/groot-ag-grid/groot-ag-grid-tree-data.model";
 
 interface User {
   id: string;

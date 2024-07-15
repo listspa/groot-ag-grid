@@ -76,6 +76,7 @@ import {
 } from '@listgroup/groot/lib/groot-base/components/tables/table-pagination/table-pagination.component';
 import {MultiSortPaginationOptions} from './groot-ag-grid-pagination.model';
 import {GrootAgGridTreeDataService} from './groot-ag-grid-tree-data.service';
+import {TreeTableWithExtras} from './groot-ag-grid-tree-data.model';
 
 const SPECIAL_TOOL_CELL: ColDef = {
   resizable: false,
@@ -88,20 +89,6 @@ const SPECIAL_TOOL_CELL: ColDef = {
   suppressColumnsToolPanel: true,
   maxWidth: 30,
   width: 30,
-};
-
-interface TreeTableBase {
-  _treeMetadata?: {
-    parentId?: string | null;
-    id?: string;
-    level?: number;
-    expanded?: boolean;
-    dataPath?: string[];
-  };
-}
-
-export type   TreeTableWithExtras<T> = TreeTableBase & T & {
-  _children?: TreeTableWithExtras<T>[];
 };
 
 @Component({
@@ -1041,7 +1028,10 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
 
   expandAll(): void {
     if (this.useCommunityTree) {
-      this.communityTreeData = this.grootAgGridTreeDataService.manageRecursiveExpansion(this.initialCommunityTreeData, true);
+      this.communityTreeData = this.grootAgGridTreeDataService.manageRecursiveExpansion(
+        this.initialCommunityTreeData,
+        true,
+        this.nodeExpandedStatus);
       this.drawGrid(this.communityTreeData);
     } else {
       this.api.expandAll();
@@ -1050,7 +1040,10 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
 
   collapseAll(): void {
     if (this.useCommunityTree) {
-      this.communityTreeData = this.grootAgGridTreeDataService.manageRecursiveExpansion(this.initialCommunityTreeData, false);
+      this.communityTreeData = this.grootAgGridTreeDataService.manageRecursiveExpansion(
+        this.initialCommunityTreeData,
+        false,
+        this.nodeExpandedStatus);
       this.drawGrid(this.communityTreeData);
     } else {
       this.api.collapseAll();
@@ -1059,7 +1052,11 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
 
   expandLevel(level: number): void {
     if (this.useCommunityTree) {
-      this.communityTreeData = this.grootAgGridTreeDataService.manageRecursiveExpansion(this.initialCommunityTreeData, true, level);
+      this.communityTreeData = this.grootAgGridTreeDataService.manageRecursiveExpansion(
+        this.initialCommunityTreeData,
+        true,
+        this.nodeExpandedStatus,
+        level);
       this.drawGrid(this.communityTreeData);
     }
   }

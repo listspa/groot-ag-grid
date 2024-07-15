@@ -1,19 +1,6 @@
 import {Injectable} from '@angular/core';
 import {GetDataPath, GetRowIdFunc, GridApi, GridOptions} from 'ag-grid-community';
-
-interface TreeTableBase {
-  _treeMetadata?: {
-    parentId?: string | null;
-    id?: string;
-    level?: number;
-    expanded?: boolean;
-    dataPath?: string[];
-  };
-}
-
-export type TreeTableWithExtras<T> = TreeTableBase & T & {
-  _children?: TreeTableWithExtras<T>[];
-};
+import {TreeTableWithExtras} from './groot-ag-grid-tree-data.model';
 
 @Injectable({
   providedIn: 'root'
@@ -141,14 +128,14 @@ export class GrootAgGridTreeDataService<T> {
 
   manageRecursiveExpansion(dataArray: TreeTableWithExtras<T>[],
                            expand: boolean,
-                           level: number = undefined,
-                           nodeExpandedStatus?: Map<string, boolean>): TreeTableWithExtras<T>[] {
+                           nodeExpandedStatus?: Map<string, boolean>,
+                           level: number = undefined): TreeTableWithExtras<T>[] {
     dataArray.forEach(row => {
       if (level === undefined || row._treeMetadata.level < level) {
         if (row._children) {
           nodeExpandedStatus?.set(row._treeMetadata.id, expand);
           row._treeMetadata.expanded = expand;
-          row._children = this.manageRecursiveExpansion(row._children, expand, level);
+          row._children = this.manageRecursiveExpansion(row._children, expand, nodeExpandedStatus, level);
         }
       }
     });
