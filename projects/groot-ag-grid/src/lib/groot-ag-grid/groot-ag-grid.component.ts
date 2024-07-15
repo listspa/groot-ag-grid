@@ -746,7 +746,7 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
 
   onPageChanged(pageNum: number): void {
     this._currentPageNum = pageNum;
-    if (this.api && !this.api?.isDestroyed()){
+    if (!this.api?.isDestroyed()){
       this.api?.showLoadingOverlay();
     }
     this.search.emit(this.getCurrentPagination());
