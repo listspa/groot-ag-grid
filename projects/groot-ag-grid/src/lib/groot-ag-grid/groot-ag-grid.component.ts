@@ -639,7 +639,7 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
 
   private setGetDataPath(): void {
     this._getDataPath = this.getDataPath;
-    if (!this.useCommunityTree) {
+    if (this.getDataPath && !this.useCommunityTree) {
       this.treeData = true;
       this.api?.setGridOption('treeData', this.treeData);
       this.api?.setGridOption('getDataPath', this._getDataPath);
@@ -987,7 +987,6 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
     if (firstElaboration){
       this.setGroupDefaultExpanded();
     }
-    this.drawGrid(this.communityTreeData);
 
     return ({
       records: this.communityTreeData,
