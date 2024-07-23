@@ -1,5 +1,10 @@
 # Groot-ag-grid releases
 
+## Version 6.1.4 - 2024-07-23
+
+- feat: moved type related to Community Tree Table into model and exposed them via public-api
+- fix: fixed missing check when setting getDataPath
+
 ## Version 6.1.3 - 2024-07-15
 
 - feat: Community Tree Table implementation (no need for Enterprise module)
