@@ -1,5 +1,9 @@
 # Groot-ag-grid releases
 
+## Version 6.1.5 - 2024-07-23
+
+- fix: use right version of ngx-translate core and http-loader according to angular v17
+
 ## Version 6.1.4 - 2024-07-23
 
 - feat: moved type related to Community Tree Table into model and exposed them via public-api
