@@ -987,6 +987,7 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
     if (firstElaboration){
       this.setGroupDefaultExpanded();
     }
+    this.drawGrid(this.communityTreeData);
 
     return ({
       records: this.communityTreeData,

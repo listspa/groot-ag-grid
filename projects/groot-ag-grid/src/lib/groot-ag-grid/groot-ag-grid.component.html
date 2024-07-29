@@ -74,14 +74,15 @@
 
 <ng-template #communityTreeTemplate let-row let-index="index" let-params>
   <div
-    [style.padding-left.rem]="row._treeMetadata.level">
+    [ngStyle]="{'padding-left.rem': 2 * row._treeMetadata.level + (row._children.length === 0 ? 1.6 : 0)}"
+  >
     <i class="fa-solid fa-chevron-down communityTreeIcon" *ngIf="row._children.length!=0 && row._treeMetadata.expanded"
        (click)="communityTreeHandleCollapseRow(row)"
        aria-hidden="true"></i>
     <i class="fa-solid fa-chevron-right communityTreeIcon" *ngIf="row._children.length!=0 && !row._treeMetadata.expanded"
        (click)="communityTreeHandleExpandRow(row)"
        aria-hidden="true"></i>
-    <span [ngStyle]="{'margin-left.rem': (0.5) * (3 + (row._children.length === 0 ? 4 : 0))}">
+    <span [ngStyle]="{'margin-left.px': row._children.length === 0 ? 6.25 : 0}">
       <ng-container *ngIf="_communityTreeGroupColTemplate">
       <ng-container
         *ngTemplateOutlet="_communityTreeGroupColTemplate; context: { $implicit: row, index: index, params: params }"></ng-container>

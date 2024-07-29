@@ -307,6 +307,8 @@
   </li>
   <li>Provided data must contain the <code>id</code> property; alternatively, <code>[getRowId]</code> must be used ;</li>
   <li>Provided data must contain the <code>parentId</code> property; alternatively, <code>[getDataPath]</code> must be used ;</li>
+  <li><code>NEW</code> The grid is now able to generate missing nodes in the tree structure. This only works if the provided data has a <code>rowId</code> property
+  and if this field is used as <code>[getRowId]</code>; also <code>[getDataPath]</code> must be provided. These generated nodes can be automatically populated if in the given ColDefs <code>aggFunc</code> is specified (currently only working with <code>sum</code>) </li>
   <li>(optional) You can provide a custom template inside the <code>autoGroupColumnDef</code> ; for example:
     <pre><code>
       &#64;ViewChild('communityTreeTemplate', {{ "{" }} static: true &#125;&#125;) communityTreeTemplate: TemplateRef&lt;any&gt;
@@ -337,6 +339,7 @@
 
 <groot-ag-grid-table-header [actions]="tplHeaderActionsCommunityTree">
   <ng-template #tplHeaderActionsCommunityTree>
+    <span class="me-3 fa fa-arrows-rotate" (click)="reloadCommunityTree()" aria-hidden="true"></span>
     <groot-ag-grid-table-action label="Expand All" (click)="communityTreeTable.expandAll()" aria-hidden="true"></groot-ag-grid-table-action>
     <groot-ag-grid-table-action label="Expand Level 1" (click)="communityTreeTable.expandLevel(1)" aria-hidden="true"></groot-ag-grid-table-action>
     <groot-ag-grid-table-action label="Collapse All" (click)="communityTreeTable.collapseAll()" aria-hidden="true"></groot-ag-grid-table-action>
@@ -348,11 +351,10 @@
   [columnDefs]="communityTreeColumns"
   [useCommunityTree]="true"
   [autoGroupColumnDef]="communityTreeGroupColDef"
-  [groupDefaultExpanded]="1"
   [getDataPath]="getDataPathCommunityTree"
   [getRowId]="getRowIdCommunityTree"
   [searchResultsData]="searchResultsDataCommunityTree"
-  (search)="searchTree()"
+  (search)="searchCommunityTree()"
   [hideTitleBar]="true"
 ></groot-ag-grid>
 
@@ -362,6 +364,6 @@
       <i *ngIf="row.macroCategory === 'transportation'" class="fa-solid fa-car" aria-hidden="true"></i>
       <i *ngIf="row.macroCategory === 'food'" class="fa-solid fa-pizza-slice" aria-hidden="true"></i>
       <i *ngIf="row.macroCategory === 'home'" class="fa-solid fa-house" aria-hidden="true"></i>
-      {{ row.description }}
+      {{ row.description ?? 'Auto-generated - lev.' + row._treeMetadata?.level}}
   </span>
 </ng-template>

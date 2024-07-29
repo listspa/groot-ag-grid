@@ -15,66 +15,123 @@ export class GrootAgGridTreeDataService<T> {
                             getDataPath?: GetDataPath,
                             nodeExpandedStatus?: Map<string, boolean>,
                             api?: GridApi,
-                            gridOptions?: GridOptions): TreeTableWithExtras<T>[]{
+                            gridOptions?: GridOptions): TreeTableWithExtras<T>[] {
     const recordMap: { [key: string]: TreeTableWithExtras<T> } = {};
     const dataPathToRowId = {};
     const tree: TreeTableWithExtras<T>[] = [];
+    const missingNodes: string[] = [];
 
-    // retrieve id and store in recordMap
-    rows?.forEach((val: TreeTableWithExtras<T>) => {
-      const treeNode: TreeTableWithExtras<T> = {...val, _treeMetadata: {}};
-      treeNode._treeMetadata.id = (getRowId && api && gridOptions) ?
-        getRowId({
-          api,
-          columnApi: undefined,
-          context: gridOptions.context,
-          level: 0,
-          data: treeNode
-        }) : (treeNode.hasOwnProperty('id') ? (treeNode as any).id : undefined);
+    // if gridReady
+    if (api) {
+      // retrieve id and store in recordMap
+      rows?.forEach((val: TreeTableWithExtras<T>) => {
+        const treeNode: TreeTableWithExtras<T> = {...val, _treeMetadata: {}};
+        treeNode._treeMetadata.id = (getRowId && gridOptions) ?
+          getRowId({
+            api,
+            columnApi: undefined,
+            context: gridOptions.context,
+            level: 0,
+            data: treeNode
+          }) : (treeNode.hasOwnProperty('id') ? (treeNode as any).id : undefined);
 
-      if (treeNode._treeMetadata.id === undefined) {
-        console.error('Row ID undefined. You must provide [getRowId] or an \'id\' property in the data object');
-      }
-
-      recordMap[treeNode._treeMetadata.id] = {
-        ...treeNode,
-        _treeMetadata: {
-          ...treeNode._treeMetadata,
-          expanded: nodeExpandedStatus.get(treeNode._treeMetadata.id) ?? (treeNode._treeMetadata.expanded || false)
-        },
-        _children: []
-      };
-    });
-
-    // identify parent-child relationship
-    Object.entries(recordMap).forEach(([key, element]) => {
-      if (getDataPath) {
-        const dataPath = getDataPath(element);
-        dataPathToRowId[dataPath.join('@#$')] = element._treeMetadata.id;
-        element._treeMetadata.parentId = null;
-        element._treeMetadata.dataPath = dataPath;
-        if (dataPath?.length > 1) {
-          const parentDataPath = dataPath.slice(0, -1).join('@#$');
-          if (dataPathToRowId[parentDataPath]) {
-            element._treeMetadata.parentId = dataPathToRowId[parentDataPath];
-          }
+        if (treeNode._treeMetadata.id === undefined) {
+          console.error('Row ID undefined. You must provide [getRowId] or an \'id\' property in the data object');
         }
-      }
 
-      if (element._treeMetadata.parentId === null) {
-        tree.push(recordMap[key]);
-      } else {
-        if (recordMap[element._treeMetadata.parentId]) {
-          recordMap[element._treeMetadata.parentId]._children.push({
-            ...recordMap[element._treeMetadata.id],
-            parentId: element._treeMetadata.parentId,
-            dataPath: element._treeMetadata.dataPath ?? element._treeMetadata.dataPath
+        if (getDataPath) {
+          const dataPath = getDataPath(treeNode);
+          dataPathToRowId[dataPath.join('|')] = treeNode._treeMetadata.id;
+          treeNode._treeMetadata.parentId = null;
+          treeNode._treeMetadata.dataPath = dataPath;
+        }
+
+        recordMap[treeNode._treeMetadata.id] = {
+          ...treeNode,
+          _treeMetadata: {
+            ...treeNode._treeMetadata,
+            expanded: nodeExpandedStatus.get(treeNode._treeMetadata.id) ?? (treeNode._treeMetadata.expanded || false)
+          },
+          _children: []
+        };
+      });
+
+      // check if there are missing elements in the tree structure
+      // if missing nodes are found, they are added and their rowId is built using getDataPath
+      Object.entries(recordMap).forEach(([key, element]) => {
+        if (getDataPath) {
+          const concatenatedPaths = element._treeMetadata.dataPath.reduce((acc, curr, index) => {
+            if (index === 0) {
+              acc.push(curr);
+            } else {
+              acc.push(`${acc[index - 1]}|${curr}`);
+            }
+            return acc;
+          }, [] as string[]);
+          concatenatedPaths.forEach((path, index) => {
+            if (!dataPathToRowId[path]) {
+              dataPathToRowId[path] = path;
+              // @ts-ignore
+              recordMap[path] = {
+                rowId: path,
+                _treeMetadata: {
+                  id: path,
+                  dataPath: path.split('|'),
+                  expanded: nodeExpandedStatus.get(path) ?? false,
+                  level: index,
+                },
+                _children: []
+              };
+              missingNodes.push(path);
+              if (index === 0) {
+                tree.push(recordMap[path]);
+              }
+            }
           });
         }
-      }
-    });
+      });
 
-    tree.forEach(root => this.assignLevels(root, 0));
+      // identify parent-child relationship
+      Object.keys(recordMap).forEach(key => {
+        const element = recordMap[key];
+        if (getDataPath) {
+          if (element._treeMetadata.dataPath?.length > 1) {
+            const parentDataPath = element._treeMetadata.dataPath.slice(0, -1).join('|');
+            if (dataPathToRowId[parentDataPath]) {
+              element._treeMetadata.parentId = dataPathToRowId[parentDataPath];
+            }
+          }
+        }
+        if (element._treeMetadata.parentId === null) {
+          tree.push(recordMap[key]);
+        } else {
+          if (recordMap[element._treeMetadata.parentId]) {
+            recordMap[element._treeMetadata.parentId]._children.push(recordMap[element._treeMetadata.id]);
+          }
+        }
+      });
+
+      // perform data aggregation of columns with aggFunc = sum
+      // tslint:disable-next-line:no-string-literal
+      const toBeAggregated = api.getColumnDefs()?.filter(colDef => colDef['aggFunc'])
+        // tslint:disable-next-line:no-string-literal
+        .map(colDef => ({field: colDef['field'], aggFunc: colDef['aggFunc']}));
+
+      missingNodes?.sort((a, b) => b.length - a.length).forEach(nodeId => {
+        const node = recordMap[nodeId];
+        toBeAggregated?.forEach(el => {
+          if (el.aggFunc === 'sum' && node._children.length !== 0) {
+            const acc = node._children.reduce((acc, cur) => {
+              return cur[el.field] ? acc + cur[el.field] : acc;
+            }, null);
+            recordMap[nodeId][el.field] = acc === null ? null : acc;
+          }
+        });
+      });
+
+
+      tree.forEach(root => this.assignLevels(root, 0));
+    }
     return [...tree];
   }
 

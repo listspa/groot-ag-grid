@@ -50,7 +50,7 @@ export class PageDemoTableComponent implements OnInit {
   @ViewChild('gridHeader', {static: false}) gridHeader: GrootAgGridComponent<any>;
   @ViewChild('gridColumnHeaderTemplate', {static: false}) gridColumnHeaderTemplate: GrootAgGridComponent<any>;
   @ViewChild('columnHeaderTemplate', {static: true}) columnHeaderTemplate: TemplateRef<any>;
-  @ViewChild('communityTreeTable', {static: true}) communityTreeTable: TemplateRef<any>;
+  @ViewChild('communityTreeTable', {static: true}) communityTreeTable: GrootAgGridComponent<any>;
   availableColumns: ColDef[];
   columns: ColDef[];
   customHeaderColumns: ColDef[];
@@ -228,7 +228,7 @@ export class PageDemoTableComponent implements OnInit {
     };
 
     this.communityTreeColumns = [
-      {colId: 'count', field: 'count', cellRenderer: GrootAgGridRenderer.numbers, cellClass: 'ag-cell-right'},
+      {colId: 'count', field: 'count', aggFunc: 'sum', cellRenderer: GrootAgGridRenderer.numbers, cellClass: 'ag-cell-right'},
     ];
     this.communityTreeGroupColDef = {
       colId: 'category',
@@ -372,21 +372,25 @@ export class PageDemoTableComponent implements OnInit {
         {macroCategory: 'Liquid product', category: 'Treasury bills', subCategory: 'Treasury bills', count: 23},
       ]
     };
+  }
+
+  searchCommunityTree(){
     this.searchResultsDataCommunityTree = {
       pageNum: 0,
       pageLen: 10,
-      totalNumRecords: 16,
+      totalNumRecords: 15,
       records: [
-        {macroCategory: 'transportation', category: '', subCategory: '', description: 'Transportation', count: 542, rowId: '00' },
-        {macroCategory: 'transportation', category: 'personal', subCategory: '', description: 'Train', count: 12, rowId: '00_00'},
+        // {macroCategory: 'transportation', category: '', subCategory: '', description: 'Transportation', count: 602, rowId: '00' },
+        // {macroCategory: 'transportation', category: 'personal', subCategory: '', description: 'Train', count: 12, rowId: '00_00'},
         {macroCategory: 'transportation', category: 'personal', subCategory: 'train', subSubCategory: 'holidays', description: 'Holiday trips', count: 12, rowId: '00_00_00' },
-        {macroCategory: 'transportation', category: 'personal', subCategory: 'car', subSubCategory: '', description: 'Car', count: 530, rowId: '00_01' },
+        {macroCategory: 'transportation', category: 'personal', subCategory: 'car', subSubCategory: '', description: 'Car', count: 590, rowId: '00_01' },
         {macroCategory: 'transportation', category: 'personal', subCategory: 'car', subSubCategory: 'maintenance', description: 'Maintenance expenses', count: 345, rowId: '00_01_00' },
         {macroCategory: 'transportation', category: 'personal', subCategory: 'car', subSubCategory: 'maintenance', subSubSubCategory: 'engine', description: 'Engine', count: 95, rowId: '00_01_00_00' },
         {macroCategory: 'transportation', category: 'personal', subCategory: 'car', subSubCategory: 'maintenance', subSubSubCategory: 'tyres', description: 'Tyres', count: 250, rowId: '00_01_00_01' },
         {macroCategory: 'transportation', category: 'personal', subCategory: 'car', subSubCategory: 'fuel', description: 'Fuel', count: 185, rowId: '00_01_01' },
         {macroCategory: 'transportation', category: 'personal', subCategory: 'car', subSubCategory: 'fuel', subSubSubCategory: 'diesel', description: 'Diesel', count: 105, rowId: '00_01_01_00' },
         {macroCategory: 'transportation', category: 'personal', subCategory: 'car', subSubCategory: 'fuel', subSubSubCategory: 'electric', description: 'EV Vehicle', count: 80, rowId: '00_01_01_01' },
+        {macroCategory: 'transportation', category: 'personal', subCategory: 'car', subSubCategory: 'accessories', subSubSubCategory: '', description: 'Accessories', count: 60, rowId: '00_01_02' },
         {macroCategory: 'food', category: '', subCategory: '', description: 'Food', count: 55, rowId: '01'},
         {macroCategory: 'food', category: 'groceries', subCategory: '', description: 'Groceries', count: 35, children:[], rowId: '01_00' },
         {macroCategory: 'food', category: 'eatOutside', subCategory: '', description: 'Eating Outside', count: 20, children:[], rowId: '01_01' },
@@ -395,6 +399,13 @@ export class PageDemoTableComponent implements OnInit {
         {macroCategory: 'home', category: 'electricity', subCategory: '', description: 'Electricity', count: 60, children:[], rowId: '02_01' },
       ]
     };
+  }
+
+  reloadCommunityTree(): void {
+    if (this.communityTreeTable){
+      this.searchCommunityTree();
+      this.communityTreeTable.reloadTable();
+    }
   }
 
   changeAge(row: any): void {
