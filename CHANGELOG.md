@@ -1,8 +1,8 @@
 # Groot-ag-grid releases
 
-## Version 6.1.5 - 2024-07-23
+## Version 6.1.6 - 2024-08-05
 
-- fix: use right version of ngx-translate core and http-loader according to angular v17
+- fix: solve pagination in infiniteScroll
 
 ## Version 6.1.4 - 2024-07-23
 

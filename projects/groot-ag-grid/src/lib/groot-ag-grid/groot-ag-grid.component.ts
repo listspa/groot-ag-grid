@@ -602,6 +602,7 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
       rowModelType: this.infiniteScroll ? 'infinite' : 'clientSide',
       cacheBlockSize: this.infiniteScroll ? this.pageSize : undefined,
       datasource: this.infiniteScroll ? this.getDatasource(this) : undefined,
+      maxConcurrentDatasourceRequests: 1,
       getRowClass: this._getRowClass,
       getRowStyle: this._getRowStyle,
       domLayout: this.gridHeightCss ? 'normal' : 'autoHeight',
