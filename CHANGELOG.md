@@ -1,5 +1,9 @@
 # Groot-ag-grid releases
 
+## Version 6.1.7 - 2024-08-13
+
+- fix: multiple general fixes for Community Tree Table implementation
+
 ## Version 6.1.6 - 2024-08-05
 
 - fix: solve pagination in infiniteScroll
