@@ -167,7 +167,10 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
    * 0:   no groups are expanded (default)
    * 1:   first row group will be expanded
    */
-  @Input() groupDefaultExpanded: number;
+  @Input()
+  set groupDefaultExpanded(value: number) {
+    this.groupExpanded = value;
+  }
   private _communityTreeGroupColDef: ColDef = null;
   protected _communityTreeGroupColTemplate: TemplateRef<any> = null;
   public _autoGroupColumnDef: ColDef = null;
@@ -628,8 +631,7 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
   }
 
   private setGroupDefaultExpanded(): void {
-    if (this.groupDefaultExpanded) {
-      this.groupExpanded = this.groupDefaultExpanded;
+    if (this.groupExpanded) {
       if (this.useCommunityTree){
         this.groupExpanded === -1 ? this.expandAll() : this.expandLevel(this.groupExpanded);
       } else {
@@ -983,12 +985,13 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
       this.gridOptions);
 
     const firstElaboration = this.initialCommunityTreeData.length === 0;
-    this.initialCommunityTreeData = [...tree];
     this.communityTreeData = [...tree];
     if (firstElaboration){
+      this.initialCommunityTreeData = [...tree];
       this.setGroupDefaultExpanded();
+    } else {
+      this.drawGrid();
     }
-    this.drawGrid(this.communityTreeData);
 
     return ({
       records: this.communityTreeData,
@@ -998,17 +1001,21 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
     }) as unknown as PaginatedResponse<any>;
   }
 
-  private drawGrid(dataArray: TreeTableWithExtras<T>[]): void {
+  private drawGrid(): void {
+    this.drawGridRecursive(this.communityTreeData);
+    this.rowsDisplayed = [...this.communityTreeData];
+    this.api?.setGridOption('rowData', this.rowsDisplayed);
+  }
+
+  private drawGridRecursive(dataArray: TreeTableWithExtras<T>[]): void {
     dataArray.forEach(row => {
       if (row._treeMetadata.expanded) {
         this.communityTreeHandleExpandRow(row, false);
         if (row._children) {
-          this.drawGrid(row._children);
+          this.drawGridRecursive(row._children);
         }
       }
     });
-    this.rowsDisplayed = [...this.communityTreeData];
-    this.api?.setGridOption('rowData', this.rowsDisplayed);
   }
 
   communityTreeHandleExpandRow(row: TreeTableWithExtras<T>, singleRow = true): void {
@@ -1033,7 +1040,7 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
         this.initialCommunityTreeData,
         true,
         this.nodeExpandedStatus);
-      this.drawGrid(this.communityTreeData);
+      this.drawGrid();
     } else {
       this.api.expandAll();
     }
@@ -1045,7 +1052,7 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
         this.initialCommunityTreeData,
         false,
         this.nodeExpandedStatus);
-      this.drawGrid(this.communityTreeData);
+      this.drawGrid();
     } else {
       this.api.collapseAll();
     }
@@ -1058,7 +1065,7 @@ export class GrootAgGridComponent<T> implements OnInit, OnDestroy {
         true,
         this.nodeExpandedStatus,
         level);
-      this.drawGrid(this.communityTreeData);
+      this.drawGrid();
     }
   }
 

@@ -105,7 +105,7 @@ export class GrootAgGridTreeDataService<T> {
         if (element._treeMetadata.parentId === null) {
           tree.push(recordMap[key]);
         } else {
-          if (recordMap[element._treeMetadata.parentId]) {
+          if (recordMap[element._treeMetadata.parentId] && recordMap[element._treeMetadata.id]) {
             recordMap[element._treeMetadata.parentId]._children.push(recordMap[element._treeMetadata.id]);
           }
         }
